@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/_10dp"
+    android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name_shipping_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/_16sp"
+                android:text="George Zervoulakos"
+                android:textColor="@color/color_text_name_shipping_address"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+            <ImageView
+                android:id="@+id/imageSetDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ImageView>
+
+        </LinearLayout>
+
+    <TextView
+        android:id="@+id/main_shipping_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:text="87/35 Ly Son Road, Long Bien District \nHanoi, Vietnam 100000\n+84 - 384822466"/>
+</LinearLayout>

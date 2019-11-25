@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_add_shipping"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayoutShippingAddress"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/img_back_add_shipping_address"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/_16dp"
+            android:paddingRight="@dimen/_16dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_back_rule_account"
+            app:layout_constraintBottom_toBottomOf="@+id/txtShippingAddress"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtShippingAddress" />
+
+        <TextView
+            android:id="@+id/txtShippingAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_pro_text_medium"
+            android:gravity="center"
+            android:text="Shipping Address"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_3dp"
+        android:background="@drawable/shadow_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:paddingLeft="@dimen/_16dp"
+        android:paddingRight="16dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/_16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Full Name"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <EditText
+                    android:id="@+id/edt_fullname_shipping_address"
+                    style="@style/Style_edt_shipping"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:hint="Full name"
+                    android:paddingTop="@dimen/_4dp"
+                    android:paddingBottom="@dimen/_4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Phone Number"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_phone_code_add_shipping_address"
+                        android:layout_width="wrap_content"
+                        style="@style/Style_txt_shipping_address"
+                        android:ellipsize="marquee"
+                        android:gravity="right"
+                        android:drawableRight="@drawable/ic_chevron_down"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                    <EditText
+                        android:id="@+id/edt_phoneNumber_shipping_address"
+                        style="@style/Style_edt_shipping"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:hint="Phone number"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_4dp"
+                        android:paddingBottom="@dimen/_4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Address Line 1"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <EditText
+                    android:id="@+id/edt_address_line1_shipping_address"
+                    style="@style/Style_edt_shipping"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:hint="Street Address"
+                    android:paddingTop="@dimen/_4dp"
+                    android:paddingBottom="@dimen/_4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Country / Region"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <TextView
+                    android:id="@+id/text_country_add_shipping_address"
+                    style="@style/Style_txt_shipping_address"
+                    android:ellipsize="marquee"
+                    android:hint="Select your country"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="City / Province"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <TextView
+                    android:id="@+id/text_city_add_shipping_address"
+                    style="@style/Style_txt_shipping_address"
+                    android:ellipsize="marquee"
+                    android:hint="Select your city"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Distric"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <TextView
+                    android:id="@+id/text_distric_add_shipping_address"
+                    style="@style/Style_txt_shipping_address"
+                    android:ellipsize="marquee"
+                    android:hint="Select your distric"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Ward"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <TextView
+                    android:id="@+id/text_ward_add_shipping_address"
+                    style="@style/Style_txt_shipping_address"
+                    android:ellipsize="marquee"
+                    android:hint="Select your distric"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/ic_edt_add_shipping"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="ZIP Code"
+                    android:textColor="@color/color_text_title_add_shipping_address"
+                    android:textSize="@dimen/_12sp" />
+
+                <EditText
+                    android:id="@+id/edt_zip_code_shipping_address"
+                    style="@style/Style_edt_shipping"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:hint="100000"
+                    android:inputType="number"
+                    android:paddingTop="@dimen/_4dp"
+                    android:paddingRight="@dimen/_16dp"
+                    android:paddingBottom="@dimen/_4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|right"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:gravity="left"
+                    android:text="Set as default shipping address"
+                    android:textColor="@color/color_text_messages_dialog"
+                    android:textSize="@dimen/_16sp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swt_set_default_shipping_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_5dp"
+                    android:theme="@style/SwitchCompatTheme" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_save_shipping_address"
+                    android:layout_width="209dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bkg_btn_update_account"
+                    android:fontFamily="@font/sf_ui_display_semibold"
+                    android:gravity="center"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_16sp"/>
+
+                <TextView
+                    android:id="@+id/txt_delete_shipping_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/_30dp"
+                    android:text="Delete this address"
+                    android:textColor="@color/color_text_messages_dialog"
+                    android:textSize="@dimen/_16sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

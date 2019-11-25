@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bkg_layout_corners_dialog"
+    android:gravity="center"
+    android:padding="@dimen/_10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14dp"
+        android:layout_marginBottom="@dimen/_20dp"
+        android:gravity="center"
+        android:text="Update Birthday"
+        android:fontFamily="@font/sf_pro_display_semibold"
+        android:textColor="@color/color_text_title_dialog"
+        android:textSize="@dimen/_20sp">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_20dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <NumberPicker
+            android:id="@+id/number_picker_m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </NumberPicker>
+
+        <NumberPicker
+            android:id="@+id/number_picker_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </NumberPicker>
+
+        <NumberPicker
+            android:id="@+id/number_picker_y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </NumberPicker>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel_dialog_change_birthday"
+            android:text="Cancel"
+            style="@style/Theme_Button_Cancel_Dialog">">
+        </Button>
+
+
+        <Button
+            android:id="@+id/btn_update_dialog_change_birthday"
+            android:text="Update"
+            style="@style/Theme_Button_Update_Dialog">
+        </Button>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

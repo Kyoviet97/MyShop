@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bkg_layout_corners_dialog"
+    android:gravity="center"
+    android:padding="@dimen/_10dp">
+
+    <TextView
+        android:id="@+id/txt_title_change_fullname_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14dp"
+        android:layout_marginBottom="@dimen/_20dp"
+        android:gravity="center"
+        android:text="Update Full Name"
+        android:fontFamily="@font/sf_pro_display_semibold"
+        android:textColor="@color/color_text_title_dialog"
+        android:textSize="@dimen/_20sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/txt_message_change_fullname_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:text="Update your Full Name"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_16sp">
+    </TextView>
+
+    <EditText
+        android:id="@+id/edt_fullName_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_edt_boder_change_fullname"
+        android:ellipsize="end"
+        android:hint="Fullname"
+        android:imeOptions="actionDone"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:maxLines="1"
+        android:padding="@dimen/_10dp"
+        android:singleLine="true"
+        android:textColorHint="@color/color_txt_hint_edt"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel_dialog_change_fullname"
+            style="@style/Theme_Button_Dialog"
+            android:text="Cancel">
+        </Button>
+
+
+        <Button
+            android:id="@+id/btn_update_dialog_change_fullname"
+            android:text="Update"
+            style="@style/Theme_Button_Update_Dialog">
+        </Button>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

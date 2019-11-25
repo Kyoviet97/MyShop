@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bkg_dialog_custom">
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_content"
+        android:layout_marginRight="@dimen/_5dp"
+        android:layout_toLeftOf="@+id/btn_ok"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/sf_ui_display_semibold"
+        android:gravity="center"
+        android:text="Hủy bỏ"
+        android:textColor="#33CCFF"
+        android:textSize="@dimen/_14sp" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_content"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/sf_ui_display_semibold"
+        android:gravity="center"
+        android:text="Đồng ý"
+        android:textColor="#33CCFF"
+        android:textSize="@dimen/_14sp" />
+
+
+    <TextView
+        android:id="@+id/txt_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_title"
+        android:layout_marginLeft="@dimen/_20dp"
+        android:layout_marginRight="@dimen/_20dp"
+        android:fontFamily="@font/sf_ui_display_regular"
+        android:text="Content"
+        android:textColor="@color/color_text_gray"
+        android:textSize="@dimen/_16sp" />
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginRight="@dimen/_20dp"
+        android:layout_marginBottom="@dimen/_15dp"
+        android:fontFamily="@font/sf_ui_display_semibold"
+        android:text="Thông báo"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_16sp" />
+
+</RelativeLayout>

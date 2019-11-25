@@ -1,0 +1,523 @@
+package com.gvtechcom.myshop.Fragment;
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.gvtechcom.myshop.Adapter.AdapterFeaturedCategories;
+import com.gvtechcom.myshop.Adapter.AdapterFlashDeals;
+import com.gvtechcom.myshop.Adapter.AdapterImageSlide;
+import com.gvtechcom.myshop.Adapter.AdapterItemsYouLove;
+import com.gvtechcom.myshop.Adapter.AdapterJustForYou;
+import com.gvtechcom.myshop.Adapter.AdapterTopNewFeaturedStore;
+import com.gvtechcom.myshop.MainActivity;
+import com.gvtechcom.myshop.Model.BaseGetApiData;
+import com.gvtechcom.myshop.Model.FeaturedCategories;
+import com.gvtechcom.myshop.Model.FlashDealsModel;
+import com.gvtechcom.myshop.Model.ImageModel;
+import com.gvtechcom.myshop.Model.ItemYouLoveModel;
+import com.gvtechcom.myshop.Model.JustForYou;
+import com.gvtechcom.myshop.Model.Product;
+import com.gvtechcom.myshop.Model.TopSelection;
+import com.gvtechcom.myshop.Network.APIServer;
+import com.gvtechcom.myshop.Network.RetrofitBuilder;
+import com.gvtechcom.myshop.R;
+import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.viewpagerindicator.CirclePageIndicator;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+public class FragmentHomeContent extends Fragment {
+    private View rootView;
+    private MySharePreferences mySharePreferences = new MySharePreferences();
+    private Boolean isLoadMore = true;
+    private static int currentPage = 0;
+    private static int NUM_PAGES = 0;
+
+    private int page = 2;
+
+    private FragmentManager fragmentManager;
+
+    private APIServer apiServer;
+
+    private BaseGetApiData obj;
+    private ItemYouLoveModel.ItemYouLoveModelParser objItemYouLove;
+
+    private ArrayList<ImageModel> imageModelArrayList;
+
+    private ArrayList<FlashDealsModel> arrayListFlashDeals;
+    private AdapterFlashDeals adapterFlashDeals;
+    private List<Product> lsProductFlashDeals;
+
+    List<ItemYouLoveModel.Product> lsProductItemYouLove;
+
+    private List<JustForYou> lsJustForYou;
+    private AdapterJustForYou adapterJustForYou;
+
+    private List<FeaturedCategories> lsFeaturedCategories;
+    private AdapterFeaturedCategories adapterFeaturedCategories;
+
+    private ArrayList<TopSelection> topSelectionArrayList;
+    private AdapterTopNewFeaturedStore adapterTopSelection;
+
+    private List<ItemYouLoveModel> lsItemYouLove;
+    private AdapterItemsYouLove adapterItemsYouLove;
+
+    @BindView(R.id.card_view_flash_deals)
+    CardView cardViewFlashDeals;
+    @BindView(R.id.view_pager_slide)
+    ViewPager viewPagerSlide;
+    @BindView(R.id.recycler_view_flash_deals)
+    RecyclerView recyclerViewFlashDeals;
+    @BindView(R.id.recycler_view_just_for_you)
+    RecyclerView recyclerJustForYou;
+    @BindView(R.id.recyclerView_featured_categories)
+    RecyclerView recyclerViewFeaturedCategories;
+    @BindView(R.id.recycler_view_items_you_love)
+    RecyclerView recyclerItemsYouLove;
+    @BindView(R.id.Nested_scroll_view)
+    NestedScrollView NestedScrollView;
+    @BindView(R.id.FeaturedTextView)
+    TextView FeaturedTextView;
+    @BindView(R.id.txt_count_hours)
+    TextView txtCountHours;
+    @BindView(R.id.txt_count_minute)
+    TextView txtCountMinute;
+    @BindView(R.id.txt_count_seconds)
+    TextView txtCountSeconds;
+    @BindView(R.id.img_top_selection_one)
+    ImageView imgTopSelectOne;
+    @BindView(R.id.img_top_selection_two)
+    ImageView imgTopSelectTwo;
+    @BindView(R.id.img_new_for_you_one)
+    ImageView imgNewForYouOne;
+    @BindView(R.id.img_new_for_you_two)
+    ImageView imgNewForYouTwo;
+    @BindView(R.id.img_new_feature_brands_one)
+    ImageView imgFeatureBrandsOne;
+    @BindView(R.id.img_new_feature_brands_two)
+    ImageView imgFeatureBrandsTwo;
+    @BindView(R.id.img_stores_you_love_one)
+    ImageView imgStoreYouLoveOne;
+    @BindView(R.id.img_stores_you_love_two)
+    ImageView imgStoreYouLoveTwo;
+    @BindView(R.id.progressbar_load_api_footer)
+    ProgressBar progessbar_footer;
+    @BindView(R.id.txt_flash_deals_default)
+    TextView txtFlashDealsDetails;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_content_home, container, false);
+        ButterKnife.bind(this, rootView);
+        MainActivity mainActivity;
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "");
+        return rootView;
+    }
+
+    private Boolean checkstart = true;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init();
+
+        setRecyclerView();
+
+        setOnClickItemDetails();
+
+        setItemSlideBanner();
+
+        loadItemFlashDeals();
+        setTimeFlashDeals();
+
+        setItemJustForYou();
+
+        setItemFeaturedCategorie();
+
+        setItemTopNewFeaturedStore();
+
+        getNestedScrollChange();
+    }
+
+    private void init() {
+        onListenKeyboard();
+        Retrofit retrofitClient;
+        retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
+        apiServer = retrofitClient.create(APIServer.class);
+        Gson gson = new Gson();
+        String json = mySharePreferences.GetSharePrefStringObject(getActivity(), "objDataHomeContent");
+        String jsonItemYouLove = mySharePreferences.GetSharePrefStringObject(getActivity(), "MyModelItemYouLove");
+        obj = gson.fromJson(json, BaseGetApiData.class);
+        objItemYouLove = gson.fromJson(jsonItemYouLove, ItemYouLoveModel.ItemYouLoveModelParser.class);
+        fragmentManager = getFragmentManager();
+        lsProductItemYouLove = new ArrayList<>();
+        for (int i = 0; i <= objItemYouLove.response.products.size(); i++) {
+            if (i != objItemYouLove.response.products.size()) {
+                lsProductItemYouLove.add(objItemYouLove.response.products.get(i));
+            } else {
+                setAdapterItemsYouLove(lsProductItemYouLove);
+            }
+        }
+    }
+
+    private void setRecyclerView() {
+        LinearLayoutManager linearLayoutManagerViewFlashDeals = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewFlashDeals.setLayoutManager(linearLayoutManagerViewFlashDeals);
+
+        LinearLayoutManager linearLayoutManagerJustForYou = new GridLayoutManager(getActivity(), 2);
+        recyclerJustForYou.setLayoutManager(linearLayoutManagerJustForYou);
+
+        LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerItemsYouLove.setLayoutManager(linearLayoutManager);
+
+        LinearLayoutManager linearLayoutManagerFeaturedCategories = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewFeaturedCategories.setLayoutManager(linearLayoutManagerFeaturedCategories);
+    }
+
+    private void setItemSlideBanner() {
+        imageModelArrayList = new ArrayList<>();
+        for (int i = 0; i <= obj.getResponse().getBanners().size(); i++) {
+            if (i != obj.getResponse().getBanners().size()) {
+                imageModelArrayList.add(new ImageModel(obj.getResponse().getBanners().get(i).getImage()));
+            } else {
+                slideImageBanner();
+            }
+        }
+    }
+
+    private void slideImageBanner() {
+        viewPagerSlide.setAdapter(new AdapterImageSlide(getActivity(), imageModelArrayList));
+        viewPagerSlide.setOffscreenPageLimit(imageModelArrayList.size());
+        CirclePageIndicator indicatorSlide = (CirclePageIndicator) rootView.findViewById(R.id.indicator_slide);
+
+        indicatorSlide.setViewPager(viewPagerSlide);
+        final float density = getResources().getDisplayMetrics().density;
+
+        indicatorSlide.setRadius(3 * density);
+        indicatorSlide.setStrokeWidth(0);
+
+        NUM_PAGES = imageModelArrayList.size();
+
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                viewPagerSlide.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 3000, 3000);
+
+        indicatorSlide.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+            }
+
+            @Override
+            public void onPageScrolled(int pos, float arg1, int arg2) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int pos) {
+            }
+        });
+
+    }
+
+    private void loadItemFlashDeals() {
+        lsProductFlashDeals = obj.getResponse().getFlashDeals().getProducts();
+        if (lsProductFlashDeals != null) {
+            adapterFlashDeals = new AdapterFlashDeals(lsProductFlashDeals, getActivity());
+            recyclerViewFlashDeals.setAdapter(adapterFlashDeals);
+            adapterFlashDeals.setOnItemClickListener(new AdapterFlashDeals.ItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Toast.makeText(getActivity(), "Gia: " + lsProductFlashDeals.get(position).getPriceSale() + '\n' +
+                            "So luong: " + lsProductFlashDeals.get(position).getQuantity() + "/" + lsProductFlashDeals.get(position).getSold() + '\n' +
+                            "Sale: " + lsProductFlashDeals.get(position).getPercentSale(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void setTimeFlashDeals() {
+        Calendar calendar = Calendar.getInstance();
+        Calendar calendarCurent = Calendar.getInstance();
+        calendar.setTimeInMillis((obj.getResponse().getFlashDeals().getEndDatetime()) * 1000L);
+    }
+
+    private void setItemJustForYou() {
+        if (obj != null) {
+            lsJustForYou = obj.getResponse().getJustForYou();
+            adapterJustForYou = new AdapterJustForYou(lsJustForYou, getActivity());
+            adapterJustForYou.setItemClickListener(new AdapterJustForYou.ItemClickListener() {
+                @Override
+                public void onClickListener(String idProduct) {
+                    Toast.makeText(getActivity(), "idProduct: " + idProduct, Toast.LENGTH_SHORT).show();
+                }
+            });
+            recyclerJustForYou.setAdapter(adapterJustForYou);
+        }
+    }
+
+    private void setItemFeaturedCategorie() {
+        if (obj != null) {
+            lsFeaturedCategories = obj.getResponse().getFeature_categories();
+            adapterFeaturedCategories = new AdapterFeaturedCategories(getActivity(), lsFeaturedCategories);
+            adapterFeaturedCategories.setItemClickListenr(new AdapterFeaturedCategories.ItemClickListener() {
+                @Override
+                public void itemClick(String idProduct) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(R.id.content_home_frame_layout, new FragmentItemDetail());
+                    fragmentTransaction.addToBackStack("home_content");
+                    fragmentTransaction.commit();
+                }
+            });
+            recyclerViewFeaturedCategories.setAdapter(adapterFeaturedCategories);
+        }
+    }
+
+    private void setItemTopNewFeaturedStore() {
+        setGlideImage(obj.getResponse().getTopSelections().get(0).product_image, imgTopSelectOne);
+        setGlideImage(obj.getResponse().getTopSelections().get(1).product_image, imgTopSelectTwo);
+
+        setGlideImage(obj.getResponse().getNewsForYou().get(0).product_image, imgNewForYouOne);
+        setGlideImage(obj.getResponse().getNewsForYou().get(1).product_image, imgNewForYouTwo);
+
+        setGlideImage(obj.getResponse().getFeatureBrands().get(0).image, imgFeatureBrandsOne);
+        setGlideImage(obj.getResponse().getFeatureBrands().get(1).image, imgFeatureBrandsTwo);
+
+        setGlideImage(obj.getResponse().getStoresYouLove().get(0).image, imgStoreYouLoveOne);
+        setGlideImage(obj.getResponse().getStoresYouLove().get(1).image, imgStoreYouLoveTwo);
+
+    }
+
+    private void setAdapterItemsYouLove(List<ItemYouLoveModel.Product> lsItemYouLove) {
+        if (adapterItemsYouLove == null) {
+            adapterItemsYouLove = new AdapterItemsYouLove(getActivity(), lsItemYouLove);
+            recyclerItemsYouLove.setAdapter(adapterItemsYouLove);
+            adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
+                @Override
+                public void onClickListener(String productId) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(R.id.content_home_frame_layout, new FragmentItemDetail());
+                    fragmentTransaction.addToBackStack("home");
+                    fragmentTransaction.commit();
+                }
+            });
+        } else {
+            adapterItemsYouLove.UpdateAdapter(lsItemYouLove);
+            recyclerItemsYouLove.setAdapter(adapterItemsYouLove);
+        }
+    }
+
+    private void getNestedScrollChange() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            NestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    int NestedScrollHight = (NestedScrollView.getChildAt(0).getHeight() - NestedScrollView.getHeight());
+                    if (isLoadMore == true && scrollY == NestedScrollHight) {
+                        isLoadMore = false;
+                        loadmore();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                isLoadMore = true;
+                            }
+                        }, 1000);
+                    }
+                }
+            });
+        }
+    }
+
+    private void loadmore() {
+        Animation animation_side_up = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_up_progressbar);
+        Animation animation_side_down = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_progressbar);
+        progessbar_footer.setVisibility(View.VISIBLE);
+        progessbar_footer.setAnimation(animation_side_up);
+        Call<ItemYouLoveModel.ItemYouLoveModelParser> callItemYouLove = apiServer.GetItemYouLove(page, 8);
+        callItemYouLove.enqueue(new Callback<ItemYouLoveModel.ItemYouLoveModelParser>() {
+            @Override
+            public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {
+                if (response.body().code != 200) {
+                    Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
+                    progessbar_footer.setAnimation(animation_side_down);
+                    progessbar_footer.setVisibility(View.GONE);
+                } else {
+                    for (int i = 0; i <= response.body().response.products.size(); i++) {
+                        if (i != response.body().response.products.size()) {
+                            lsProductItemYouLove.add(response.body().response.products.get(i));
+                        } else {
+                            setAdapterItemsYouLove(lsProductItemYouLove);
+                            page = page + 1;
+                            progessbar_footer.setAnimation(animation_side_down);
+                            progessbar_footer.setVisibility(View.GONE);
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Throwable t) {
+                progessbar_footer.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void onListenKeyboard() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (isOpen == true) {
+                            mainActivity.setHideButtonNavigation(true);
+                        } else {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mainActivity.setHideButtonNavigation(false);
+                                }
+                            }, 100);
+                        }
+                    }
+                });
+    }
+
+    private void setOnClickItemDetails(){
+        txtFlashDealsDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentFlashDetails());
+                fragmentTransaction.addToBackStack("home_content");
+                fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void setGlideImage(String url, View view) {
+        Glide.with(getActivity())
+                .load(url)
+                .placeholder(R.drawable.banner_image_slide)
+                .error(R.drawable.banner_image_slide)
+                .into((ImageView) view);
+    }
+
+    @OnClick({R.id.img_top_selection_one, R.id.img_top_selection_two, R.id.img_new_for_you_one, R.id.img_new_for_you_two,
+            R.id.img_new_feature_brands_one, R.id.img_new_feature_brands_two, R.id.img_stores_you_love_one, R.id.img_stores_you_love_two})
+    void OnClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_top_selection_one:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getTopSelections().get(0).product_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_top_selection_two:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getTopSelections().get(1).product_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_new_for_you_one:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getNewsForYou().get(0).product_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_new_for_you_two:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getNewsForYou().get(1).product_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_new_feature_brands_one:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "brand_id: " + obj.getResponse().getFeatureBrands().get(0).brand_id + '\n'
+                            + "use_id: " + obj.getResponse().getFeatureBrands().get(0).user_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_new_feature_brands_two:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "band_id: " + obj.getResponse().getFeatureBrands().get(1).brand_id + '\n'
+                            + "use_id: " + obj.getResponse().getFeatureBrands().get(1).user_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_stores_you_love_one:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "store_id: " + obj.getResponse().getStoresYouLove().get(0).store_id + '\n'
+                            + "address_id: " + obj.getResponse().getStoresYouLove().get(0).address_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.img_stores_you_love_two:
+                if (obj != null) {
+                    Toast.makeText(getActivity(), "store_id: " + obj.getResponse().getStoresYouLove().get(0).store_id + '\n'
+                            + "address_id: " + obj.getResponse().getStoresYouLove().get(1).address_id, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_tran"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/color_tran"
+            app:cardCornerRadius="@dimen/_20dp">
+
+                <ImageView
+                    android:id="@+id/image_silde"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/banner_image_slide"
+                    android:scaleType="fitXY" />
+
+        </androidx.cardview.widget.CardView>
+
+</LinearLayout>

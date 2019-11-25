@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:gravity="center"
+        android:text="My Account"
+        android:textSize="@dimen/_16sp"
+        android:fontFamily="@font/sf_pro_text_medium"
+        android:textColor="@color/color_text_account"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:background="#F1F1F1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_5dp"
+                android:background="@drawable/shadow_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/banner_account"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_edit_full_name_acoount"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5">
+
+
+                <TextView
+                    android:id="@+id/txt_phone_number_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:text="0338055398"
+                    android:textColor="@color/color_phone_number_account"
+                    android:textSize="@dimen/_16sp" />
+
+                <TextView
+                    android:id="@+id/txt_full_name_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollHorizontally="true"
+                    android:maxLines="2"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:hint="Update"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_18sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_edit_full_name_acoount"
+                android:layout_width="@dimen/_60dp"
+                android:layout_height="@dimen/_30dp"
+                android:background="@drawable/bkg_btn_edit_account"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.93"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5">
+
+            </Button>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_avatar_account"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.5"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Personal Information"
+           android:padding="@dimen/_20dp"
+           android:textColor="@android:color/black"
+           android:fontFamily="@font/sf_pro_text_regular"
+           android:textSize="@dimen/_14sp">
+       </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_20dp"
+            android:background="@android:color/white">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:text="Email" />
+
+                <TextView
+                    android:id="@+id/txt_email_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textSize="@dimen/_14sp"
+                    android:drawableRight="@drawable/ic_icon_bullist"
+                    android:paddingRight="@dimen/_10dp"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:textColor="@android:color/black"
+                    android:hint="Update"
+                    android:background="@drawable/ic_edt_under_line_account">
+                </TextView>
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:text="Gender" />
+
+                <TextView
+                    android:id="@+id/txt_gender_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textSize="@dimen/_14sp"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:drawableRight="@drawable/ic_icon_bullist"
+                    android:paddingRight="@dimen/_10dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Update"
+                    android:background="@drawable/ic_edt_under_line_account"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:text="Birthday" />
+
+                <TextView
+                    android:id="@+id/txt_birthday_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textSize="@dimen/_14sp"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:drawableRight="@drawable/ic_icon_bullist"
+                    android:paddingRight="@dimen/_10dp"
+                    android:textColor="@android:color/black"
+                    android:hint="Update"
+                    android:background="@drawable/ic_edt_under_line_account">
+                </TextView>
+
+
+            <Button
+                android:id="@+id/btn_share_to_friends"
+                android:layout_width="match_parent"
+                android:textColor="@android:color/black"
+                android:text="Share eCom to Friends"
+                android:fontFamily="@font/sf_pro_text_medium"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_14sp"
+                android:layout_marginLeft="@dimen/_5dp"
+                android:layout_marginRight="@dimen/_25dp"
+                android:layout_marginTop="@dimen/_24dp"
+                android:layout_marginBottom="@dimen/_24dp"
+                android:padding="@dimen/_14dp"
+                android:drawableLeft="@drawable/ic_share__account"
+                android:background="@drawable/bkg_btn_share_to_friends"
+                android:layout_height="wrap_content">
+            </Button>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Account"
+            android:padding="@dimen/_20dp"
+            android:fontFamily="@font/sf_pro_text_regular"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_14sp">
+        </TextView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:padding="@dimen/_16dp"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="eCom Wallet"
+                android:padding="@dimen/_14dp"
+                android:fontFamily="@font/sf_pro_text_medium"
+                android:gravity="center"
+                android:drawableLeft="@drawable/ic_wallet"
+                android:textAllCaps="false"
+                android:layout_margin="@dimen/_5dp"
+                android:textColor="@android:color/black"
+                android:background="@drawable/bkg_btn_share_to_friends"
+                android:textSize="@dimen/_14sp">
+            </Button>
+
+            <Button
+                android:id="@+id/btn_shipping_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Shipping Address"
+                android:padding="@dimen/_14dp"
+                android:fontFamily="@font/sf_pro_text_medium"
+                android:gravity="center"
+                android:layout_margin="@dimen/_5dp"
+                android:drawableLeft="@drawable/ic_map_marker_check"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false"
+                android:background="@drawable/bkg_btn_share_to_friends"
+                android:textSize="@dimen/_14sp">
+            </Button>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:padding="@dimen/_14dp"
+                android:fontFamily="@font/sf_pro_text_medium"
+                android:gravity="center"
+                android:layout_margin="@dimen/_5dp"
+                android:drawableLeft="@drawable/ic_setting"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:background="@drawable/bkg_btn_share_to_friends"
+                android:textSize="@dimen/_14sp">
+            </Button>
+
+            <Button
+                android:id="@+id/btn_change_password_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Change Password"
+                android:padding="@dimen/_14dp"
+                android:fontFamily="@font/sf_pro_text_medium"
+                android:gravity="center"
+                android:layout_margin="@dimen/_5dp"
+                android:textAllCaps="false"
+                android:drawableLeft="@drawable/ic_lock"
+                android:textColor="@android:color/black"
+                android:background="@drawable/bkg_btn_share_to_friends"
+                android:textSize="@dimen/_14sp">
+            </Button>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_logout_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bkg_btn_click_log_out"
+            android:layout_marginTop="@dimen/_30dp"
+            android:layout_marginBottom="@dimen/_30dp"
+            android:fontFamily="@font/sf_pro_text_medium"
+            android:textColor="#EB3B5A"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_16sp"
+            android:text="Log Out">
+        </Button>
+
+    </LinearLayout>
+
+
+
+
+    </ScrollView>
+
+</LinearLayout>

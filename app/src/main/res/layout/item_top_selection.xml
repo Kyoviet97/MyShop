@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10dp">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="right"
+       android:orientation="horizontal">
+
+       <ImageView
+           android:id="@+id/img_icon_top_selection"
+           android:layout_width="@dimen/_22dp"
+           android:layout_height="@dimen/_22dp"
+           android:src="@drawable/ic_top_selection"/>
+
+       <TextView
+           android:id="@+id/textView_top_selection"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_22dp"
+           android:layout_marginLeft="@dimen/_4dp"
+           android:text="Top Selection"
+           android:textSize="@dimen/_11sp"
+           android:fontFamily="@font/sf_pro_text_bold"
+           android:textColor="@color/color_text_top_selection"
+           android:gravity="center|left"/>
+
+   </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/_2dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="@dimen/_4dp">
+
+            <ImageView
+                android:id="@+id/img_top_selection_one"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/top_selection_one"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/_2dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="@dimen/_6dp">
+
+            <ImageView
+                android:id="@+id/img_top_selection_two"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/top_selection_two"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

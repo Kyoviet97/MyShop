@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    tools:context=".FirtsLauncher">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to eCommerce"
+        android:textSize="@dimen/_17sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/_55dp"
+        android:fontFamily="@font/sf_pro_text_medium">
+    </TextView>
+
+    <Button
+        android:id="@+id/btn_click_firts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_50dp"
+        android:layout_marginTop="@dimen/_30dp"
+        android:layout_marginEnd="@dimen/_50dp"
+        android:background="@drawable/bkg_btn_click_firts"
+        android:text="Explore NOW"
+        android:textColor="#FDA13B"/>
+
+</LinearLayout>

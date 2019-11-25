@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="dark_slate_gray">#2F4F4F</color>
+    <color name="gray_2">#AFAFAF</color>
+    <color name="gray_1">#C0C0C0</color>
+    <color name="black">#000000</color>
+
+    <color name="navigation_bg">#FAFAFA</color>
+
+    <color name="progress1">#EBEBEB</color>
+    <color name="progress2">#f9f9f9</color>
+    <color name="progress3">#666666</color>
+    <color name="color_white">#ffffff</color>
+    <color name="hover_select">#b3b3b3</color>
+
+    <color name="color_text_gray">#4a4a4a</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="red">#F44336</color>
+</resources>

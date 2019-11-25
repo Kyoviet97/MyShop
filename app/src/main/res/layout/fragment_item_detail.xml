@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="top|center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/item_detail_demo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintVertical_bias="0.05"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/_10dp"
+                        android:src="@drawable/ic_back_navigation_white" />
+
+
+                    <ImageView
+                        android:id="@+id/cart_item_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/img_menu_detail"
+                        android:layout_toLeftOf="@+id/img_menu_detail"
+                        android:layout_alignParentTop="false"
+                        android:layout_alignParentBottom="true"
+                        android:padding="@dimen/_10dp"
+                        android:src="@drawable/ic_cart_item_detail" />
+
+                    <ImageView
+                        android:id="@+id/img_menu_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/_10dp"
+                        android:src="@drawable/ic_menu_item_detail" />
+                </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="#EB3B5A"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:padding="@dimen/_10dp"
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:src="@drawable/ic_icon_flash_item_detail"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_15sp"
+                    android:gravity="center"
+                    android:fontFamily="@font/sf_pro_text_bold"
+                    android:text="Flash Deals end in"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/txt_count_hours"
+                        style="@style/Style_textView_count_down_timer_item_detail"
+                        android:fontFamily="@font/sf_pro_text_bold"
+                        android:text="00"/>
+
+                    <TextView
+                        android:id="@+id/txt_count_minute"
+                        style="@style/Style_textView_count_down_timer_item_detail"
+                        android:fontFamily="@font/sf_pro_text_bold"
+                        android:text="00"/>
+
+                    <TextView
+                        android:id="@+id/txt_count_seconds"
+                        style="@style/Style_textView_count_down_timer_item_detail"
+                        android:fontFamily="@font/sf_pro_text_bold"
+                        android:text="00"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center|left"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sf_pro_display_bold"
+                            android:textSize="@dimen/_20sp"
+                            android:textColor="#4A4A4A"
+                            android:text="US $0.69 - $1.74"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#9B9B9B"
+                                android:fontFamily="@font/sf_pro_text_regular"
+                                android:textSize="@dimen/_17sp"
+                                android:text="US $0.99 - $2.49"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bkg_txt_sale_item_detail"
+                                android:paddingLeft="@dimen/_3dp"
+                                android:paddingRight="@dimen/_3dp"
+                                android:fontFamily="@font/sf_pro_text_regular"
+                                android:textSize="@dimen/_12sp"
+                                android:textColor="#D0021B"
+                                android:layout_marginLeft="@dimen/_5dp"
+                                android:text="-30%"/>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5dp"
+                            android:src="@drawable/ic_heart_item_detail">
+                        </ImageView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:fontFamily="@font/sf_pro_text_regular"
+                            android:textSize="@dimen/_12sp"
+                            android:textColor="#4A4A4A"
+                            android:text="201"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:textSize="@dimen/_16sp"
+                    android:textColor="#4A4A4A"
+                    android:text="COXANG iwo 8 Plus/ecg ppg smart watch men Heart Rate iwo 9 smartwatch iwo 8 /iwo 10 Smart Watch for women/men 2019 for Apple IOS"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingTop="@dimen/_16dp"
+                    android:paddingBottom="@dimen/_16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="4.9"
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_15sp"
+                        android:fontFamily="@font/sf_pro_text_regular"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_8dp"
+                        android:src="@drawable/ic_star_item_detail"/>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_8dp"
+                        android:background="#9B9B9B"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="12391 orders"
+                        android:layout_marginLeft="@dimen/_8dp"
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_15sp"
+                        android:fontFamily="@font/sf_pro_text_regular"/>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EBEBEB"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_10dp"
+                    android:layout_marginBottom="@dimen/_10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Free Shipping"
+                            android:fontFamily="@font/sf_pro_text_semibold"
+                            android:textColor="#4A4A4A"
+                            android:textSize="@dimen/_15sp">
+                        </TextView>
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="To Vietnam via Singapore Post"
+                            android:fontFamily="@font/sf_pro_text_regular"
+                            android:textColor="#9B9B9B"
+                            android:textSize="@dimen/_15sp">
+                        </TextView>
+
+                    </LinearLayout>
+
+                   <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       android:adjustViewBounds="true"
+                       android:layout_gravity="center"
+                       android:src="@drawable/ic_chevron_right"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16dp"
+                android:layout_marginBottom="@dimen/_16dp"
+                android:padding="@dimen/_16dp"
+                android:orientation="vertical"
+                android:background="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Select Color: "
+                        android:textSize="@dimen/_15sp"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:textColor="#4A4A4A"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Silver Aluminum with Sport Band"
+                        android:textSize="@dimen/_13sp"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:textColor="#4A4A4A"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:layout_height="@dimen/_50dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:layout_marginBottom="@dimen/_10dp"
+                    android:background="#EBEBEB"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Quantity"
+                    android:textColor="#4A4A4A"
+                    android:fontFamily="@font/sf_pro_text_semibold"
+                    android:textSize="@dimen/_15sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingTop="@dimen/_12dp"
+                    android:paddingBottom="@dimen/_8dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_difference_item_detail"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:textSize="@dimen/_14sp"
+                        android:paddingLeft="@dimen/_15dp"
+                        android:paddingRight="@dimen/_15dp"
+                        android:text="1"
+                        android:textColor="#4A4A4A"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_plus_item_detail"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:textSize="@dimen/_14sp"
+                        android:paddingLeft="@dimen/_15dp"
+                        android:text="23232 available"
+                        android:textColor="#4A4A4A"/>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include layout="@layout/include_customer_reviews_item_detail"/>
+
+            <include layout="@layout/include_questions_answers_item_detail"/>
+
+            <include layout="@layout/include_tech_store_item_detail"/>
+
+
+            //Tong quat
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

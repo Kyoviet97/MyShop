@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="@dimen/_16dp"
+    android:layout_marginTop="@dimen/_16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ABC Tech Store"
+        android:textSize="@dimen/_15sp"
+        android:fontFamily="@font/sf_pro_text_semibold"
+        android:textColor="#4A4A4A"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12dp"
+        android:layout_marginBottom="@dimen/_16dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="94.2%"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/sf_pro_text_semibold"
+                android:textColor="#4A4A4A"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Positive Feedback"
+                android:textSize="@dimen/_13sp"
+                android:fontFamily="@font/sf_pro_text_regular"
+                android:textColor="#9B9B9B"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="2">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2123"
+                    android:textSize="@dimen/_15sp"
+                    android:fontFamily="@font/sf_pro_text_semibold"
+                    android:textColor="#4A4A4A"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Items"
+                    android:textSize="@dimen/_13sp"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:textColor="#9B9B9B"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="222222"
+                    android:textSize="@dimen/_15sp"
+                    android:gravity="right"
+                    android:fontFamily="@font/sf_pro_text_semibold"
+                    android:textColor="#4A4A4A"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sold"
+                    android:textSize="@dimen/_13sp"
+                    android:gravity="right"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:textColor="#9B9B9B"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="@dimen/_30dp"
+            android:background="@drawable/ic_btn_go_to_store_accept"
+            android:text="Go To Store"
+            android:textSize="@dimen/_13sp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="@dimen/_30dp"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:background="@drawable/ic_btn_contact_seller_accept"
+            android:text="Go To Store"
+            android:textSize="@dimen/_13sp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:textColor="#FD9644"/>
+
+    </LinearLayout>
+
+</LinearLayout>

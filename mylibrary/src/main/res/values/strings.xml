@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MyLibrary</string>
+
+      <string name="err_network">Không có kết nối internet!</string>
+    <string name="no_server_connection_message">Không có kết nối internet!</string>
+    <string name="err_data_null">Xin vui lòng khởi động lại ứng dụng để cập nhật dữ liệu mới!</string>
+    <string name="err_token">Xin vui lòng đăng nhập lại ứng dụng để cập nhật dữ liệu mới!</string>
+    <string name="err_data_profile_null">Xin vui lòng đăng nhập lại!</string>
+    <string name="err_system">"Không có kết nối internet hoặc kết nối kém, xin vui lòng kiểm tra lại!"</string>
+    <string name="err_edt_empty">"Xin vui lòng điền đầy đủ thông tin!"</string>
+    <string name="err_permission">"Xin vui lòng chọn <b>(Quyền hoặc Cho phép)</b> để cấp quyền truy cập cho ứng dụng!"</string>
+
+    <string name="str_notify_retry">Thử lại</string>
+    <string name="str_notify_exit">Thoát</string>
+
+
+</resources>

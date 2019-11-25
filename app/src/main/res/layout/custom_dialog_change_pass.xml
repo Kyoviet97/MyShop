@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bkg_layout_corners_dialog"
+    android:gravity="center"
+    android:padding="@dimen/_10dp">
+
+    <TextView
+        android:id="@+id/txt_title_change_fullname_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14dp"
+        android:layout_marginBottom="@dimen/_20dp"
+        android:gravity="center"
+        android:text="Change Password"
+        android:fontFamily="@font/sf_pro_display_semibold"
+        android:textColor="@color/color_text_title_dialog"
+        android:textSize="@dimen/_18sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/txt_message_change_fullname_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:text="Password has at least 6 characters"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14sp">
+    </TextView>
+
+    <com.mylibrary.ui.input.CustomInputText
+        android:id="@+id/edt_old_pass"
+        android:ellipsize="end"
+        android:imeOptions="actionNext"
+        android:hint="Current password"
+        android:drawableRight="@drawable/ic_eye_password_gren"
+        android:fontFamily="@font/sf_pro_text_regular"
+        style="@style/Theme_Edt_Dialog"/>
+
+    <com.mylibrary.ui.input.CustomInputText
+        android:id="@+id/edt_new_pass"
+        android:ellipsize="end"
+        android:hint="New password"
+        android:drawableRight="@drawable/ic_eye_password_gren"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:imeOptions="actionNext"
+        style="@style/Theme_Edt_Dialog"/>
+
+    <com.mylibrary.ui.input.CustomInputText
+        android:id="@+id/edt_new_pass_confirm"
+        android:hint="Repeat new password"
+        android:drawableRight="@drawable/ic_eye_password_gren"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:imeOptions="actionDone"
+        style="@style/Theme_Edt_Dialog"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginBottom="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel_pass"
+            android:text="Cancel"
+            style="@style/Theme_Button_Cancel_Dialog">">
+        </Button>
+
+
+        <Button
+            android:id="@+id/btn_update_pass"
+            android:text="Update"
+            style="@style/Theme_Button_Update_Dialog">>
+        </Button>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
