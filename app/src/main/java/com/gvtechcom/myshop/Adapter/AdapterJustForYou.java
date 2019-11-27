@@ -52,7 +52,7 @@ public class AdapterJustForYou extends RecyclerView.Adapter<AdapterJustForYou.Vi
         return lsJustForYou.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+        public class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageViewJustForYou;
         private TextView  infoJustForYou, priceJustForYou, soldJustForYou;
 

@@ -151,6 +151,7 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:id="@+id/txt_item_detail_percent_sale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sf_pro_display_bold"
@@ -204,6 +205,7 @@
                         </ImageView>
 
                         <TextView
+                            android:id="@+id/txt_item_detail_like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -218,6 +220,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txt_item_detail_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sf_pro_text_regular"
@@ -254,6 +257,7 @@
                         android:background="#9B9B9B"/>
 
                     <TextView
+                        android:id="@+id/txt_item_detail_sold"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="12391 orders"
@@ -426,16 +430,15 @@
                 android:textSize="@dimen/_22sp"
                 android:textColor="#4A4A4A"
                 android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginBottom="@dimen/_16dp"
-                android:layout_marginLeft="@dimen/_16dp"
-                android:layout_marginRight="@dimen/_16dp"
+                android:layout_marginBottom="@dimen/_11dp"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_marginRight="@dimen/_10dp"
                 android:fontFamily="@font/sf_pro_display_bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:padding="@dimen/_16dp"
+                android:padding="@dimen/_5dp"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -453,16 +456,21 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="#FF7100"/>
+
     //Navigation bottom Item Detail
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:weightSum="3">
+        android:weightSum="3.1">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:background="@android:color/white"
             android:weightSum="2"
             android:orientation="horizontal">
@@ -470,8 +478,9 @@
            <LinearLayout
                android:layout_width="0dp"
                android:layout_height="match_parent"
+               android:paddingLeft="@dimen/_5dp"
                android:layout_weight="1"
-               android:layout_marginLeft="@dimen/_8dp"
+
                android:orientation="vertical">
 
                <ImageView
@@ -496,11 +505,12 @@
 
            </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_marginRight="@dimen/_8sp"
+                android:paddingRight="@dimen/_5dp"
                 android:orientation="vertical">
 
                 <ImageView

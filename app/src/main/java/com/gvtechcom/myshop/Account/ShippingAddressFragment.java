@@ -16,8 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerViewShipping;
 import com.gvtechcom.myshop.MainActivity;
-import com.gvtechcom.myshop.Model.BaseGetApiAddress;
-import com.gvtechcom.myshop.Model.ResponseAddress;
+import com.gvtechcom.myshop.Model.BaseGetAPIShippingAddress;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
@@ -47,6 +46,7 @@ public class ShippingAddressFragment extends Fragment {
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private MainActivity mainActivity;
+    private List<BaseGetAPIShippingAddress.Data> dataFullAddress;
 
 
     @Nullable
@@ -102,7 +102,7 @@ public class ShippingAddressFragment extends Fragment {
     }
 
     private void getApiAddress() {
-        progressDialogCustom.onShow(false, "Loading...");
+//        progressDialogCustom.onShow(false, "Loading...");
         MySharePreferences preferences = new MySharePreferences();
         String AccessToken = preferences.GetSharePref(getActivity(), "access_token");
         String Token = preferences.GetSharePref(getActivity(), "token");
@@ -114,22 +114,22 @@ public class ShippingAddressFragment extends Fragment {
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
         String time = String.valueOf(getTime.getCalendar());
 
-        Call<BaseGetApiAddress> call = apiServer.GetFullAddress("application/json", Authorization, time, getMD5.md5_2(AccessToken, timeSign), "Android");
-        call.enqueue(new Callback<BaseGetApiAddress>() {
+        Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call = apiServer.GetFullAddressShipping("application/json", Authorization, time, getMD5.md5_2(AccessToken, timeSign), "Android");
+        call.enqueue(new Callback<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser>() {
             @Override
-            public void onResponse(Call<BaseGetApiAddress> call, Response<BaseGetApiAddress> response) {
+            public void onResponse(Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call, Response<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> response) {
                 System.out.println("========>" + response.toString());
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
                     Toast.makeText(getActivity(), "Hết phiên đăng nhập!", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (response.body().getCode() != 200) {
+                    if (response.body().code != 200) {
                         progressDialogCustom.onHide();
-                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialogCustom.onHide();
-                        List<ResponseAddress> dataAllAddressList = new ArrayList<>();
-                        dataAllAddressList = response.body().getResponseAddress();
+                        List<BaseGetAPIShippingAddress.Data> dataAllAddressList = new ArrayList<>();
+                        dataAllAddressList = response.body().response.data;
                         Collections.sort(dataAllAddressList);
 
                         adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
@@ -138,14 +138,46 @@ public class ShippingAddressFragment extends Fragment {
                     }
                 }
 
-
             }
 
             @Override
-            public void onFailure(Call<BaseGetApiAddress> call, Throwable t) {
+            public void onFailure(Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call, Throwable t) {
 
             }
         });
+
+//        Call<BaseGetApiAddress> call = apiServer.GetFullAddress("application/json", Authorization, time, getMD5.md5_2(AccessToken, timeSign), "Android");
+//        call.enqueue(new Callback<BaseGetApiAddress>() {
+//            @Override
+//            public void onResponse(Call<BaseGetApiAddress> call, Response<BaseGetApiAddress> response) {
+//                System.out.println("========>" + response.toString());
+//                if (response.code() == 401) {
+//                    progressDialogCustom.onHide();
+//                    Toast.makeText(getActivity(), "Hết phiên đăng nhập!", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    if (response.body().getCode() != 200) {
+//                        progressDialogCustom.onHide();
+//                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        progressDialogCustom.onHide();
+//                        List<ResponseAddress> dataAllAddressList = new ArrayList<>();
+//                        dataAllAddressList = response.body().getResponseAddress();
+//                        Collections.sort(dataAllAddressList);
+//
+//                        adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
+//                        clickAdapter();
+//                        recyclerView.setAdapter(adapterRecyclerViewShipping);
+//                    }
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseGetApiAddress> call, Throwable t) {
+//
+//            }
+//        });
     }
 
     private void clickAdapter() {

@@ -154,6 +154,7 @@ public class FragmentHomeContent extends Fragment {
         MainActivity mainActivity;
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "");
         return rootView;
@@ -169,8 +170,6 @@ public class FragmentHomeContent extends Fragment {
 
         setRecyclerView();
 
-        setOnClickItemDetails();
-
         setItemSlideBanner();
 
         loadItemFlashDeals();
@@ -180,7 +179,7 @@ public class FragmentHomeContent extends Fragment {
 
         setItemFeaturedCategorie();
 
-        setItemTopNewFeaturedStore();
+//        setItemTopNewFeaturedStore();
 
         getNestedScrollChange();
     }
@@ -287,9 +286,7 @@ public class FragmentHomeContent extends Fragment {
             adapterFlashDeals.setOnItemClickListener(new AdapterFlashDeals.ItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    Toast.makeText(getActivity(), "Gia: " + lsProductFlashDeals.get(position).getPriceSale() + '\n' +
-                            "So luong: " + lsProductFlashDeals.get(position).getQuantity() + "/" + lsProductFlashDeals.get(position).getSold() + '\n' +
-                            "Sale: " + lsProductFlashDeals.get(position).getPercentSale(), Toast.LENGTH_SHORT).show();
+                   setOnClickItemDetails(lsProductFlashDeals.get(position).getProductId());
                 }
             });
         }
@@ -308,7 +305,7 @@ public class FragmentHomeContent extends Fragment {
             adapterJustForYou.setItemClickListener(new AdapterJustForYou.ItemClickListener() {
                 @Override
                 public void onClickListener(String idProduct) {
-                    Toast.makeText(getActivity(), "idProduct: " + idProduct, Toast.LENGTH_SHORT).show();
+                    setOnClickItemDetails(idProduct);
                 }
             });
             recyclerJustForYou.setAdapter(adapterJustForYou);
@@ -332,20 +329,22 @@ public class FragmentHomeContent extends Fragment {
         }
     }
 
-    private void setItemTopNewFeaturedStore() {
-        setGlideImage(obj.getResponse().getTopSelections().get(0).product_image, imgTopSelectOne);
-        setGlideImage(obj.getResponse().getTopSelections().get(1).product_image, imgTopSelectTwo);
-
-        setGlideImage(obj.getResponse().getNewsForYou().get(0).product_image, imgNewForYouOne);
-        setGlideImage(obj.getResponse().getNewsForYou().get(1).product_image, imgNewForYouTwo);
-
-        setGlideImage(obj.getResponse().getFeatureBrands().get(0).image, imgFeatureBrandsOne);
-        setGlideImage(obj.getResponse().getFeatureBrands().get(1).image, imgFeatureBrandsTwo);
-
-        setGlideImage(obj.getResponse().getStoresYouLove().get(0).image, imgStoreYouLoveOne);
-        setGlideImage(obj.getResponse().getStoresYouLove().get(1).image, imgStoreYouLoveTwo);
-
-    }
+//    private void setItemTopNewFeaturedStore() {
+//        for (int i = 0; i < obj.getResponse().getFeatureBrands().size(); i ++){
+//            setGlideImage(obj.getResponse().getTopSelections().get(i).product_image, imgTopSelectOne);
+//            setGlideImage(obj.getResponse().getTopSelections().get(i).product_image, imgTopSelectTwo);
+//
+//            setGlideImage(obj.getResponse().getNewsForYou().get(i).product_image, imgNewForYouOne);
+//            setGlideImage(obj.getResponse().getNewsForYou().get(i).product_image, imgNewForYouTwo);
+//
+//            setGlideImage(obj.getResponse().getFeatureBrands().get(i).image, imgFeatureBrandsOne);
+//            setGlideImage(obj.getResponse().getFeatureBrands().get(i).image, imgFeatureBrandsTwo);
+//
+//            setGlideImage(obj.getResponse().getStoresYouLove().get(i).image, imgStoreYouLoveOne);
+//            setGlideImage(obj.getResponse().getStoresYouLove().get(i).image, imgStoreYouLoveTwo);
+//        }
+//
+//    }
 
     private void setAdapterItemsYouLove(List<ItemYouLoveModel.Product> lsItemYouLove) {
         if (adapterItemsYouLove == null) {
@@ -354,10 +353,7 @@ public class FragmentHomeContent extends Fragment {
             adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
                 @Override
                 public void onClickListener(String productId) {
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.content_home_frame_layout, new FragmentItemDetail());
-                    fragmentTransaction.addToBackStack("home");
-                    fragmentTransaction.commit();
+                    setOnClickItemDetails(productId);
                 }
             });
         } else {
@@ -443,16 +439,16 @@ public class FragmentHomeContent extends Fragment {
                 });
     }
 
-    private void setOnClickItemDetails(){
-        txtFlashDealsDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentFlashDetails());
-                fragmentTransaction.addToBackStack("home_content");
-                fragmentTransaction.commit();
-            }
-        });
+    private void setOnClickItemDetails(String idProduct){
+      fragmentManager = getFragmentManager();
+      FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+      Fragment fragmentItemDetails = new FragmentItemDetail();
+      Bundle bundle = new Bundle();
+      bundle.putString("idProduct", idProduct);
+      fragmentItemDetails.setArguments(bundle);
+      fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentItemDetails);
+      fragmentTransaction.addToBackStack("home");
+      fragmentTransaction.commit();
     }
 
     private void setGlideImage(String url, View view) {

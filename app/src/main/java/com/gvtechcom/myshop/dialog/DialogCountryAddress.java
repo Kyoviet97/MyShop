@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerCountryAddress;
-import com.gvtechcom.myshop.Model.CountryInfo;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import butterknife.OnClick;
 
 public class DialogCountryAddress extends AppCompatDialog {
     private AdapterRecyclerCountryAddress adapterRecyclerCountry;
-    private List<CountryInfo> lsCountry;
+    private List<CountryInfoModel.Data> lsCountry;
     private int position;
 
     @BindView(R.id.edt_search_address)
@@ -37,7 +37,7 @@ public class DialogCountryAddress extends AppCompatDialog {
     Button Select_Address;
 
 
-    public List<CountryInfo> getLsCountry() {
+    public List<CountryInfoModel.Data> getLsCountry() {
         return lsCountry;
     }
 
@@ -53,7 +53,7 @@ public class DialogCountryAddress extends AppCompatDialog {
 //        this.lsCountry = lsCountry;
 //    }
 
-    public DialogCountryAddress(Context context, List<CountryInfo> responseCountries) {
+    public DialogCountryAddress(Context context, List<CountryInfoModel.Data> responseCountries) {
         super(context);
         setCancelable(false);
         setContentView(R.layout.custom_dialog_address);
@@ -85,9 +85,9 @@ public class DialogCountryAddress extends AppCompatDialog {
     private void setOnclickAdapter() {
         adapterRecyclerCountry.setOnItemClickedListener(new AdapterRecyclerCountryAddress.OnItemClickedListener() {
             @Override
-            public void onItemClick(List<CountryInfo> lsCountryInfo, int position) {
+            public void onItemClick(List<CountryInfoModel.Data> lsCountryInfo, int position) {
                 for (int i = 0; i < lsCountryInfo.size(); i++) {
-                    CountryInfo dataCountry = lsCountryInfo.get(i);
+                    CountryInfoModel.Data dataCountry = lsCountryInfo.get(i);
                     if (i == position) {
                         dataCountry.isCheck = true;
                     } else dataCountry.isCheck = false;
@@ -96,7 +96,7 @@ public class DialogCountryAddress extends AppCompatDialog {
 
                 setPosition(position);
 
-                List<CountryInfo> cityList = lsCountryInfo;
+                List<CountryInfoModel.Data> cityList = lsCountryInfo;
             }
         });
     }
@@ -107,7 +107,7 @@ public class DialogCountryAddress extends AppCompatDialog {
     }
 
 
-    private void settingAdapter(List<CountryInfo> responseCountryList) {
+    private void settingAdapter(List<CountryInfoModel.Data> responseCountryList) {
         if (adapterRecyclerCountry == null) {
             adapterRecyclerCountry = new AdapterRecyclerCountryAddress(getContext(), responseCountryList);
             recyclerViewAddress.setAdapter(adapterRecyclerCountry);
@@ -124,7 +124,7 @@ public class DialogCountryAddress extends AppCompatDialog {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (s.length() != 0) {
-                List<CountryInfo> list = filterCountry(s.toString());
+                List<CountryInfoModel.Data> list = filterCountry(s.toString());
                 settingAdapter(list);
             } else {
                 settingAdapter(lsCountry);
@@ -141,9 +141,9 @@ public class DialogCountryAddress extends AppCompatDialog {
         }
     };
 
-    private List<CountryInfo> filterCountry(String charFillter) {
-        List<CountryInfo> responseCountryList = new ArrayList<>();
-        for (CountryInfo responseCountry : lsCountry) {
+    private List<CountryInfoModel.Data> filterCountry(String charFillter) {
+        List<CountryInfoModel.Data> responseCountryList = new ArrayList<>();
+        for (CountryInfoModel.Data responseCountry : lsCountry) {
             if (responseCountry != null && responseCountry.name != null) {
                 if (responseCountry.name.toLowerCase().contains(charFillter.toLowerCase())) {
                     responseCountryList.add(responseCountry);

@@ -1,11 +1,13 @@
 package com.gvtechcom.myshop.Network;
 
+import com.gvtechcom.myshop.Model.BaseGetAPIShippingAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.CountryInfo;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.FlashDealsDetails;
 import com.gvtechcom.myshop.Model.GetAddressIdAddress;
+import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
 import com.gvtechcom.myshop.Model.UpdateNotifyModel;
 
@@ -120,6 +122,13 @@ public interface APIServer {
                                            @Query("sign") String sign,
                                            @Query("type_app") String type_app);
 
+    @GET("user/shipping-address")
+    Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> GetFullAddressShipping(@Header("Accept") String Accept,
+                                                           @Header("Authorization") String Authorization,
+                                                           @Query("time") String time,
+                                                           @Query("sign") String sign,
+                                                           @Query("type_app") String type_app);
+
     @GET("user/country-address")
     Call<CountryInfo.CountryParser> GetListCountry(@Query("time") String time,
                                                    @Query("sign") String sign,
@@ -208,9 +217,9 @@ public interface APIServer {
                                                                         @Query("product_group_id") String product_group_id);
 
     @GET("user/country-address")
-    Call<CountryInfoModel.CountryInfoModelParser> GetApiShippingTest(@Query("time") String time,
-                                           @Query("sign") String sign,
-                                           @Query("type_app") String type_app,
-                                           @Query("dev") String dev);
-
+    Call<CountryInfoModel.CountryInfoModelParser> GetApiShippingCountryAddress(@Query("time") String time,
+                                                                               @Query("sign") String sign,
+                                                                               @Query("type_app") String type_app);
+    @GET("detail-product")
+    Call<ItemDetailsModel.ItemDetailsModelParser> GetApiItemDetails(@Query("product_id") String product_id);
 }

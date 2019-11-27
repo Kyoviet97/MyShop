@@ -21,6 +21,7 @@ import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.CountryInfo;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.GetAddressIdAddress;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -58,7 +59,7 @@ public class AddShippingAddessFragment extends Fragment {
     private HashMap<String, String> hashMapData;
     private MainActivity mainActivity;
     private FragmentManager fragmentManager;
-    private CountryInfo.CountryParser countryParser;
+    private CountryInfoModel.CountryInfoModelParser countryInfoModel;
     private int positionCountry;
     private List<CountryInfo.CityInfo> cityInfos;
     private BaseGetApiAddress dataDistric;
@@ -222,30 +223,21 @@ public class AddShippingAddessFragment extends Fragment {
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
 
-        Call<CountryInfo.CountryParser> countryCall = apiServer.GetListCountry(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), timeSign);
-        countryCall.enqueue(new Callback<CountryInfo.CountryParser>() {
+        Call<CountryInfoModel.CountryInfoModelParser> CallCountry = apiServer.GetApiShippingCountryAddress(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), timeSign);
+        CallCountry.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
-            public void onResponse(Call<CountryInfo.CountryParser> call, Response<CountryInfo.CountryParser> response) {
-                CountryInfo.CountryParser countryParser = response.body();
-                if (countryParser == null) {
-                    System.out.println("--------------------Error request");
-                } else if (countryParser.code == 200) {
-                    progressDialogCustom.onHide();
-                    AddShippingAddessFragment.this.countryParser = countryParser;
+            public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
+                if (response.body().code != 200){
+                    Toast.makeText(mainActivity, response.body().message, Toast.LENGTH_SHORT).show();
+                }else {
+                    countryInfoModel = response.body();
 
-                    if (!idAddress.equals(" ")) {
-                        progressDialogCustom.onHide();
-                        cityInfos = countryParser.response.get(0).cities;
-                    }
-
-                } else {
-                    progressDialogCustom.onHide();
-                    System.out.println("--------------------Error code: " + countryParser.code + "__" + countryParser.message);
                 }
             }
 
             @Override
-            public void onFailure(Call<CountryInfo.CountryParser> call, Throwable t) {
+            public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
+
             }
         });
     }
@@ -302,13 +294,14 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void setDialogCountry() {
-        if (countryParser != null) {
-            DialogCountryAddress dialogAddress = new DialogCountryAddress(getActivity(), countryParser.response);
+        if (countryInfoModel != null) {
+            DialogCountryAddress dialogAddress = new DialogCountryAddress(getActivity(), countryInfoModel.response.data);
             int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.90);
             int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.75);
             dialogAddress.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialogAddress.getWindow().setLayout(width, height);
             dialogAddress.show();
+
             dialogAddress.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -319,7 +312,7 @@ public class AddShippingAddessFragment extends Fragment {
                     nameCountry = dialogAddress.getLsCountry().get(positionCountry).name;
                     txtCountyShipping.setText(nameCountry);
                     String idCountry = dialogAddress.getLsCountry().get(positionCountry).id;
-                    cityInfos = dialogAddress.getLsCountry().get(positionCountry).cities;
+//                    cityInfos = dialogAddress.getLsCountry().get(positionCountry).cities;
                     if (!idCountry.equals(hashMapData.get("Country"))) {
                         txtCityShipping.setText(null);
                         txtDistricAddress.setText(null);
@@ -335,7 +328,7 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void setDialogCity() {
-        if (countryParser != null && cityInfos != null) {
+        if (countryInfoModel != null && cityInfos != null) {
             DialogCityAddress dialogCityAddress = new DialogCityAddress(getActivity(), cityInfos, txtCityShipping.getText().toString());
             int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.90);
             int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.75);
@@ -369,7 +362,7 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void setDialogPhoneCode() {
-        if (countryParser != null && dataPhoneCode != null) {
+        if (countryInfoModel != null && dataPhoneCode != null) {
             DialogPhoneCodeAddress dialogPhoneCodeAddress = new DialogPhoneCodeAddress(getActivity(), dataPhoneCode, nameCountry);
             int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.90);
             int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.75);

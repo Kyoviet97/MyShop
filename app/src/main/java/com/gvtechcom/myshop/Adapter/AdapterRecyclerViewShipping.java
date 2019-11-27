@@ -11,16 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gvtechcom.myshop.Model.ResponseAddress;
+import com.gvtechcom.myshop.Model.BaseGetAPIShippingAddress;
 import com.gvtechcom.myshop.R;
 
 import java.util.List;
 
 public class AdapterRecyclerViewShipping extends RecyclerView.Adapter<AdapterRecyclerViewShipping.ViewHolder> {
-    private List<ResponseAddress> responseAddresses;
+    private List<BaseGetAPIShippingAddress.Data> responseAddresses;
     private Context context;
 
-    public AdapterRecyclerViewShipping(List<ResponseAddress> dataShippingAddress, Context context) {
+    public AdapterRecyclerViewShipping(List<BaseGetAPIShippingAddress.Data> dataShippingAddress, Context context) {
         this.responseAddresses = dataShippingAddress;
         this.context = context;
     }
@@ -36,13 +36,13 @@ public class AdapterRecyclerViewShipping extends RecyclerView.Adapter<AdapterRec
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String idAddress = responseAddresses.get(position).getId();
-        String PhoneNumber = responseAddresses.get(position).getTelephone();
-        String FullName = responseAddresses.get(position).getName();
-        int intDefault = responseAddresses.get(position).getIsDefault();
-        String ZipCode = responseAddresses.get(position).getZipCode();
-        String PhoneCode = responseAddresses.get(position).getPhoneCode();
-        String Address = responseAddresses.get(position).getDetail();
+        String idAddress = responseAddresses.get(position).id;
+        String PhoneNumber = responseAddresses.get(position).telephone;
+        String FullName = responseAddresses.get(position).name;
+        int intDefault = responseAddresses.get(position).is_default;
+        String ZipCode = responseAddresses.get(position).zip_code;
+        String PhoneCode = responseAddresses.get(position).phone_code;
+        String Address = responseAddresses.get(position).detail;
 
         holder.txtNameShippingAddress.setText(FullName);
         holder.txtMainShippingAddress.setText(Address + " " + ZipCode + '\n' + PhoneCode + " - " + PhoneNumber);
@@ -71,7 +71,7 @@ public class AdapterRecyclerViewShipping extends RecyclerView.Adapter<AdapterRec
                 @Override
                 public void onClick(View v) {
                     if (onItemClickedListener != null) {
-                        onItemClickedListener.onItemClick(responseAddresses.get(getAdapterPosition()).getId());
+                        onItemClickedListener.onItemClick(responseAddresses.get(getAdapterPosition()).id);
                     }
                 }
             });
