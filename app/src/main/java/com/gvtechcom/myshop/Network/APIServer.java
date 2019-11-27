@@ -135,13 +135,13 @@ public interface APIServer {
                                                    @Query("type_app") String type_app);
 
     @GET("user/city-address")
-    Call<BaseGetApiAddress> GetListDistrict(@Query("time") String time,
+    Call<CountryInfoModel.CountryInfoModelParser> GetListDistrict(@Query("time") String time,
                                             @Query("sign") String sign,
                                             @Query("type_app") String type_app,
                                             @Query("id") String id);
 
     @GET("user/district-address")
-    Call<BaseGetApiAddress> GetListWard(@Query("time") String time,
+    Call<CountryInfoModel.CountryInfoModelParser> GetListWard(@Query("time") String time,
                                         @Query("sign") String sign,
                                         @Query("type_app") String type_app,
                                         @Query("id") String id);

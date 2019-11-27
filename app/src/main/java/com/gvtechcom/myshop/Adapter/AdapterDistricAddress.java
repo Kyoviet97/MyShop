@@ -9,21 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gvtechcom.myshop.Model.ResponseAddress;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.List;
 
 public class AdapterDistricAddress extends RecyclerView.Adapter<AdapterDistricAddress.ViewHoler> {
     private Context context;
-    private List<ResponseAddress> lsDistric;
+    private List<CountryInfoModel.Data> lsDistric;
 
-    public AdapterDistricAddress(Context context, List<ResponseAddress> lsDistric) {
+    public AdapterDistricAddress(Context context, List<CountryInfoModel.Data> lsDistric) {
         this.context = context;
         this.lsDistric = lsDistric;
     }
 
-    public void setAdapter(List<ResponseAddress> lsDistricFilter) {
+    public void setAdapter(List<CountryInfoModel.Data> lsDistricFilter) {
         this.lsDistric = lsDistricFilter;
         notifyDataSetChanged();
     }
@@ -38,7 +38,7 @@ public class AdapterDistricAddress extends RecyclerView.Adapter<AdapterDistricAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHoler holder, int position) {
-        holder.textViewDistric.setText(lsDistric.get(position).getName());
+        holder.textViewDistric.setText(lsDistric.get(position).name);
         if (lsDistric.get(position).isCheck != null) {
             if (lsDistric.get(position).isCheck) {
                 holder.textViewDistric.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_done, 0);
@@ -72,7 +72,7 @@ public class AdapterDistricAddress extends RecyclerView.Adapter<AdapterDistricAd
     }
 
     public interface OnItemClickedListener {
-        void onItemClick(int position, List<ResponseAddress> lsDistric);
+        void onItemClick(int position, List<CountryInfoModel.Data> lsDistric);
     }
 
     protected OnItemClickedListener onItemClickedListener;

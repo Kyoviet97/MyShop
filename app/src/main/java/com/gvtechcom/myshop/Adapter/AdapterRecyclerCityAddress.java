@@ -9,21 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gvtechcom.myshop.Model.CountryInfo;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.List;
 
 public class AdapterRecyclerCityAddress extends RecyclerView.Adapter<AdapterRecyclerCityAddress.ViewHolder> {
     private Context context;
-    private List<CountryInfo.CityInfo> cityList;
+    private List<CountryInfoModel.City> cityList;
 
-    public AdapterRecyclerCityAddress(Context context, List<CountryInfo.CityInfo> cityList) {
+    public AdapterRecyclerCityAddress(Context context, List<CountryInfoModel.City> cityList) {
         this.context = context;
         this.cityList = cityList;
     }
 
-    public void setDataList(List<CountryInfo.CityInfo> lsCountry) {
+    public void setDataList(List<CountryInfoModel.City> lsCountry) {
         this.cityList = lsCountry;
         notifyDataSetChanged();
     }
@@ -73,7 +73,7 @@ public class AdapterRecyclerCityAddress extends RecyclerView.Adapter<AdapterRecy
     }
 
     public interface OnItemClickedListener {
-        void onItemClick(int Position, List<CountryInfo.CityInfo> listCity);
+        void onItemClick(int Position, List<CountryInfoModel.City> listCity);
     }
 
     private OnItemClickedListener onItemClickedListener;

@@ -18,9 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.gvtechcom.myshop.MainActivity;
-import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
-import com.gvtechcom.myshop.Model.CountryInfo;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.GetAddressIdAddress;
 import com.gvtechcom.myshop.Network.APIServer;
@@ -61,9 +59,9 @@ public class AddShippingAddessFragment extends Fragment {
     private FragmentManager fragmentManager;
     private CountryInfoModel.CountryInfoModelParser countryInfoModel;
     private int positionCountry;
-    private List<CountryInfo.CityInfo> cityInfos;
-    private BaseGetApiAddress dataDistric;
-    private BaseGetApiAddress dataWard;
+    private List<CountryInfoModel.City> cityInfos;
+    private List<CountryInfoModel.Data> dataDistric;
+    private List<CountryInfoModel.Data> dataWard;
     private List<String> dataPhoneCode;
     private String nameCountry;
     private String idAddress;
@@ -218,7 +216,7 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void getApiCountryAddress() {
-        progressDialogCustom.onShow(false, "Loading...");
+//        progressDialogCustom.onShow(false, "Loading...");
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
@@ -227,14 +225,12 @@ public class AddShippingAddessFragment extends Fragment {
         CallCountry.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
-                if (response.body().code != 200){
+                if (response.body().code != 200) {
                     Toast.makeText(mainActivity, response.body().message, Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     countryInfoModel = response.body();
-
                 }
             }
-
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
 
@@ -248,22 +244,22 @@ public class AddShippingAddessFragment extends Fragment {
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
 
-        Call<BaseGetApiAddress> call = apiServer.GetListDistrict(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android", idCity);
-        call.enqueue(new Callback<BaseGetApiAddress>() {
+        Call<CountryInfoModel.CountryInfoModelParser> call = apiServer.GetListDistrict(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android", idCity);
+        call.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
-            public void onResponse(Call<BaseGetApiAddress> call, Response<BaseGetApiAddress> response) {
-                if (response.body().getCode() != 200) {
+            public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
+                if (response.body().code != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialogCustom.onHide();
-                    dataDistric = response.body();
+                    dataDistric = response.body().response.data;
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseGetApiAddress> call, Throwable t) {
-                    progressDialogCustom.onHide();
+            public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
+
             }
         });
     }
@@ -273,22 +269,22 @@ public class AddShippingAddessFragment extends Fragment {
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
-        Call<BaseGetApiAddress> callWard = apiServer.GetListWard(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android", idWard);
-        callWard.enqueue(new Callback<BaseGetApiAddress>() {
+        Call<CountryInfoModel.CountryInfoModelParser> callWard = apiServer.GetListWard(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android", idWard);
+        callWard.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
-            public void onResponse(Call<BaseGetApiAddress> call, Response<BaseGetApiAddress> response) {
-                if (response.body().getCode() != 200) {
+            public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
+                if (response.body().code != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(mainActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, response.body().message, Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialogCustom.onHide();
-                    dataWard = response.body();
+                    dataWard = response.body().response.data;
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseGetApiAddress> call, Throwable t) {
-                    progressDialogCustom.onHide();
+            public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
+
             }
         });
     }
@@ -312,7 +308,7 @@ public class AddShippingAddessFragment extends Fragment {
                     nameCountry = dialogAddress.getLsCountry().get(positionCountry).name;
                     txtCountyShipping.setText(nameCountry);
                     String idCountry = dialogAddress.getLsCountry().get(positionCountry).id;
-//                    cityInfos = dialogAddress.getLsCountry().get(positionCountry).cities;
+                    cityInfos = dialogAddress.getLsCountry().get(positionCountry).cities;
                     if (!idCountry.equals(hashMapData.get("Country"))) {
                         txtCityShipping.setText(null);
                         txtDistricAddress.setText(null);
@@ -381,7 +377,7 @@ public class AddShippingAddessFragment extends Fragment {
 
     private void setDialogDistric() {
         if (dataDistric != null) {
-            DialogDistricAddress dialogDistricAddress = new DialogDistricAddress(getActivity(), dataDistric.getResponseAddress(), txtDistricAddress.getText().toString(), "distric");
+            DialogDistricAddress dialogDistricAddress = new DialogDistricAddress(getActivity(), dataDistric, txtDistricAddress.getText().toString(), "distric");
             int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.90);
             int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.75);
             dialogDistricAddress.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -411,7 +407,7 @@ public class AddShippingAddessFragment extends Fragment {
 
     private void setDialogWard() {
         if (dataWard != null) {
-            DialogDistricAddress dialogDistricAddress = new DialogDistricAddress(getActivity(), dataWard.getResponseAddress(), txtWardShipping.getText().toString(), "ward");
+            DialogDistricAddress dialogDistricAddress = new DialogDistricAddress(getActivity(), dataWard, txtWardShipping.getText().toString(), "ward");
             int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.90);
             int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.75);
             dialogDistricAddress.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

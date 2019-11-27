@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerCityAddress;
-import com.gvtechcom.myshop.Model.CountryInfo;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class DialogCityAddress extends AppCompatDialog {
     private String nameCity;
     private String idCity;
     private AdapterRecyclerCityAddress adapterRecyclerCityAddress;
-    private List<CountryInfo.CityInfo> cityList;
+    private List<CountryInfoModel.City> cityList;
     private Boolean isSelect = false;
 
     @BindView(R.id.edt_search_address)
@@ -55,7 +55,7 @@ public class DialogCityAddress extends AppCompatDialog {
 
     }
 
-    public DialogCityAddress(Context context, List<CountryInfo.CityInfo> cityList, String nameCityaOld) {
+    public DialogCityAddress(Context context, List<CountryInfoModel.City> cityList, String nameCityaOld) {
         super(context);
         setCancelable(false);
         setContentView(R.layout.custom_dialog_address);
@@ -77,7 +77,7 @@ public class DialogCityAddress extends AppCompatDialog {
         recyclerViewAddress.setLayoutManager(linearLayoutManager);
     }
 
-    private void settingAdapter(List<CountryInfo.CityInfo> cityList) {
+    private void settingAdapter(List<CountryInfoModel.City> cityList) {
         if (adapterRecyclerCityAddress == null) {
             adapterRecyclerCityAddress = new AdapterRecyclerCityAddress(getContext(), cityList);
             recyclerViewAddress.setAdapter(adapterRecyclerCityAddress);
@@ -92,21 +92,19 @@ public class DialogCityAddress extends AppCompatDialog {
     private void setOnclickAdapter() {
         adapterRecyclerCityAddress.setOnItemClickedListener(new AdapterRecyclerCityAddress.OnItemClickedListener() {
             @Override
-            public void onItemClick(int Position, List<CountryInfo.CityInfo> cityFilter) {
-
+            public void onItemClick(int Position, List<CountryInfoModel.City> listCity) {
                 setSelect(true);
 
-                setIdCity(cityFilter.get(Position).id);
-                setNameCity(cityFilter.get(Position).name);
+                setIdCity(listCity.get(Position).id);
+                setNameCity(listCity.get(Position).name);
 
-                for (int i = 0; i < cityFilter.size(); i ++){
-                    CountryInfo.CityInfo dataCity = cityFilter.get(i);
+                for (int i = 0; i < listCity.size(); i ++){
+                    CountryInfoModel.City dataCity = listCity.get(i);
                     if (i == Position) {
                         dataCity.isCheck = true;
                     } else dataCity.isCheck = false;
                 }
                 adapterRecyclerCityAddress.notifyDataSetChanged();
-
             }
         });
     }
@@ -116,7 +114,7 @@ public class DialogCityAddress extends AppCompatDialog {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (s.length() != 0) {
-                List<CountryInfo.CityInfo> listfilter = filterCity(s.toString());
+                List<CountryInfoModel.City> listfilter = filterCity(s.toString());
                 settingAdapter(listfilter);
             } else {
                 settingAdapter(cityList);
@@ -134,9 +132,9 @@ public class DialogCityAddress extends AppCompatDialog {
         }
     };
 
-    private List<CountryInfo.CityInfo> filterCity(String charFillter) {
-        List<CountryInfo.CityInfo> cityInfosFiter = new ArrayList<>();
-        for (CountryInfo.CityInfo responseCity : cityList) {
+    private List<CountryInfoModel.City> filterCity(String charFillter) {
+        List<CountryInfoModel.City> cityInfosFiter = new ArrayList<>();
+        for (CountryInfoModel.City responseCity : cityList) {
             if (responseCity != null && responseCity.name != null) {
                 if (responseCity.name.toLowerCase().contains(charFillter.toLowerCase())) {
                     cityInfosFiter.add(responseCity);

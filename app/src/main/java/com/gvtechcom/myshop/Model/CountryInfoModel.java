@@ -17,6 +17,7 @@ public class CountryInfoModel {
     public class City{
         public String id;
         public String name;
+        public Boolean isCheck;
     }
 
     public class CountryInfoModelParser{

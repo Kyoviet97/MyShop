@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.Adapter.AdapterDistricAddress;
-import com.gvtechcom.myshop.Model.ResponseAddress;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import butterknife.OnClick;
 
 public class DialogDistricAddress extends AppCompatDialog {
     private AdapterDistricAddress adapterDistricAddress;
-    private List<ResponseAddress> lsDistric;
+    private List<CountryInfoModel.Data> lsDistric;
     private String nameDistric;
     private String idDistric;
     private Boolean isSelect = false;
@@ -66,7 +66,7 @@ public class DialogDistricAddress extends AppCompatDialog {
     }
 
 
-    public DialogDistricAddress(Context context, List<ResponseAddress> lsDistric, String nameDistricOld, String title) {
+    public DialogDistricAddress(Context context, List<CountryInfoModel.Data> lsDistric, String nameDistricOld, String title) {
         super(context);
         setCancelable(false);
         setContentView(R.layout.custom_dialog_address);
@@ -84,7 +84,7 @@ public class DialogDistricAddress extends AppCompatDialog {
         recyclerViewAddress.setLayoutManager(linearLayoutManager);
     }
 
-    private void setAdapter(List<ResponseAddress> lsDistric) {
+    private void setAdapter(List<CountryInfoModel.Data> lsDistric) {
         if (adapterDistricAddress == null && lsDistric != null) {
             adapterDistricAddress = new AdapterDistricAddress(getContext(), lsDistric);
             recyclerViewAddress.setAdapter(adapterDistricAddress);
@@ -100,16 +100,16 @@ public class DialogDistricAddress extends AppCompatDialog {
     private void setClickAdapter() {
         adapterDistricAddress.setOnItemClickedListener(new AdapterDistricAddress.OnItemClickedListener() {
             @Override
-            public void onItemClick(int position, List<ResponseAddress> lsDistricfl) {
+            public void onItemClick(int position, List<CountryInfoModel.Data> lsDistricfl) {
                 setSlect(true);
-                setNameDistric(lsDistricfl.get(position).getName());
-                setIdDistric(lsDistricfl.get(position).getId());
+                setNameDistric(lsDistricfl.get(position).name);
+                setIdDistric(lsDistricfl.get(position).id);
                 for (int i = 0; i < lsDistricfl.size(); i++) {
-                    ResponseAddress responseAddress = lsDistricfl.get(i);
+                    CountryInfoModel.Data responseAddress = lsDistricfl.get(i);
                     if (i == position) {
-                        responseAddress.setCheck(true);
+                        responseAddress.isCheck = true;
                     } else {
-                        responseAddress.setCheck(false);
+                        responseAddress.isCheck = false;
                     }
                     adapterDistricAddress.notifyDataSetChanged();
                 }
@@ -125,7 +125,7 @@ public class DialogDistricAddress extends AppCompatDialog {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (s.length() != 0) {
-                List<ResponseAddress> listfilter = filterRecycler(s.toString());
+                List<CountryInfoModel.Data> listfilter = filterRecycler(s.toString());
                 setAdapter(listfilter);
             } else {
                 setAdapter(lsDistric);
@@ -138,11 +138,11 @@ public class DialogDistricAddress extends AppCompatDialog {
         }
     };
 
-    private List<ResponseAddress> filterRecycler(String s) {
-        List<ResponseAddress> lsDistricFilter = new ArrayList<>();
-        for (ResponseAddress responseAddress : lsDistric) {
-            if (responseAddress != null && responseAddress.getName() != null) {
-                if (responseAddress.getName().toLowerCase().contains(s.toLowerCase())) {
+    private List<CountryInfoModel.Data> filterRecycler(String s) {
+        List<CountryInfoModel.Data> lsDistricFilter = new ArrayList<>();
+        for (CountryInfoModel.Data responseAddress : lsDistric) {
+            if (responseAddress != null && responseAddress.name != null) {
+                if (responseAddress.name.toLowerCase().contains(s.toLowerCase())) {
                     lsDistricFilter.add(responseAddress);
                 }
             }

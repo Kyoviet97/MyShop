@@ -102,7 +102,7 @@ public class ShippingAddressFragment extends Fragment {
     }
 
     private void getApiAddress() {
-//        progressDialogCustom.onShow(false, "Loading...");
+        progressDialogCustom.onShow(false, "Loading...");
         MySharePreferences preferences = new MySharePreferences();
         String AccessToken = preferences.GetSharePref(getActivity(), "access_token");
         String Token = preferences.GetSharePref(getActivity(), "token");
@@ -137,47 +137,12 @@ public class ShippingAddressFragment extends Fragment {
                         recyclerView.setAdapter(adapterRecyclerViewShipping);
                     }
                 }
-
             }
-
             @Override
             public void onFailure(Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call, Throwable t) {
 
             }
         });
-
-//        Call<BaseGetApiAddress> call = apiServer.GetFullAddress("application/json", Authorization, time, getMD5.md5_2(AccessToken, timeSign), "Android");
-//        call.enqueue(new Callback<BaseGetApiAddress>() {
-//            @Override
-//            public void onResponse(Call<BaseGetApiAddress> call, Response<BaseGetApiAddress> response) {
-//                System.out.println("========>" + response.toString());
-//                if (response.code() == 401) {
-//                    progressDialogCustom.onHide();
-//                    Toast.makeText(getActivity(), "Hết phiên đăng nhập!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    if (response.body().getCode() != 200) {
-//                        progressDialogCustom.onHide();
-//                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        progressDialogCustom.onHide();
-//                        List<ResponseAddress> dataAllAddressList = new ArrayList<>();
-//                        dataAllAddressList = response.body().getResponseAddress();
-//                        Collections.sort(dataAllAddressList);
-//
-//                        adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
-//                        clickAdapter();
-//                        recyclerView.setAdapter(adapterRecyclerViewShipping);
-//                    }
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseGetApiAddress> call, Throwable t) {
-//
-//            }
-//        });
     }
 
     private void clickAdapter() {
