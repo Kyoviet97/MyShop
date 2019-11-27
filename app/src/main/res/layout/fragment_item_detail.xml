@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="top|center"
     android:layout_width="match_parent"
@@ -10,7 +9,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,6 +79,7 @@
                 </RelativeLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            //Main Flash Deals en in x:x:x
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
@@ -128,7 +129,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-
+            //Main Detail product
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -315,7 +316,7 @@
 
             </LinearLayout>
 
-
+            //Selec Color
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -408,17 +409,156 @@
 
             </LinearLayout>
 
+            //Customer Reviews
             <include layout="@layout/include_customer_reviews_item_detail"/>
 
+            // Question and Answers
             <include layout="@layout/include_questions_answers_item_detail"/>
 
+            // ABC Tect Store
             <include layout="@layout/include_tech_store_item_detail"/>
 
+            //TextView Related Products
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Related Products"
+                android:textSize="@dimen/_22sp"
+                android:textColor="#4A4A4A"
+                android:layout_marginTop="@dimen/_16dp"
+                android:layout_marginBottom="@dimen/_16dp"
+                android:layout_marginLeft="@dimen/_16dp"
+                android:layout_marginRight="@dimen/_16dp"
+                android:fontFamily="@font/sf_pro_display_bold"/>
 
-            //Tong quat
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/_16dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_related_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+            //Layout All Main Detail
         </LinearLayout>
 
 
     </androidx.core.widget.NestedScrollView>
+
+
+    //Navigation bottom Item Detail
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:layout_marginLeft="@dimen/_8dp"
+               android:orientation="vertical">
+
+               <ImageView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:layout_marginRight="@dimen/_10dp"
+                   android:layout_marginLeft="@dimen/_10dp"
+                   android:paddingTop="@dimen/_5dp"
+                   android:layout_marginBottom="@dimen/_2dp"
+                   android:src="@drawable/ic_store_navigation_bottom_item_detail"/>
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="Store"
+                   android:textSize="@dimen/_8sp"
+                   android:layout_marginBottom="@dimen/_2dp"
+                   android:gravity="center"
+                   android:fontFamily="@font/sf_pro_text_medium"
+                   android:textColor="#8E8E93"/>
+
+           </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/_8sp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_marginLeft="@dimen/_10dp"
+                    android:paddingTop="@dimen/_5dp"
+                    android:layout_marginBottom="@dimen/_2dp"
+                    android:src="@drawable/ic_contact_navigation_bottom_item_detail"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Contact"
+                    android:textSize="@dimen/_8sp"
+                    android:layout_marginBottom="@dimen/_2dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:textColor="#8E8E93"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <Button
+            android:id="@+id/btn_add_to_cart_item_details"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#FFEADA"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:text="Add To Cart"
+            android:textAllCaps="false"
+            android:textColor="#FF7100"
+            android:textSize="@dimen/_15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btn_buy_now_item_details"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_buy_now_item_details"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:text="Buy Now"
+            android:background="#FD9644"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </LinearLayout>
 
 </LinearLayout>

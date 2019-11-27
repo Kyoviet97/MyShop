@@ -3,6 +3,7 @@ package com.gvtechcom.myshop.Network;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.CountryInfo;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.FlashDealsDetails;
 import com.gvtechcom.myshop.Model.GetAddressIdAddress;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
@@ -205,5 +206,11 @@ public interface APIServer {
     Call<FlashDealsDetails.FlashDealsDetailsParser> GetFlashDealsDetails(@Query("page") Integer page,
                                                                         @Query("per_page") Integer per_page,
                                                                         @Query("product_group_id") String product_group_id);
+
+    @GET("user/country-address")
+    Call<CountryInfoModel.CountryInfoModelParser> GetApiShippingTest(@Query("time") String time,
+                                           @Query("sign") String sign,
+                                           @Query("type_app") String type_app,
+                                           @Query("dev") String dev);
 
 }
