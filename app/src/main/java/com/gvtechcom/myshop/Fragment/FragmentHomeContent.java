@@ -3,6 +3,7 @@ package com.gvtechcom.myshop.Fragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -153,10 +154,10 @@ public class FragmentHomeContent extends Fragment {
         ButterKnife.bind(this, rootView);
         MainActivity mainActivity;
         mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setDisplayNavigationBar(true, false, true) ;
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "");
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "", R.color.color_StatusBar);
         return rootView;
     }
 

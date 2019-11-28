@@ -272,15 +272,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
-        } else {
-        }
-    }
-
     public void setDisplayNavigationBar(Boolean navicationTop, Boolean back, Boolean cart) {
+
         if (navicationTop) {
             navigationTop.setVisibility(View.VISIBLE);
         } else {
@@ -300,11 +293,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setColorNavigationBar(int iconBack, int colorSearch, String hintSearch){
+    public void setColorNavigationBar(int iconBack, int colorSearch, String hintSearch, int color){
+        navigationTop.setBackgroundResource(color);
         imgBtnBackNavigation.setImageResource(iconBack);
         searchViewNavigation.setBackgroundResource(colorSearch);
         searchViewNavigation.setHint(hintSearch);
         searchViewNavigation.setHintTextColor(Color.parseColor("#9CFFFFFF"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+        }
     }
 
 }

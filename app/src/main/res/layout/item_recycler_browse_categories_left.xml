@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_browse_categories_left"
     android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="wrap_content"
     android:padding="@dimen/_5dp"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/img_browse_categories_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_browse_categories"/>
 
@@ -18,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="2"
+        android:gravity="center"
         android:paddingTop="@dimen/_5dp"
         android:textSize="@dimen/_8sp"
         android:textColor="#4A4A4A"

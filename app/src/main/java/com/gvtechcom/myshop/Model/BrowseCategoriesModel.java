@@ -9,6 +9,7 @@ public class BrowseCategoriesModel {
         public String category_image;
         public List<String> top_brands;
         public List<Children> children;
+        public Boolean isSelect;
 
 
 

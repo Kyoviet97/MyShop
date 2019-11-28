@@ -49,6 +49,25 @@ public class AdapterRecyclerUpdateNotify extends RecyclerView.Adapter<AdapterRec
             txtTitleUpdateNotify = itemView.findViewById(R.id.title_update_notify);
             txtdateTimeUpdateNotify = itemView.findViewById(R.id.start_datetime_update_notify);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onClickItem != null){
+                        onClickItem.onClick(lsDataUpdateNotify.get(getAdapterPosition())._id);
+                    }
+                }
+            });
+
         }
+    }
+
+    public interface onClickItem{
+        void onClick(String idNotify);
+    }
+
+    private onClickItem onClickItem;
+
+    public void setOnClickItem(onClickItem clickItem){
+        this.onClickItem = clickItem;
     }
 }

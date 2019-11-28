@@ -10,14 +10,25 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.gvtechcom.myshop.Adapter.AdapterRecyclerViewShipping;
+import com.gvtechcom.myshop.Model.BaseGetAPIShippingAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
+import com.gvtechcom.myshop.Model.UpdateNotifyModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.GetMD5;
+import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.mylibrary.base.BaseActivity;
+import com.mylibrary.ui.progress.ProgressDialogCustom;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +42,7 @@ public class SplashActivity extends BaseActivity {
     private Boolean stopCount;
     private ItemYouLoveModel.ItemYouLoveModelParser objectItemYouLove;
     private BaseGetApiData objDataHomeContent;
+    private UpdateNotifyModel.UpdateNotifyModelParser dataNotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +60,7 @@ public class SplashActivity extends BaseActivity {
         apiServer = retrofitClient.create(APIServer.class);
         LoadApiHome();
         LoadApiItemYouLove();
+        getDataUpdateNotify();
         loading();
     }
 
@@ -94,6 +107,24 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
+    private void getDataUpdateNotify() {
+        Call<UpdateNotifyModel.UpdateNotifyModelParser> updateNotifyModelCall = apiServer.GetDataUpdateNotify();
+        updateNotifyModelCall.enqueue(new Callback<UpdateNotifyModel.UpdateNotifyModelParser>() {
+            @Override
+            public void onResponse(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Response<UpdateNotifyModel.UpdateNotifyModelParser> response) {
+                if (response.body().code != 200) {
+                } else {
+                    dataNotify = response.body();
+                    mySharePreferences.SaveSharePrefObject(getApplicationContext(), dataNotify, "MyOjectNotify");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Throwable t) {
+            }
+        });
+    }
+
     private void loading() {
         countDownTimer = new CountDownTimer(10000, 1000) {
             @Override
@@ -101,7 +132,7 @@ public class SplashActivity extends BaseActivity {
                 if (stopCount == true) {
                     countDownTimer.cancel();
                 } else {
-                    if (objectItemYouLove != null && objDataHomeContent != null) {
+                    if (objectItemYouLove != null && objDataHomeContent != null && dataNotify != null) {
                         stopCount = true;
                         checkFirstLauncher();
                     }

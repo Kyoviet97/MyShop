@@ -6,6 +6,9 @@ public class UpdateNotifyModel {
     public Integer current_page;
     public Integer total;
     public List<DataUpdateNoty> data;
+    public String title;
+    public String start_datetime;
+    public String content;
 
 
     public class DataUpdateNoty{

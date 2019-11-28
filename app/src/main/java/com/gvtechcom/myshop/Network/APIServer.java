@@ -212,6 +212,9 @@ public interface APIServer {
     @GET("notifications")
     Call<UpdateNotifyModel.UpdateNotifyModelParser> GetDataUpdateNotify();
 
+    @GET("notifications/find-by-id")
+    Call<UpdateNotifyModel.UpdateNotifyModelParser> GetDataUpdateNotifyDetail(@Query("notification_id") String notification_id);
+
     @GET("flash-deals")
     Call<FlashDealsDetails.FlashDealsDetailsParser> GetFlashDealsDetails(@Query("page") Integer page,
                                                                         @Query("per_page") Integer per_page,

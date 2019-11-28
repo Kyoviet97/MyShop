@@ -20,6 +20,13 @@
             android:textColor="#4A4A4A"
             android:textSize="@dimen/_16sp" />
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_3dp"
+        android:background="@drawable/shadow_layout">
+    </View>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_update_notify"
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.Fragment;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerBrowseCategoriesLeft;
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -33,6 +35,7 @@ public class FragmentBrowseCategories extends Fragment {
     private Retrofit retrofit;
     private List<BrowseCategoriesModel> dataBrowseCategories;
     private AdapterRecyclerBrowseCategoriesLeft adapterRecyclerBrowseCategoriesLeft;
+    private MainActivity mainActivity;
 
     @BindView(R.id.recycler_browse_categories_left)
     RecyclerView RecyclerViewBrowseLeft;
@@ -52,8 +55,14 @@ public class FragmentBrowseCategories extends Fragment {
     }
 
     private void init() {
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.setDisplayNavigationBar(true, true, false);
+        mainActivity.setColorIconDarkMode(true, R.color.white);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white);
         setRetrofit();
+        setRecyclerView();
         callApiBrowse();
+
 
     }
 

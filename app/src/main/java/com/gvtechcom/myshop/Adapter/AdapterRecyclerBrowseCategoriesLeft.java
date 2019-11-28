@@ -1,21 +1,24 @@
 package com.gvtechcom.myshop.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.List;
 
-public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<AdapterRecyclerBrowseCategoriesLeft.ViewHoler>{
+public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<AdapterRecyclerBrowseCategoriesLeft.ViewHoler> {
     private Context context;
     private List<BrowseCategoriesModel> lsBrowseCategories;
 
@@ -34,13 +37,16 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
 
     @Override
     public void onBindViewHolder(@NonNull ViewHoler holder, int position) {
-//        Glide.with(context)
-//                .load("https://ae01.alicdn.com/kf/HTB1RzFjMgHqK1RjSZJnq6zNLpXaS.jpg_220x220.jpg")
-//                .placeholder(R.drawable.banner_image_slide)
-//                .error(R.drawable.banner_image_slide)
-//                .into(holder.imageView_browse_category_left);
-//
-//        holder.txt_browse_category_left.setText(lsBrowseCategories.get(position).category_name);
+        Glide.with(context)
+                .load(lsBrowseCategories.get(position).category_image)
+                .placeholder(R.drawable.banner_image_slide)
+                .error(R.drawable.banner_image_slide)
+                .into(holder.imageView_browse_category_left);
+        holder.txt_browse_category_left.setText(lsBrowseCategories.get(position).category_name);
+
+        holder.linearLayout.setBackgroundColor(Color.WHITE);
+
+
     }
 
     @Override
@@ -51,11 +57,15 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
     public class ViewHoler extends RecyclerView.ViewHolder {
         private ImageView imageView_browse_category_left;
         private TextView txt_browse_category_left;
+        private LinearLayout linearLayout;
 
         public ViewHoler(@NonNull View itemView) {
             super(itemView);
             imageView_browse_category_left = itemView.findViewById(R.id.img_browse_categories_left);
-            txt_browse_category_left = imageView_browse_category_left.findViewById(R.id.txt_browse_categories_left);
+            txt_browse_category_left = itemView.findViewById(R.id.txt_browse_categories_left);
+            linearLayout = itemView.findViewById(R.id.layout_browse_categories_left);
+
+
         }
     }
 }

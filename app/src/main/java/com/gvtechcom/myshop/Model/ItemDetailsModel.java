@@ -21,7 +21,7 @@ public class ItemDetailsModel implements Serializable {
     public List<Product> product;
     public Store store;
 
-    @SerializedName("relates product")
+    @SerializedName("relates_product")
     public List<RelatesProduct> relatesproduct;
 
     public class ReView{
