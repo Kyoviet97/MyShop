@@ -138,6 +138,7 @@ public class ShippingAddressFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call, Throwable t) {
 
@@ -153,7 +154,6 @@ public class ShippingAddressFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 Bundle bundle = new Bundle();
                 bundle.putString("idAddress", idAddress);
-
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentAddShipping.setArguments(bundle);
                 fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentAddShipping);
@@ -163,7 +163,7 @@ public class ShippingAddressFragment extends Fragment {
         });
     }
 
-    private void setViewRecycler(){
+    private void setViewRecycler() {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);

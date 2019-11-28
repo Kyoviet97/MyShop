@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_browse_categories_left"
         android:layout_width="@dimen/_80dp"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,14 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Top Brands"
+            android:padding="@dimen/_10dp"
             android:background="@android:color/white"
             android:textSize="@dimen/_15sp"
             android:fontFamily="@font/sf_pro_text_semibold"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_name_trademark"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="wrap_content"/>
 
 
     </LinearLayout>

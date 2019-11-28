@@ -3,6 +3,7 @@ package com.gvtechcom.myshop.Network;
 import com.gvtechcom.myshop.Model.BaseGetAPIShippingAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
+import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Model.CountryInfo;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.FlashDealsDetails;
@@ -222,4 +223,10 @@ public interface APIServer {
                                                                                @Query("type_app") String type_app);
     @GET("detail-product")
     Call<ItemDetailsModel.ItemDetailsModelParser> GetApiItemDetails(@Query("product_id") String product_id);
+
+
+    @GET("categories")
+    Call<BrowseCategoriesModel.BrowseCategoriesModelParser> GetApiBrowseCategoriesModel();
+
+
 }

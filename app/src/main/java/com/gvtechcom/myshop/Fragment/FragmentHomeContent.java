@@ -179,7 +179,7 @@ public class FragmentHomeContent extends Fragment {
 
         setItemFeaturedCategorie();
 
-//        setItemTopNewFeaturedStore();
+        setItemTopNewFeaturedStore();
 
         getNestedScrollChange();
     }
@@ -329,22 +329,46 @@ public class FragmentHomeContent extends Fragment {
         }
     }
 
-//    private void setItemTopNewFeaturedStore() {
-//        for (int i = 0; i < obj.getResponse().getFeatureBrands().size(); i ++){
-//            setGlideImage(obj.getResponse().getTopSelections().get(i).product_image, imgTopSelectOne);
-//            setGlideImage(obj.getResponse().getTopSelections().get(i).product_image, imgTopSelectTwo);
-//
-//            setGlideImage(obj.getResponse().getNewsForYou().get(i).product_image, imgNewForYouOne);
-//            setGlideImage(obj.getResponse().getNewsForYou().get(i).product_image, imgNewForYouTwo);
-//
-//            setGlideImage(obj.getResponse().getFeatureBrands().get(i).image, imgFeatureBrandsOne);
-//            setGlideImage(obj.getResponse().getFeatureBrands().get(i).image, imgFeatureBrandsTwo);
-//
-//            setGlideImage(obj.getResponse().getStoresYouLove().get(i).image, imgStoreYouLoveOne);
-//            setGlideImage(obj.getResponse().getStoresYouLove().get(i).image, imgStoreYouLoveTwo);
-//        }
-//
-//    }
+    private void setItemTopNewFeaturedStore() {
+        if (obj.getResponse().getTopSelections().size() > 1) {
+            setGlideImage(obj.getResponse().getTopSelections().get(obj.getResponse().getTopSelections().size() - 2).product_image, imgTopSelectOne);
+            setGlideImage(obj.getResponse().getTopSelections().get(obj.getResponse().getTopSelections().size() - 1).product_image, imgTopSelectTwo);
+            setClickCategori(imgTopSelectOne, obj.getResponse().getTopSelections().get(obj.getResponse().getTopSelections().size() - 2).product_id);
+            setClickCategori(imgTopSelectTwo, obj.getResponse().getTopSelections().get(obj.getResponse().getTopSelections().size() - 1).product_id);
+
+        }
+
+        if (obj.getResponse().getNewsForYou().size() > 1) {
+            setGlideImage(obj.getResponse().getNewsForYou().get(obj.getResponse().getNewsForYou().size() - 2).product_image, imgNewForYouOne);
+            setGlideImage(obj.getResponse().getNewsForYou().get(obj.getResponse().getNewsForYou().size() - 1).product_image, imgNewForYouTwo);
+            setClickCategori(imgNewForYouOne, obj.getResponse().getNewsForYou().get(obj.getResponse().getNewsForYou().size() - 2).product_id);
+            setClickCategori(imgNewForYouTwo, obj.getResponse().getNewsForYou().get(obj.getResponse().getNewsForYou().size() - 1).product_id);
+
+        }
+
+        if (obj.getResponse().getFeatureBrands().size() > 1) {
+            setGlideImage(obj.getResponse().getFeatureBrands().get(obj.getResponse().getFeatureBrands().size() - 2).image, imgFeatureBrandsOne);
+            setGlideImage(obj.getResponse().getFeatureBrands().get(obj.getResponse().getFeatureBrands().size() - 1).image, imgFeatureBrandsTwo);
+//            setClickCategori(imgFeatureBrandsOne, obj.getResponse().getFeatureBrands().get(obj.getResponse().getNewsForYou().size() - 2).brand_id);
+//            setClickCategori(imgFeatureBrandsTwo, obj.getResponse().getFeatureBrands().get(obj.getResponse().getNewsForYou().size() - 1).brand_id);
+
+        }
+
+        if (obj.getResponse().getStoresYouLove().size() > 1) {
+            setGlideImage(obj.getResponse().getStoresYouLove().get(obj.getResponse().getStoresYouLove().size() - 2).image, imgStoreYouLoveOne);
+            setGlideImage(obj.getResponse().getStoresYouLove().get(obj.getResponse().getStoresYouLove().size() - 1).image, imgStoreYouLoveTwo);
+
+        }
+    }
+
+        private void setClickCategori(View v, String idProduct){
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setOnClickItemDetails(idProduct);
+                }
+            });
+        }
 
     private void setAdapterItemsYouLove(List<ItemYouLoveModel.Product> lsItemYouLove) {
         if (adapterItemsYouLove == null) {
@@ -459,61 +483,17 @@ public class FragmentHomeContent extends Fragment {
                 .into((ImageView) view);
     }
 
-    @OnClick({R.id.img_top_selection_one, R.id.img_top_selection_two, R.id.img_new_for_you_one, R.id.img_new_for_you_two,
-            R.id.img_new_feature_brands_one, R.id.img_new_feature_brands_two, R.id.img_stores_you_love_one, R.id.img_stores_you_love_two})
-    void OnClick(View view) {
-        switch (view.getId()) {
-            case R.id.img_top_selection_one:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getTopSelections().get(0).product_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_top_selection_two:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getTopSelections().get(1).product_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_new_for_you_one:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getNewsForYou().get(0).product_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_new_for_you_two:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "id_product: " + obj.getResponse().getNewsForYou().get(1).product_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_new_feature_brands_one:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "brand_id: " + obj.getResponse().getFeatureBrands().get(0).brand_id + '\n'
-                            + "use_id: " + obj.getResponse().getFeatureBrands().get(0).user_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_new_feature_brands_two:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "band_id: " + obj.getResponse().getFeatureBrands().get(1).brand_id + '\n'
-                            + "use_id: " + obj.getResponse().getFeatureBrands().get(1).user_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_stores_you_love_one:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "store_id: " + obj.getResponse().getStoresYouLove().get(0).store_id + '\n'
-                            + "address_id: " + obj.getResponse().getStoresYouLove().get(0).address_id, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.img_stores_you_love_two:
-                if (obj != null) {
-                    Toast.makeText(getActivity(), "store_id: " + obj.getResponse().getStoresYouLove().get(0).store_id + '\n'
-                            + "address_id: " + obj.getResponse().getStoresYouLove().get(1).address_id, Toast.LENGTH_SHORT).show();
-                }
+    @OnClick({R.id.btn_browse_categories})
+    void OnClick(View view){
+        switch (view.getId()){
+            case R.id.btn_browse_categories:
+                fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentBrowseCategories());
+                fragmentTransaction.addToBackStack("home");
+                fragmentTransaction.commit();
                 break;
         }
     }
+
 }
