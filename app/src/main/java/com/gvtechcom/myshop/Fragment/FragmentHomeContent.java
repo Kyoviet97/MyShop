@@ -103,6 +103,10 @@ public class FragmentHomeContent extends Fragment {
     private List<ItemYouLoveModel> lsItemYouLove;
     private AdapterItemsYouLove adapterItemsYouLove;
 
+    private Handler handler;
+    private Boolean isStopHandel;
+    private Runnable update;
+
     @BindView(R.id.card_view_flash_deals)
     CardView cardViewFlashDeals;
     @BindView(R.id.view_pager_slide)
@@ -226,6 +230,7 @@ public class FragmentHomeContent extends Fragment {
             if (i != obj.getResponse().getBanners().size()) {
                 imageModelArrayList.add(new ImageModel(obj.getResponse().getBanners().get(i).getImage()));
             } else {
+                isStopHandel = false;
                 slideImageBanner();
             }
         }
@@ -243,21 +248,24 @@ public class FragmentHomeContent extends Fragment {
         indicatorSlide.setStrokeWidth(0);
 
         NUM_PAGES = imageModelArrayList.size();
-
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
+                handler = new Handler();
+                update = new Runnable() {
             public void run() {
-                if (currentPage == NUM_PAGES) {
-                    currentPage = 0;
-                }
-                viewPagerSlide.setCurrentItem(currentPage++, true);
+              if (isStopHandel == true){
+                    handler.removeCallbacks(update);
+              }else {
+                  if (currentPage == NUM_PAGES) {
+                      currentPage = 0;
+                  }
+                  viewPagerSlide.setCurrentItem(currentPage++, true);
+              }
             }
         };
         Timer swipeTimer = new Timer();
         swipeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                handler.post(Update);
+                handler.post(update);
             }
         }, 3000, 3000);
 
@@ -287,7 +295,12 @@ public class FragmentHomeContent extends Fragment {
             adapterFlashDeals.setOnItemClickListener(new AdapterFlashDeals.ItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                   setOnClickItemDetails(lsProductFlashDeals.get(position).getProductId());
+                   fragmentManager = getFragmentManager();
+                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                   Fragment fragmentFlashDealsDetail = new FragmentFlashDetails();
+                   fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentFlashDealsDetail);
+                   fragmentTransaction.addToBackStack("home");
+                   fragmentTransaction.commit();
                 }
             });
         }
@@ -321,7 +334,7 @@ public class FragmentHomeContent extends Fragment {
                 @Override
                 public void itemClick(String idProduct) {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.content_home_frame_layout, new FragmentItemDetail());
+                    fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentItemDetail());
                     fragmentTransaction.addToBackStack("home_content");
                     fragmentTransaction.commit();
                 }
@@ -497,4 +510,11 @@ public class FragmentHomeContent extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isStopHandel = true;
+        System.out.println("=================>" + "StopHander");
+
+    }
 }

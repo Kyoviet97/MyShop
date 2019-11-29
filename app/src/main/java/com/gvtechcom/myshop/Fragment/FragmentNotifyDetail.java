@@ -79,7 +79,7 @@ public class FragmentNotifyDetail extends Fragment {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setDefaultFontSize(R.dimen._20sp);
+        webSettings.setTextSize(WebSettings.TextSize.LARGER);
 
 
         final Activity activity = getActivity();

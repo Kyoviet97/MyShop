@@ -1,5 +1,8 @@
 package com.gvtechcom.myshop.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class BrowseCategoriesModel {
@@ -23,8 +26,14 @@ public class BrowseCategoriesModel {
    }
 
     public class BrowseCategoriesModelParser{
+        @SerializedName("status")
+        @Expose
         public Integer code;
+        @SerializedName("content")
+        @Expose
         public String message;
+        @SerializedName("data")
+        @Expose
         public List<BrowseCategoriesModel> response;
     }
 }

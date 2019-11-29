@@ -1,5 +1,8 @@
 package com.gvtechcom.myshop.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class BaseGetAPIShippingAddress {
@@ -22,8 +25,14 @@ public class BaseGetAPIShippingAddress {
     }
 
     public class BaseGetAPIShippingAddressParser{
+        @SerializedName("status")
+        @Expose
         public Integer code;
+        @SerializedName("content")
+        @Expose
         public String message;
+        @SerializedName("data")
+        @Expose
         public BaseGetAPIShippingAddress response;
     }
 }

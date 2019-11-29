@@ -1,6 +1,8 @@
 package com.mylibrary.ui.progress;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -23,6 +25,7 @@ public class ProgressDialogCustom extends AppCompatDialog implements IDelegatePr
         super(context, R.style.Theme_Progress);
         mDelayHandler = new DelayHandler(this);
         setContentView(R.layout.progress_dialog);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setCancelable(false);
         mProgressMessage = findViewById(R.id.progress_bar_message);
     }
@@ -57,9 +60,9 @@ public class ProgressDialogCustom extends AppCompatDialog implements IDelegatePr
     @Override
     public void onShow(boolean delay, String message) {
         if (message == null) {
-            message = "Loading...";
+            message = "";
         }
-        setMessage(message);
+        setMessage("");
         if (delay) {
             this.show();
         } else {

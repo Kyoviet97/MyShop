@@ -33,6 +33,7 @@ import com.gvtechcom.myshop.dialog.DialogCountryAddress;
 import com.gvtechcom.myshop.dialog.DialogCustomMessage;
 import com.gvtechcom.myshop.dialog.DialogDistricAddress;
 import com.gvtechcom.myshop.dialog.DialogPhoneCodeAddress;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -52,6 +53,7 @@ import retrofit2.Retrofit;
 public class AddShippingAddessFragment extends Fragment {
     private View rootView;
     private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
     private int isDefault = 1;
     private APIServer apiServer;
     private HashMap<String, String> hashMapData;
@@ -93,13 +95,11 @@ public class AddShippingAddessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_add_shipping_address, container, false);
         ButterKnife.bind(this, rootView);
-        Retrofit retrofit;
-        retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
-        apiServer = retrofit.create(APIServer.class);
         fragmentManager = getFragmentManager();
         mainActivity = (MainActivity) getActivity();
         mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
         onListenKeyboard();
         return rootView;
     }
@@ -108,8 +108,15 @@ public class AddShippingAddessFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwitchDefault();
+        setRetrofit();
         init();
         getApiCountryAddress();
+    }
+
+    private void setRetrofit() {
+        Retrofit retrofit;
+        retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
+        apiServer = retrofit.create(APIServer.class);
     }
 
     private void init() {
@@ -184,7 +191,7 @@ public class AddShippingAddessFragment extends Fragment {
                 });
     }
 
-    private void saveAddress(){
+    private void saveAddress() {
         String fullName = edtFullNameShippingAddress.getText().toString();
         String telephone = edtPhoneNumber.getText().toString();
         String addressDefault = edtAddress1.getText().toString();
@@ -197,7 +204,7 @@ public class AddShippingAddessFragment extends Fragment {
                 hashMapData.get("PhoneCode") == null || TextUtils.isEmpty(hashMapData.get("PhoneCode")) ||
                 TextUtils.isEmpty(fullName) || TextUtils.isEmpty(telephone) ||
                 TextUtils.isEmpty(addressDefault) || TextUtils.isEmpty(zipCode)) {
-            Toast.makeText(mainActivity, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                toastDialog.onShow("Please fill out the form");
         } else {
             String country = hashMapData.get("Country");
             String city = hashMapData.get("City");
@@ -226,14 +233,15 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
                 if (response.body().code != 200) {
-                    Toast.makeText(mainActivity, response.body().message, Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().message);
                 } else {
                     countryInfoModel = response.body();
                 }
             }
+
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
-
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
@@ -250,7 +258,7 @@ public class AddShippingAddessFragment extends Fragment {
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
                 if (response.body().code != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().message);
                 } else {
                     progressDialogCustom.onHide();
                     dataDistric = response.body().response.data;
@@ -259,7 +267,7 @@ public class AddShippingAddessFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
-
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
@@ -275,7 +283,7 @@ public class AddShippingAddessFragment extends Fragment {
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
                 if (response.body().code != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(mainActivity, response.body().message, Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().message);
                 } else {
                     progressDialogCustom.onHide();
                     dataWard = response.body().response.data;
@@ -284,6 +292,7 @@ public class AddShippingAddessFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
+                toastDialog.onShow("An error occurred, please try again later");
 
             }
         });
@@ -416,10 +425,10 @@ public class AddShippingAddessFragment extends Fragment {
             dialogDistricAddress.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                        if (dialogDistricAddress.getSlect()) {
-                            txtWardShipping.setText(dialogDistricAddress.getNameDistric());
-                            hashMapData.put("Ward", dialogDistricAddress.getIdDistric());
-                        }
+                    if (dialogDistricAddress.getSlect()) {
+                        txtWardShipping.setText(dialogDistricAddress.getNameDistric());
+                        hashMapData.put("Ward", dialogDistricAddress.getIdDistric());
+                    }
                 }
             });
         }
@@ -449,23 +458,28 @@ public class AddShippingAddessFragment extends Fragment {
                             @Override
                             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                                 if (response.code() == 401) {
-                                    Toast.makeText(getActivity(), "Hết phiên đăng nhập", Toast.LENGTH_SHORT).show();
+                                    toastDialog.onShow("You have been logged out. Please login again");
                                     progressDialogCustom.onHide();
                                 } else {
                                     if (response.body().getCode() != 200) {
-                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                       toastDialog.onShow(response.body().getMessage());
                                         progressDialogCustom.onHide();
                                     } else {
-                                        Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                         progressDialogCustom.onHide();
-                                        fragmentManager.popBackStack();
+                                        toastDialog.onShow(response.body().getMessage());
+                                        toastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                            @Override
+                                            public void onDismiss(DialogInterface dialog) {
+                                                fragmentManager.popBackStack();
+                                            }
+                                        });
                                     }
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                                Toast.makeText(getActivity(), t.toString(), Toast.LENGTH_SHORT).show();
+                                toastDialog.onShow("An error occurred, please try again later");
                             }
                         });
                     }
@@ -519,10 +533,9 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().getMessage());
                     progressDialogCustom.onHide();
                 } else {
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     progressDialogCustom.onHide();
                     fragmentManager.popBackStack();
                 }
@@ -531,6 +544,7 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
@@ -544,7 +558,6 @@ public class AddShippingAddessFragment extends Fragment {
         String userId = preferences.GetSharePref(getActivity(), "object_user_id");
         String Authorization = Token_type + " " + Token;
 
-
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
@@ -554,11 +567,11 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onResponse(Call<GetAddressIdAddress.GetAddressIdParser> call, Response<GetAddressIdAddress.GetAddressIdParser> response) {
                 if (response.code() == 401) {
-                    Toast.makeText(getActivity(), "Hết phiên đăng nhập", Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow("You have been logged out. Please login again");
                     progressDialogCustom.onHide();
                 } else {
                     if (response.body().code != 200) {
-                        Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
+                        toastDialog.onShow(response.body().message);
                         progressDialogCustom.onHide();
                     } else {
                         GetAddressIdAddress.GetAddressIdParser dataAddressId = response.body();
@@ -603,10 +616,9 @@ public class AddShippingAddessFragment extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<GetAddressIdAddress.GetAddressIdParser> call, Throwable t) {
-
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
 
@@ -635,28 +647,29 @@ public class AddShippingAddessFragment extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    Toast("Hết phiên đăng nhập");
+                    toastDialog.onShow("You have been logged out. Please login again");
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        Toast(response.body().getMessage());
+                        toastDialog.onShow(response.body().getMessage());
                     } else {
                         progressDialogCustom.onHide();
-                        Toast(response.body().getMessage());
-                        fragmentManager.popBackStack();
+                        toastDialog.onShow(response.body().getMessage());
+                        toastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                fragmentManager.popBackStack();
+                            }
+                        });
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
-    }
-
-    private void Toast(String s) {
-        Toast.makeText(mainActivity, s, Toast.LENGTH_SHORT).show();
     }
 }
 

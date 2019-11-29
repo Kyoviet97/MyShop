@@ -13,6 +13,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="Theme_dialog_toast" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/progress_round_border</item>
+    </style>
+
     <style name="style_btn_account">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

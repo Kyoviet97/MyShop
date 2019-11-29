@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import retrofit2.Retrofit;
 public class DialogEditGender extends AppCompatDialog {
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
     private String strGender = "";
 
     @BindView(R.id.checkBox_male)
@@ -48,19 +50,23 @@ public class DialogEditGender extends AppCompatDialog {
         super(context, R.style.Theme_Dialog);
         setContentView(R.layout.custom_change_gender);
         ButterKnife.bind(this);
-
-        progressDialogCustom = new ProgressDialogCustom(getContext());
-
-        Retrofit retrofitClient;
-        retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
-        apiServer = retrofitClient.create(APIServer.class);
-
+        init();
         setStrGender(txtGenderAccount);
         if (txtGenderAccount.equals("Male")) {
             checkMaleGender.setChecked(true);
         } else {
             checkFemaleGender.setChecked(true);
         }
+    }
+
+    private void init() {
+        progressDialogCustom = new ProgressDialogCustom(getContext());
+        toastDialog = new ToastDialog(getContext());
+
+        Retrofit retrofitClient;
+        retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
+        apiServer = retrofitClient.create(APIServer.class);
+
     }
 
     private void loadApiChangeGender(int gender) {
@@ -82,18 +88,23 @@ public class DialogEditGender extends AppCompatDialog {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getContext(), "Hết phiên đăng nhập", Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow("You have been logged out. Please login again");
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        Toast.makeText(getContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        toastDialog.onShow(response.body().getMessage());
 
                     } else {
                         MySharePreferences preferences = new MySharePreferences();
-                        System.out.println("--------->" + response.body().getResponse().getDataUser().getGender());
                         preferences.SaveSharePref(getContext(), "gender", response.body().getResponse().getDataUser().getGender());
                         progressDialogCustom.onHide();
-                        dismiss();
+                        toastDialog.onShow(response.body().getMessage());
+                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                dismiss();
+                            }
+                        });
                     }
                 }
             }
@@ -101,7 +112,7 @@ public class DialogEditGender extends AppCompatDialog {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                System.out.println("---------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
 
             }
         });

@@ -1,5 +1,8 @@
 package com.gvtechcom.myshop.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class CountryInfoModel {
@@ -21,8 +24,14 @@ public class CountryInfoModel {
     }
 
     public class CountryInfoModelParser{
+        @SerializedName("status")
+        @Expose
         public Integer code;
+        @SerializedName("content")
+        @Expose
         public String message;
+        @SerializedName("data")
+        @Expose
         public CountryInfoModel response;
     }
 

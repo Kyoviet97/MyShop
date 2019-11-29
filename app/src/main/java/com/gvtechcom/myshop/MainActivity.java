@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     Fragment_Account();
                 }
                 break;
+
+            case R.id.img_btn_back_navigation:
+                    fragmentManager.popBackStack();
+                break;
         }
     }
 

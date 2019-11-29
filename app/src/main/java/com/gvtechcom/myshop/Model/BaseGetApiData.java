@@ -4,13 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class BaseGetApiData {
-    @SerializedName("code")
+    @SerializedName("status")
     @Expose
     private Integer code;
-    @SerializedName("message")
+    @SerializedName("content")
     @Expose
     private String message;
-    @SerializedName("response")
+    @SerializedName("data")
     @Expose
     private Response response;
 

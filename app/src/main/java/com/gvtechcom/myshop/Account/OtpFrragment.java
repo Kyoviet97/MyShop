@@ -149,7 +149,7 @@ public class OtpFrragment extends Fragment {
                     Fragment fragmentOtp = new FragmentChangePass();
                     Bundle bundle = new Bundle();
                     bundle.putString("TelephoneNumber", PhoneNumberBundle);
-                    bundle.putString("OtpNumber", response.body().getResponse().getOtp());
+                    bundle.putString("OtpNumber", editTextAccount.getText().toString());
                     fragmentOtp.setArguments(bundle);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame_account, fragmentOtp);
@@ -178,14 +178,12 @@ public class OtpFrragment extends Fragment {
                     Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialogCustom.onHide();
-                    System.out.println("--------->" + response.body().getResponse().getOtp());
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                System.out.println("--------->" + t.toString());
             }
         });
 

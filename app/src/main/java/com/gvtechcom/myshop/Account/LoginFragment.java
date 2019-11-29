@@ -30,6 +30,7 @@ import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.gvtechcom.myshop.Utils.ValidateInput;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.input.CustomInputText;
 import com.mylibrary.ui.input.DrawableClickListener;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
@@ -49,6 +50,7 @@ public class LoginFragment extends Fragment {
     private APIServer apiServer;
 
     private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
 
     private FragmentManager fragmentManager;
 
@@ -88,6 +90,7 @@ public class LoginFragment extends Fragment {
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
 
         buttonRegister();
         buttonForgotPassword();
@@ -140,10 +143,10 @@ public class LoginFragment extends Fragment {
         String phoneNumber = edtPhoneNumber.getText().toString();
 
         if (!validateInput.validatePhone(phoneNumber)) {
-            thongBao("Invalid phone number");
+            toastDialog.onShow("Invalid phone number");
         } else {
             if (!validateInput.validatePass(pass)) {
-                thongBao("Password is too short");
+                toastDialog.onShow("Password is too short");
             } else {
                 loadApiLogin(edtPhoneNumber.getText().toString(), edtPassword.getText().toString());
 
@@ -192,7 +195,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
-                    thongBao(response.body().getMessage());
+                    progressDialogCustom.onHide();
+                    toastDialog.onShow(response.body().getMessage());
                 } else {
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -222,7 +226,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
@@ -232,10 +236,4 @@ public class LoginFragment extends Fragment {
         n = 1;
         super.onDestroyView();
     }
-
-    private void thongBao(String s) {
-        progressDialogCustom.onHide();
-        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-    }
-
 }

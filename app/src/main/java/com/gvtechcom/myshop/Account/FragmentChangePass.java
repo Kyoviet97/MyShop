@@ -215,8 +215,6 @@ public class FragmentChangePass extends Fragment {
 
                 } else {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
                     String token = response.body().getResponse().getToken();
                     String access_token = response.body().getResponse().getAccessToken();
                     String token_type = response.body().getResponse().getTokenType();
@@ -243,7 +241,6 @@ public class FragmentChangePass extends Fragment {
                     startActivity(intent);
                     getActivity().finish();
                 }
-
             }
 
             @Override

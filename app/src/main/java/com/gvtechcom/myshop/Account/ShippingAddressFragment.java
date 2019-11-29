@@ -26,6 +26,7 @@ import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -128,13 +129,17 @@ public class ShippingAddressFragment extends Fragment {
                         Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialogCustom.onHide();
-                        List<BaseGetAPIShippingAddress.Data> dataAllAddressList = new ArrayList<>();
-                        dataAllAddressList = response.body().response.data;
-                        Collections.sort(dataAllAddressList);
 
-                        adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
-                        clickAdapter();
-                        recyclerView.setAdapter(adapterRecyclerViewShipping);
+                        if (response.body().response.data == null) {
+                            System.out.println("========================NULL");
+                        } else {
+                            List<BaseGetAPIShippingAddress.Data> dataAllAddressList = new ArrayList<>();
+                            dataAllAddressList = response.body().response.data;
+                            Collections.sort(dataAllAddressList);
+                            adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
+                            clickAdapter();
+                            recyclerView.setAdapter(adapterRecyclerViewShipping);
+                        }
                     }
                 }
             }

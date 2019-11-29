@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class DialogChangePass extends AppCompatDialog {
 
     private ProgressDialogCustom progressDialogCustom;
 
+    private ToastDialog toastDialog;
+
     @BindView(R.id.edt_old_pass)
     CustomInputText edtOldPassWord;
 
@@ -54,6 +57,7 @@ public class DialogChangePass extends AppCompatDialog {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getContext());
+        toastDialog = new ToastDialog(getContext());
         setShowEdtPassWord();
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -80,10 +84,10 @@ public class DialogChangePass extends AppCompatDialog {
         String srtNewPass = edtNewPass.getText().toString();
         String srtNewPassConfirm = edtNewPassConfirm.getText().toString();
         if (!validateInput.validatePass(srtNewPass)) {
-            Toast("Password is too short");
+            toastDialog.onShow("Password is too short");
         } else {
             if (!validateInput.validateTheSamePass(srtNewPass, srtNewPassConfirm)) {
-                Toast("Password incorrect");
+                toastDialog.onShow("Password incorrect");
             } else {
                 LoadApiChangePassWord(srtOldPass, srtNewPass, srtNewPassConfirm);
                 dismiss();
@@ -152,7 +156,6 @@ public class DialogChangePass extends AppCompatDialog {
 
     private void LoadApiChangePassWord(String oldpass, String new_pass, String confirm_pass) {
         progressDialogCustom.onShow(false, "Loading...");
-
         MySharePreferences preferences = new MySharePreferences();
         String AccessToken = preferences.GetSharePref(getContext(), "access_token");
         String Token = preferences.GetSharePref(getContext(), "token");
@@ -170,28 +173,30 @@ public class DialogChangePass extends AppCompatDialog {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getContext(), "Hết phiên đăng nhập", Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow("You have been logged out. Please login again");
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        Toast.makeText(getContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        toastDialog.onShow(response.body().getMessage());
 
                     } else {
                         progressDialogCustom.onHide();
-                        Toast.makeText(getContext(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                        toastDialog.onShow(response.body().getMessage());
+                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                dismiss();
+                            }
+                        });
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                System.out.println("---------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
                 progressDialogCustom.onHide();
             }
         });
-    }
-
-    private void Toast(String s) {
-        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 }

@@ -53,11 +53,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/transparent"/>
-
     <WebView
         android:id="@+id/webView_update_notitify"
         android:layout_width="match_parent"

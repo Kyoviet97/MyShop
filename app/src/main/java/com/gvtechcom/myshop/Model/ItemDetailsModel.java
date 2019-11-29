@@ -1,5 +1,6 @@
 package com.gvtechcom.myshop.Model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -80,8 +81,14 @@ public class ItemDetailsModel implements Serializable {
 
 
     public class ItemDetailsModelParser{
+        @SerializedName("status")
+        @Expose
         public Integer code;
+        @SerializedName("content")
+        @Expose
         public String message;
+        @SerializedName("data")
+        @Expose
         public ItemDetailsModel response;
     }
 }

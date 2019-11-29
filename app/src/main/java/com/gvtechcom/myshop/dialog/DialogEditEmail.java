@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class DialogEditEmail extends AppCompatDialog {
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
 
+    private ToastDialog toastDialog;
+
     @BindView(R.id.edt_fullName_dialog)
     EditText editEmailAcoount;
 
@@ -58,6 +61,7 @@ public class DialogEditEmail extends AppCompatDialog {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getContext());
+        toastDialog = new ToastDialog(getContext());
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
@@ -104,24 +108,31 @@ public class DialogEditEmail extends AppCompatDialog {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
-                    Toast.makeText(getContext(), "Hết phiên đăng nhập", Toast.LENGTH_SHORT).show();
                     progressDialogCustom.onHide();
+                    toastDialog.onShow("You have been logged out. Please login again");
                 } else {
                     if (response.body().getCode() != 200) {
-                        Toast.makeText(getContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
-
+                        progressDialogCustom.onHide();
+                        toastDialog.onShow(response.body().getMessage());
                     } else {
                         MySharePreferences preferences = new MySharePreferences();
                         preferences.SaveSharePref(getContext(), "email", response.body().getResponse().getDataUser().getEmail());
                         progressDialogCustom.onHide();
-                        dismiss();
+                        toastDialog.onShow(response.body().getMessage());
+                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                dismiss();
+                            }
+                        });
+
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                System.out.println("---------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
                 progressDialogCustom.onHide();
             }
         });

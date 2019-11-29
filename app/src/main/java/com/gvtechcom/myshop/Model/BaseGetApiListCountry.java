@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class BaseGetApiListCountry {
-    @SerializedName("code")
+    @SerializedName("status")
     @Expose
     private Integer code;
-    @SerializedName("message")
+    @SerializedName("content")
     @Expose
     private String message;
-    @SerializedName("response")
+    @SerializedName("data")
     @Expose
     private List<ResponseCountry> responseCountryList = null;
 

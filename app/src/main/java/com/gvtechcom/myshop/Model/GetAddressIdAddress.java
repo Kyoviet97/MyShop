@@ -1,5 +1,8 @@
 package com.gvtechcom.myshop.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class GetAddressIdAddress {
     private String name;
     private String telephone;
@@ -90,8 +93,14 @@ public class GetAddressIdAddress {
     }
 
     public class GetAddressIdParser{
-        public int code;
+        @SerializedName("status")
+        @Expose
+        public Integer code;
+        @SerializedName("content")
+        @Expose
         public String message;
+        @SerializedName("data")
+        @Expose
         public GetAddressIdAddress response;
     }
 

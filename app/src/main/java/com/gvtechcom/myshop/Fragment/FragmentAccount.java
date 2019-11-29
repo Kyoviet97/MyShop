@@ -36,6 +36,7 @@ import com.gvtechcom.myshop.dialog.DialogCustomMessage;
 import com.gvtechcom.myshop.dialog.DialogEditEmail;
 import com.gvtechcom.myshop.dialog.DialogEditFullNane;
 import com.gvtechcom.myshop.dialog.DialogEditGender;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +56,7 @@ public class FragmentAccount extends Fragment {
     private FragmentManager fragmentManager;
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
     private MySharePreferences sharePreferences;
 
     @BindView(R.id.txt_full_name_account)
@@ -75,7 +77,6 @@ public class FragmentAccount extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("==================> onCreateView");
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, rootView);
         MainActivity mainActivity;
@@ -87,7 +88,6 @@ public class FragmentAccount extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        System.out.println("==================> onViewCreated");
         super.onViewCreated(view, savedInstanceState);
         super.onViewCreated(view, savedInstanceState);
         init();
@@ -100,6 +100,7 @@ public class FragmentAccount extends Fragment {
         getDataLocal();
 
         progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
 
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -217,7 +218,7 @@ public class FragmentAccount extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((year - numberYear.getValue()) < 15) {
-                    Toast("You are under 15 years old");
+                    toastDialog.onShow("You are under 15 years old");
                 } else {
                     calendar.set(numberYear.getValue(), numberMonth.getValue() - 1, numberDay.getValue());
                     @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YYYY");
@@ -322,17 +323,24 @@ public class FragmentAccount extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    Toast("Hết phiên đăng nhập");
+                    toastDialog.onShow("You have been logged out. Please login again");
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        Toast(response.body().getMessage());
+                        toastDialog.onShow(response.body().getMessage());
 
                     } else {
                         sharePreferences.SaveSharePref(getActivity(), "birthday", response.body().getResponse().getDataUser().getBirthday().toString());
                         getDataLocal();
                         progressDialogCustom.onHide();
-                        dialogChangeBirthDay.dismiss();
+                        toastDialog.onShow(response.body().getMessage());
+                        toastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                dialogChangeBirthDay.dismiss();
+                            }
+                        });
+
                     }
                 }
             }
@@ -340,7 +348,7 @@ public class FragmentAccount extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                System.out.println("---------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
@@ -389,10 +397,6 @@ public class FragmentAccount extends Fragment {
         });
 
 
-    }
-
-    private void Toast(String s) {
-        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
 

@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import retrofit2.Retrofit;
 
 public class DialogEditFullNane extends AppCompatDialog {
     private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
     private APIServer apiServer;
     private String srtName;
 
@@ -65,6 +67,7 @@ public class DialogEditFullNane extends AppCompatDialog {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getContext());
+        toastDialog = new ToastDialog(getContext());
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
@@ -89,17 +92,23 @@ public class DialogEditFullNane extends AppCompatDialog {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getContext(), "Hết phiên đăng nhập", Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow("You have been logged out. Please login again");
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        Toast.makeText(getContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        toastDialog.onShow(response.body().getMessage());
 
                     } else {
                         MySharePreferences preferences = new MySharePreferences();
                         preferences.SaveSharePref(getContext(), "name", response.body().getResponse().getDataUser().getName());
                         progressDialogCustom.onHide();
-                        dismiss();
+                        toastDialog.onShow(response.body().getMessage());
+                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                dismiss();
+                            }
+                        });
                     }
                 }
             }
@@ -107,7 +116,7 @@ public class DialogEditFullNane extends AppCompatDialog {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                System.out.println("---------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
