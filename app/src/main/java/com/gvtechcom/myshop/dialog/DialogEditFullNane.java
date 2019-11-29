@@ -1,13 +1,18 @@
 package com.gvtechcom.myshop.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialog;
 
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -49,6 +54,7 @@ public class DialogEditFullNane extends AppCompatDialog {
         setContentView(R.layout.custom_dialog_change_fullname);
         ButterKnife.bind(this);
         edtFullName.setText(name);
+        MainActivity mainActivity = (MainActivity) getContext();
         init();
     }
 
@@ -120,5 +126,4 @@ public class DialogEditFullNane extends AppCompatDialog {
             }
         });
     }
-
 }

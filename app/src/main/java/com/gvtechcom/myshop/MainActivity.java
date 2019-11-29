@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -9,7 +10,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -297,12 +301,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setColorNavigationBar(int iconBack, int colorSearch, String hintSearch, int color){
+    public void setColorNavigationBar(int iconBack, int colorSearch, String hintSearch, int color, String codeString){
         navigationTop.setBackgroundResource(color);
         imgBtnBackNavigation.setImageResource(iconBack);
         searchViewNavigation.setBackgroundResource(colorSearch);
         searchViewNavigation.setHint(hintSearch);
-        searchViewNavigation.setHintTextColor(Color.parseColor("#9CFFFFFF"));
+        searchViewNavigation.setHintTextColor(Color.parseColor(codeString));
+    }
+
+
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(MainActivity.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override

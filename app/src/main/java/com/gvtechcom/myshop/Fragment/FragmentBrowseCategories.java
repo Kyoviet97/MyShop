@@ -58,12 +58,10 @@ public class FragmentBrowseCategories extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, true, false);
         mainActivity.setColorIconDarkMode(true, R.color.white);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white, "#E8A7A7A7");
         setRetrofit();
         setRecyclerView();
         callApiBrowse();
-
-
     }
 
     private void setRecyclerView(){
@@ -88,7 +86,6 @@ public class FragmentBrowseCategories extends Fragment {
                     if (dataBrowseCategories != null){
                         adapterRecyclerBrowseCategoriesLeft = new AdapterRecyclerBrowseCategoriesLeft(getActivity(), dataBrowseCategories);
                         RecyclerViewBrowseLeft.setAdapter(adapterRecyclerBrowseCategoriesLeft);
-
                     }
                 }
             }

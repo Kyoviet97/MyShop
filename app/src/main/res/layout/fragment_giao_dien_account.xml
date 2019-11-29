@@ -27,8 +27,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sf_pro_text_regular"
         android:gravity="center"
-        android:text="Tôi muốn đăng ký tài khoản mới Số điện thoại của tôi là:"
+        android:text="I want to register a new account \nMy phone number is:"
         android:textSize="@dimen/_16dp"
+        android:textColor="#A1AAB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -43,16 +44,18 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sf_pro_display_regular"
         android:gravity="center"
-        android:hint="Nhập số điện thoại…"
+        android:hint="Enter your phone number…"
         android:inputType="number"
-        android:textSize="@dimen/_18sp"
+        android:textColor="#A1AAB1"
+        android:textSize="@dimen/_20sp"
+        android:textColorHint="#D8D8D8"
         android:background="@drawable/ic_edt_under_line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_message_tren_edt"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:id="@+id/textView_message_duoi_edt"
@@ -60,20 +63,22 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sf_pro_text_regular"
         android:gravity="center"
-        android:text="Nhập số điện thoại để nhận mã kích hoạt tài khoản mới"
+        android:text="Enter the phone number to receive a new account activation code"
         android:textSize="@dimen/_14dp"
+        android:textColor="#A1AAB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_account"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <Button
         android:id="@+id/button_account"
         style="@style/style_btn_account"
-        android:text="Đăng ký"
+        android:text="Register"
         android:fontFamily="@font/sf_pro_text_medium"
+        android:textSize="@dimen/_16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -86,8 +91,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Tôi đã có tài khoản?"
+        android:text="I already have an account?"
         android:textSize="@dimen/_14sp"
+        android:textColor="#9B9B9B"
         android:fontFamily="@font/sf_pro_text_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +118,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sf_pro_text_medium"
             android:gravity="center"
-            android:text="Sử dụng ứng dụng B2PAY là bạn đã chấp nhận"
+            android:text="Use of the B2PAY application is your acceptance"
             android:textSize="@dimen/_9sp" />
 
         <TextView
@@ -121,7 +127,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sf_pro_text_medium"
             android:gravity="center"
-            android:text="Điều khoản và Điều kiện"
+            android:text="terms and conditions"
             android:textColor="@color/color_StatusBar"
             android:textSize="@dimen/_9sp" />
 

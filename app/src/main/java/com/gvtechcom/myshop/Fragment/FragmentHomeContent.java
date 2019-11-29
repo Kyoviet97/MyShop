@@ -161,7 +161,6 @@ public class FragmentHomeContent extends Fragment {
         mainActivity.setDisplayNavigationBar(true, false, true) ;
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "", R.color.color_StatusBar);
         return rootView;
     }
 
@@ -295,12 +294,7 @@ public class FragmentHomeContent extends Fragment {
             adapterFlashDeals.setOnItemClickListener(new AdapterFlashDeals.ItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                   fragmentManager = getFragmentManager();
-                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                   Fragment fragmentFlashDealsDetail = new FragmentFlashDetails();
-                   fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentFlashDealsDetail);
-                   fragmentTransaction.addToBackStack("home");
-                   fragmentTransaction.commit();
+                  setOnClickItemDetails(lsProductFlashDeals.get(position).getProductId());
                 }
             });
         }
@@ -497,7 +491,7 @@ public class FragmentHomeContent extends Fragment {
                 .into((ImageView) view);
     }
 
-    @OnClick({R.id.btn_browse_categories})
+    @OnClick({R.id.btn_browse_categories, R.id.txt_flash_deals_default})
     void OnClick(View view){
         switch (view.getId()){
             case R.id.btn_browse_categories:
@@ -507,6 +501,14 @@ public class FragmentHomeContent extends Fragment {
                 fragmentTransaction.addToBackStack("home");
                 fragmentTransaction.commit();
                 break;
+
+            case R.id.txt_flash_deals_default:
+                fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransactionFlashDeal = fragmentManager.beginTransaction();
+                fragmentTransactionFlashDeal.replace(R.id.content_home_frame_layout, new FragmentFlashDetails());
+                fragmentTransactionFlashDeal.addToBackStack("home");
+                fragmentTransactionFlashDeal.commit();
+                break;
         }
     }
 
@@ -514,7 +516,5 @@ public class FragmentHomeContent extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         isStopHandel = true;
-        System.out.println("=================>" + "StopHander");
-
     }
 }

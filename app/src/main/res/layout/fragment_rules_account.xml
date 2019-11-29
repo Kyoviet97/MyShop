@@ -36,7 +36,7 @@
             android:layout_height="@dimen/_22dp"
             android:fontFamily="@font/sf_pro_text_medium"
             android:gravity="center"
-            android:text="Điều khoản và Điều kiện"
+            android:text="Terms and Conditions"
             android:textColor="#4A4A4A"
             android:textSize="@dimen/_16sp" />
 
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sf_pro_text_regular"
-        android:text="Điều khoản và điều kiện sử dụng ứng dụng eCom"
+        android:text="Terms and conditions of using eCom application"
         android:textSize="@dimen/_22sp"
         android:textColor="#4A4A4A"
         app:layout_constraintBottom_toBottomOf="parent"

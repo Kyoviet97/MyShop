@@ -66,7 +66,7 @@ public class FragmentFlashDetails extends Fragment {
         ButterKnife.bind(this, rootView);
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, true, false);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "   apple watch",        R.color.color_startus_home);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "   apple watch", R.color.color_startus_home, "#FCC39D");
         return rootView;
     }
 

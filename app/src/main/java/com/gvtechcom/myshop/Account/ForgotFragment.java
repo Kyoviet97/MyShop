@@ -25,6 +25,8 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.ValidateInput;
+import com.gvtechcom.myshop.dialog.ToastDialog;
+import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +40,9 @@ public class ForgotFragment extends Fragment {
     private View rootView;
 
     private FragmentManager fragmentManager;
+
+    private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
 
     private APIServer apiServer;
 
@@ -79,7 +84,9 @@ public class ForgotFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        txtDieuKhoan.setText(Html.fromHtml("<u>Điều khoản và Điều kiện</u>"));
+        txtDieuKhoan.setText(Html.fromHtml("<u>Terms and conditions</u>"));
+        progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
         setGiaoDien();
 
     }
@@ -87,13 +94,13 @@ public class ForgotFragment extends Fragment {
     private void setGiaoDien(){
        image_account.setImageResource(R.drawable.ic_forgot);
 
-       textView_message_tren_edt.setText("Tôi muốn lấy lại mật khẩu\n" + "Số điện thoại của tôi là:");
+       textView_message_tren_edt.setText("I want to retrieve my password \nMy phone number is:");
 
-       getTextView_message_duoi_edt.setText("Mã xác nhận chỉ được gửi khi số\n" + "điện thoại tồn tại tài khoản");
+       getTextView_message_duoi_edt.setText("The verification code is only sent when the phone number exists on the account");
 
-       button_account.setText("Lấy lại mật khẩu");
+       button_account.setText("Password retrieval");
 
-       textView_message_duoi_btn.setText(Html.fromHtml("<u>Quay lại</u>"));
+       textView_message_duoi_btn.setText(Html.fromHtml("<u>Come back</u>"));
 
     }
 
@@ -142,16 +149,16 @@ public class ForgotFragment extends Fragment {
     }
 
     private void loadApiForgotPassWord(String telephone, String time, String sign, String type_app){
+        progressDialogCustom.onShow(false, "");
         Call<BaseGetApiData> call = apiServer.ForgotPasswordSendOtp(telephone, time, sign, type_app);
         call.enqueue(new Callback<BaseGetApiData>() {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200){
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialogCustom.onHide();
+                    toastDialog.onShow(response.body().getMessage());
                 }else {
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    System.out.println("------->" + response.body().getResponse().getOtp());
-
+                    progressDialogCustom.onHide();
                     fragmentManager = getFragmentManager();
                     Fragment MyFragment = new OtpFrragment();
                     Bundle bundle = new Bundle();
@@ -166,7 +173,8 @@ public class ForgotFragment extends Fragment {
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                System.out.println("------->" + t.toString());
+                progressDialogCustom.onHide();
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }

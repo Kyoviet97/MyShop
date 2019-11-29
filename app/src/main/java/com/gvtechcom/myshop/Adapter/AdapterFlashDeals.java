@@ -38,8 +38,8 @@ public class AdapterFlashDeals extends RecyclerView.Adapter<AdapterFlashDeals.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String imageDrawable = lsProduct.get(position).getImage();
         String Price = lsProduct.get(position).getPriceSale();
-        String Amount = lsProduct.get(position).getQuantity();
-        String AmountTotal = lsProduct.get(position).getSold();
+        String Amount = lsProduct.get(position).getSold();
+        String AmountTotal = lsProduct.get(position).getQuantity();
         String FlashSale = lsProduct.get(position).getPercentSale();
 
         Glide.with(context)

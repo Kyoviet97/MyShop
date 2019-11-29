@@ -28,6 +28,7 @@ import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.gvtechcom.myshop.Utils.ValidateInput;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.input.CustomInputText;
 import com.mylibrary.ui.input.DrawableClickListener;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
@@ -52,6 +53,8 @@ public class FragmentChangePass extends Fragment {
     private FragmentManager fragmentManager;
 
     private ProgressDialogCustom progressDialogCustom;
+
+    private ToastDialog toastDialog;
 
     @BindView(R.id.button_change_pass)
     Button buttonChangePass;
@@ -84,6 +87,7 @@ public class FragmentChangePass extends Fragment {
 
         fragmentManager = getFragmentManager();
         progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -135,10 +139,10 @@ public class FragmentChangePass extends Fragment {
     private void validatePass(String srtPass1, String srtPass2) {
         ValidateInput validateInput = new ValidateInput();
         if (validateInput.validatePass(srtPass1) == false) {
-            Toast.makeText(getActivity(), "Password is too short", Toast.LENGTH_SHORT).show();
+            toastDialog.onShow("Password is too short");
         } else {
             if (validateInput.validateTheSamePass(srtPass1, srtPass2) == false) {
-                Toast.makeText(getActivity(), "Password incorrect", Toast.LENGTH_SHORT).show();
+                toastDialog.onShow("Password incorrect");
             } else {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
                 boolean isFirtsLauncher = sharedPreferences.getBoolean("register", true);
@@ -161,7 +165,7 @@ public class FragmentChangePass extends Fragment {
     }
 
     private void setGiaoDien() {
-        txtBackChange.setText(Html.fromHtml("<u>Quay lại</u>"));
+        txtBackChange.setText(Html.fromHtml("<u>Come back</u>"));
     }
 
     private void setShowPass() {
@@ -211,10 +215,9 @@ public class FragmentChangePass extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().getMessage());
 
                 } else {
-                    progressDialogCustom.onHide();
                     String token = response.body().getResponse().getToken();
                     String access_token = response.body().getResponse().getAccessToken();
                     String token_type = response.body().getResponse().getTokenType();
@@ -235,6 +238,8 @@ public class FragmentChangePass extends Fragment {
                     setSharePf.SaveSharePref(getActivity(), "email", email);
                     setSharePf.SaveSharePref(getActivity(), "gender", gender);
                     setSharePf.SaveSharePref(getActivity(), "birthday", birthday);
+
+                    progressDialogCustom.onHide();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("account", "true");
@@ -245,18 +250,21 @@ public class FragmentChangePass extends Fragment {
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-
+                progressDialogCustom.onHide();
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
 
     private void getApiChangePass(String telephone, String otp, String password, String confirm_pass, String time, String sign, String type_app) {
+        progressDialogCustom.onShow(false, "");
         Call<BaseGetApiData> call = apiServer.registerAccount(telephone, otp, password, confirm_pass, time, sign, type_app);
         call.enqueue(new Callback<BaseGetApiData>() {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
-                    Toast.makeText(getActivity(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    progressDialogCustom.onHide();
+                    toastDialog.onShow(response.body().getMessage());
                 } else {
                     String token = response.body().getResponse().getToken();
                     String access_token = response.body().getResponse().getAccessToken();
@@ -267,11 +275,6 @@ public class FragmentChangePass extends Fragment {
                     String email = response.body().getResponse().getInfoUser().getEmail();
                     String gender = response.body().getResponse().getInfoUser().getGender();
                     String birthday = response.body().getResponse().getInfoUser().getBirthday();
-
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_account, new RefCodeFrament());
-                    fragmentTransaction.addToBackStack("frag_change_pass");
-                    fragmentTransaction.commit();
 
                     MySharePreferences setSharePf = new MySharePreferences();
                     setSharePf.SaveSharePref(getActivity(), "token", token);
@@ -284,12 +287,20 @@ public class FragmentChangePass extends Fragment {
                     setSharePf.SaveSharePref(getActivity(), "gender", gender);
                     setSharePf.SaveSharePref(getActivity(), "birthday", birthday);
 
+                    progressDialogCustom.onHide();
+
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_account, new RefCodeFrament());
+                    fragmentTransaction.addToBackStack("frag_change_pass");
+                    fragmentTransaction.commit();
+
                 }
             }
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                System.out.println("------>" + t.toString());
+                progressDialogCustom.onHide();
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }

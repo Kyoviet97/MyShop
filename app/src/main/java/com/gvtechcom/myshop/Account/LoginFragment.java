@@ -13,12 +13,15 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
@@ -54,6 +57,8 @@ public class LoginFragment extends Fragment {
 
     private FragmentManager fragmentManager;
 
+    private AccountActivity mainActivity;
+
     @BindView(R.id.edt_phone_number)
     EditText edtPhoneNumber;
 
@@ -69,28 +74,34 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.btn_register)
     Button btnRegister;
 
+    @BindView(R.id.layout_main_fragment_login)
+    ConstraintLayout LayoutMainFragmentLogin;
+
     @SuppressLint("ResourceType")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, rootView);
-        init();
+        progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
         return rootView;
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
+
     }
 
     private void init() {
+        mainActivity = (AccountActivity) getActivity();
+        mainActivity.setupUI(LayoutMainFragmentLogin);
+
         Retrofit retrofit;
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
-        progressDialogCustom = new ProgressDialogCustom(getActivity());
-        toastDialog = new ToastDialog(getActivity());
 
         buttonRegister();
         buttonForgotPassword();
@@ -99,7 +110,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void buttonForgotPassword() {
-        btnForgotPassword.setText(Html.fromHtml("<p><u>Quên mật khẩu</u></p>"));
+        btnForgotPassword.setText(Html.fromHtml("<p><u>Forgot password</u></p>"));
 
         btnForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override

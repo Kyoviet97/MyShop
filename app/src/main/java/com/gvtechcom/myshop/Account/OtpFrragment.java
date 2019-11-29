@@ -26,6 +26,7 @@ import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,7 @@ public class OtpFrragment extends Fragment {
     private String PhoneNumberBundle;
 
     private ProgressDialogCustom progressDialogCustom;
+    ToastDialog toastDialog;
 
     @BindView(R.id.image_account)
     ImageView imageAccount;
@@ -116,7 +118,7 @@ public class OtpFrragment extends Fragment {
             PhoneNumberBundle = bundle.getString("PhoneNumber");
         }
 
-        txtDieuKhoan.setText(Html.fromHtml("<u>Điều khoản và Điều kiện</u>"));
+        txtDieuKhoan.setText(Html.fromHtml("<u>Terms and Conditions</u>"));
         setGiaoDien();
         stopCount = false;
 
@@ -125,6 +127,7 @@ public class OtpFrragment extends Fragment {
         apiServer = retrofitClient.create(APIServer.class);
 
         progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
     }
 
     private void buttonXacNhan() {
@@ -142,7 +145,7 @@ public class OtpFrragment extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().getMessage());
                 } else {
                     progressDialogCustom.onHide();
                     fragmentManager = getFragmentManager();
@@ -162,7 +165,7 @@ public class OtpFrragment extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                System.out.println("------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
     }
@@ -175,7 +178,7 @@ public class OtpFrragment extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().getMessage());
                 } else {
                     progressDialogCustom.onHide();
                 }
@@ -184,6 +187,7 @@ public class OtpFrragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
 
@@ -199,12 +203,12 @@ public class OtpFrragment extends Fragment {
 
     private void setGiaoDien() {
         imageAccount.setImageResource(R.drawable.ic_logo_xac_nhan);
-        textViewMessageUpEdt.setText("Nhập mã xác thực đã gửi đến\n" + "số " + PhoneNumberBundle + " của bạn");
-        editTextAccount.setHint("Mã OTP...");
-        txtTextViewMessageDownEdt.setText("Gửi lại mã xác thực\n");
+        textViewMessageUpEdt.setText("Enter the verification code sent to your " + PhoneNumberBundle);
+        editTextAccount.setHint("OTP code...");
+        txtTextViewMessageDownEdt.setText("Resend OTP code");
         txtTextViewMessageDownEdt.setTextColor(Color.parseColor("#FFAF23"));
-        buttonAccount.setText("Xác nhận");
-        textViewMessageDownBtn.setText(Html.fromHtml("<u>Đổi số điện thoại</u>"));
+        buttonAccount.setText("Confirm");
+        textViewMessageDownBtn.setText(Html.fromHtml("<u>Change phone number</u>"));
 
     }
 
@@ -222,7 +226,7 @@ public class OtpFrragment extends Fragment {
                 } else {
                     isResend = false;
                     f = f - 1;
-                    txtTextViewMessageDownEdt.setText("Gửi lại mã xác thực: " + f);
+                    txtTextViewMessageDownEdt.setText("Resend OTP code: " + f);
                 }
             }
 

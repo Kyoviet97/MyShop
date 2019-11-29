@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout_fragment_account"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@android:color/white"
@@ -62,7 +63,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_edit_full_name_acoount"
+                app:layout_constraintEnd_toStartOf="@+id/img_edit_full_name_acoount"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent"
@@ -91,19 +92,18 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_edit_full_name_acoount"
-                android:layout_width="@dimen/_60dp"
-                android:layout_height="@dimen/_30dp"
-                android:background="@drawable/bkg_btn_edit_account"
+
+            <ImageView
+                android:id="@+id/img_edit_full_name_acoount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_btn_edit_account"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.93"
+                app:layout_constraintHorizontal_bias="0.95"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5">
-
-            </Button>
+                app:layout_constraintVertical_bias="0.5"/>
 
             <ImageView
                 android:layout_width="wrap_content"

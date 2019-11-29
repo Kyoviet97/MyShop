@@ -24,6 +24,7 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.ValidateInput;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,8 @@ public class RegisterFragment extends Fragment {
     private FragmentManager fragmentManager;
 
     private ProgressDialogCustom progressDialogCustom;
+
+    private ToastDialog toastDialog;
 
     @BindView(R.id.textView_message_tren_edt)
     TextView textViewMessageUpEdt;
@@ -83,10 +86,11 @@ public class RegisterFragment extends Fragment {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
-        txtDieuKhoan.setText(Html.fromHtml("<u>Điều khoản và Điều kiện</u>"));
+        txtDieuKhoan.setText(Html.fromHtml("<u>Terms & Conditions</u>"));
     }
 
     @OnClick({R.id.button_account, R.id.rules_account, R.id.textView_message_duoi_btn})
@@ -116,7 +120,7 @@ public class RegisterFragment extends Fragment {
 
             loadApiRegister(editTextAccount.getText().toString(), String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android");
         } else {
-            Toast.makeText(getActivity(), "Vui long nhap so dien thoai", Toast.LENGTH_SHORT).show();
+            toastDialog.onShow("Please enter the phone number");
         }
     }
 
@@ -136,7 +140,7 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().getMessage());
                 } else {
                     progressDialogCustom.onHide();
                     fragmentManager = getFragmentManager();
@@ -148,14 +152,13 @@ public class RegisterFragment extends Fragment {
                     fragmentTransaction.replace(R.id.frame_account, OtpFragment);
                     fragmentTransaction.addToBackStack("frag_register");
                     fragmentTransaction.commit();
-                    System.out.println("--------->" + response.body().getResponse().getOtp());
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                System.out.println("--------->" + t.toString());
+                toastDialog.onShow("An error occurred, please try again later");
             }
         });
 

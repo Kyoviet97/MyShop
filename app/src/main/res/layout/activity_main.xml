@@ -39,7 +39,6 @@
             android:background="@drawable/bkg_search_color_white"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:textColorHint="#FFFFFF"
             android:paddingLeft="@dimen/_10dp"
             android:layout_marginRight="@dimen/_2dp"
             android:layout_marginLeft="@dimen/_10dp"

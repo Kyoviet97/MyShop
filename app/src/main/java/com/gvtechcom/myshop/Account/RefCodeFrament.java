@@ -75,13 +75,13 @@ public class RefCodeFrament extends Fragment {
 
     private void setGiaoDien(){
         imagAccount.setImageResource(R.drawable.nhap_code);
-        txtDieuKhoan.setText(Html.fromHtml("<u>Điều khoản và Điều kiện</u>"));
-        textViewMessageUpEdt.setText("Nhập mã giới thiệu để được\n" + "hưởng thêm ưu đãi từ eCom");
-        editText_account.setHint("Mã giới thiệu");
-        txtTextViewMessageDownEdt.setText("Bạn có thể bỏ qua nếu không có");
+        txtDieuKhoan.setText(Html.fromHtml("<u>Terms and Conditions</u>"));
+        textViewMessageUpEdt.setText("Enter the referral code to enjoy more offers from eCom");
+        editText_account.setHint("Referral code");
+        txtTextViewMessageDownEdt.setText("You can skip if none");
         txtTextViewMessageDownEdt.setTextColor(Color.parseColor("#FFAF23"));
-        buttonAccount.setText("Xác nhận");
-        textViewMessageDownBtn.setText(Html.fromHtml("<p><u>Bỏ qua</u></p>"));
+        buttonAccount.setText("Confirm");
+        textViewMessageDownBtn.setText(Html.fromHtml("<p><u>Skip</u></p>"));
 
     }
 

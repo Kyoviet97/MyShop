@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +89,8 @@ public class AddShippingAddessFragment extends Fragment {
     EditText edtZipCode;
     @BindView(R.id.swt_set_default_shipping_address)
     SwitchCompat switchDefault;
-
+    @BindView(R.id.layout_add_shipping)
+    LinearLayout lnLayoutMain;
 
     @Nullable
     @Override

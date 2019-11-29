@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/MainLayoutShippingAddress"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -58,11 +59,11 @@
         android:fontFamily="@font/sf_pro_text_regular"
         android:gravity="left|center"
         android:padding="@dimen/_10dp"
-        android:layout_marginTop="@dimen/_24dp"
+        android:layout_marginTop="@dimen/_18dp"
         android:text="Add an address"
         android:textAllCaps="false"
         android:textColor="#4A90E2"
-        android:layout_marginBottom="@dimen/_20dp"
+        android:layout_marginBottom="@dimen/_14dp"
         android:textSize="@dimen/_16sp" />
 
     <View

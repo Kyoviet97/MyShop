@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,6 +75,7 @@ public class FragmentAccount extends Fragment {
     @BindView(R.id.btn_shipping_address)
     Button btnShippingAddress;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -107,11 +109,11 @@ public class FragmentAccount extends Fragment {
         apiServer = retrofitClient.create(APIServer.class);
     }
 
-    @OnClick({R.id.btn_edit_full_name_acoount, R.id.txt_gender_account, R.id.txt_birthday_account, R.id.txt_email_account
+    @OnClick({R.id.img_edit_full_name_acoount, R.id.txt_gender_account, R.id.txt_birthday_account, R.id.txt_email_account
             , R.id.btn_change_password_dialog, R.id.btn_logout_account, R.id.btn_shipping_address, R.id.btn_share_to_friends})
     void onClickView(View view) {
         switch (view.getId()) {
-            case R.id.btn_edit_full_name_acoount:
+            case R.id.img_edit_full_name_acoount:
                 setClickButtonEditFullName();
                 break;
             case R.id.txt_gender_account:
