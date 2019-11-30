@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -48,6 +50,11 @@ public class RegisterFragment extends Fragment {
 
     private ToastDialog toastDialog;
 
+    private AccountActivity accountActivity;
+
+    @BindView(R.id.layout_main_register)
+    ConstraintLayout layoutMainRegister;
+
     @BindView(R.id.textView_message_tren_edt)
     TextView textViewMessageUpEdt;
 
@@ -75,6 +82,8 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_giao_dien_account, container, false);
         ButterKnife.bind(this, rootView);
+        accountActivity = (AccountActivity) getActivity();
+        accountActivity.onListenKeyboard(accountActivity, layoutMainRegister);
         return rootView;
     }
 
@@ -91,6 +100,7 @@ public class RegisterFragment extends Fragment {
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
         txtDieuKhoan.setText(Html.fromHtml("<u>Terms & Conditions</u>"));
+        textViewMessageDownBtn.setText(Html.fromHtml("<u>I already have an account?</u>"));
     }
 
     @OnClick({R.id.button_account, R.id.rules_account, R.id.textView_message_duoi_btn})
@@ -113,11 +123,9 @@ public class RegisterFragment extends Fragment {
     private void buttonRegister() {
         ValidateInput validateInput = new ValidateInput();
         if (validateInput.validatePhone(editTextAccount.getText().toString())) {
-
             GetMD5 getMD5 = new GetMD5();
             GetTime getTime = new GetTime();
             String timeSign = String.valueOf((getTime.getCalendar() + 30000));
-
             loadApiRegister(editTextAccount.getText().toString(), String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android");
         } else {
             toastDialog.onShow("Please enter the phone number");

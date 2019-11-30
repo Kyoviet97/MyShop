@@ -161,6 +161,7 @@ public class FragmentHomeContent extends Fragment {
         mainActivity.setDisplayNavigationBar(true, false, true) ;
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, " apple watch", R.color.color_StatusBar, "#D1D8E0");
         return rootView;
     }
 

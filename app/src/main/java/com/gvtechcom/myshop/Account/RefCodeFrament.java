@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.R;
@@ -30,6 +31,11 @@ public class RefCodeFrament extends Fragment {
     private View rootView;
 
     private FragmentManager fragmentManager;
+
+    private AccountActivity accountActivity;
+
+    @BindView(R.id.layout_main_register)
+    ConstraintLayout layoutMainRegister;
 
     @BindView(R.id.image_account)
     ImageView imagAccount;
@@ -61,6 +67,7 @@ public class RefCodeFrament extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_giao_dien_account, container, false);
         ButterKnife.bind(this, rootView);
+        accountActivity = (AccountActivity) getActivity();
         return rootView;
     }
 
@@ -71,6 +78,7 @@ public class RefCodeFrament extends Fragment {
         buttonRuleAccount();
         bttonSkipRefCode();
         buttonXacNhan();
+        accountActivity.onListenKeyboard(accountActivity, layoutMainRegister);
     }
 
     private void setGiaoDien(){

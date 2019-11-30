@@ -19,6 +19,9 @@ import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.R;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
 public class AccountActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     @Override
@@ -78,6 +81,20 @@ public class AccountActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(
                 activity.getCurrentFocus().getWindowToken(), 0);
     }
+
+    public void onListenKeyboard(AccountActivity accountActivity, View view) {
+        KeyboardVisibilityEvent.setEventListener(
+                accountActivity,
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (isOpen) {
+                            setupUI(view);
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onBackPressed() {

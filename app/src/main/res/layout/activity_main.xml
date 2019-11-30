@@ -16,7 +16,7 @@
         android:layout_height="50dp"
         android:paddingTop="@dimen/_4dp"
         android:paddingBottom="@dimen/_4dp"
-        android:paddingRight="@dimen/_10dp"
+        android:paddingRight="@dimen/_2dp"
         android:background="@color/color_StatusBar"
         android:orientation="horizontal">
 
@@ -25,7 +25,7 @@
             android:layout_width="@dimen/_10dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_back_navigation"
-            android:layout_marginRight="@dimen/_20dp"
+            android:layout_marginRight="@dimen/_16dp"
             android:layout_marginLeft="@dimen/_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,8 +40,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:paddingLeft="@dimen/_10dp"
-            android:layout_marginRight="@dimen/_2dp"
             android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_6dp"
             android:layout_toStartOf="@+id/img_shopping_cart"
             android:layout_toLeftOf="@+id/img_shopping_cart"
             android:layout_toEndOf="@+id/img_btn_back_navigation"
@@ -51,7 +51,6 @@
         <ImageView
             android:id="@+id/img_shopping_cart"
             android:layout_width="@dimen/_55dp"
-            android:paddingLeft="@dimen/_5dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"

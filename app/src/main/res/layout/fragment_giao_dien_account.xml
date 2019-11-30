@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main_register"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FEFEFE"
     android:paddingRight="@dimen/_50dp"
     android:paddingLeft="@dimen/_50dp">
 
@@ -29,6 +30,7 @@
         android:gravity="center"
         android:text="I want to register a new account \nMy phone number is:"
         android:textSize="@dimen/_16dp"
+        android:maxLines="2"
         android:textColor="#A1AAB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +48,7 @@
         android:gravity="center"
         android:hint="Enter your phone number…"
         android:inputType="number"
-        android:textColor="#A1AAB1"
+        android:textColor="#4A4A4A"
         android:textSize="@dimen/_20sp"
         android:textColorHint="#D8D8D8"
         android:background="@drawable/ic_edt_under_line"
@@ -66,6 +68,7 @@
         android:text="Enter the phone number to receive a new account activation code"
         android:textSize="@dimen/_14dp"
         android:textColor="#A1AAB1"
+        android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -76,15 +79,15 @@
     <Button
         android:id="@+id/button_account"
         style="@style/style_btn_account"
-        android:text="Register"
         android:fontFamily="@font/sf_pro_text_medium"
+        android:text="Register"
         android:textSize="@dimen/_16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_message_duoi_edt"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_account"
+        app:layout_constraintVertical_bias="0.38" />
 
     <TextView
         android:id="@+id/textView_message_duoi_btn"
@@ -118,6 +121,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sf_pro_text_medium"
             android:gravity="center"
+            android:textColor="#A1AAB1"
             android:text="Use of the B2PAY application is your acceptance"
             android:textSize="@dimen/_9sp" />
 
@@ -128,7 +132,7 @@
             android:fontFamily="@font/sf_pro_text_medium"
             android:gravity="center"
             android:text="terms and conditions"
-            android:textColor="@color/color_StatusBar"
+            android:textColor="#FFAF23"
             android:textSize="@dimen/_9sp" />
 
     </LinearLayout>

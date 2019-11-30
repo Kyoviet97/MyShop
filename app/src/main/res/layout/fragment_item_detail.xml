@@ -81,7 +81,9 @@
 
             //Main Flash Deals en in x:x:x
             <LinearLayout
+                android:id="@+id/main_flash_time_in_item_detail"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="?actionBarSize"
                 android:background="#EB3B5A"
                 android:orientation="horizontal">

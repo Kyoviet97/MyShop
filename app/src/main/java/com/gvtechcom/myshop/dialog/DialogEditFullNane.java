@@ -23,6 +23,9 @@ import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,7 +57,6 @@ public class DialogEditFullNane extends AppCompatDialog {
         setContentView(R.layout.custom_dialog_change_fullname);
         ButterKnife.bind(this);
         edtFullName.setText(name);
-        MainActivity mainActivity = (MainActivity) getContext();
         init();
     }
 
@@ -126,4 +128,5 @@ public class DialogEditFullNane extends AppCompatDialog {
             }
         });
     }
+
 }

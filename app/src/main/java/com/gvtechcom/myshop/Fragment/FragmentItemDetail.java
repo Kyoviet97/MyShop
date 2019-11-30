@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,7 @@ import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,6 +43,7 @@ public class FragmentItemDetail extends Fragment {
     private AdapterRelatesProduct adapterRelatesProduct;
     private String idProduct;
     private ProgressDialogCustom progressLoading;
+    private Calendar calendarCurrent;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -57,6 +62,8 @@ public class FragmentItemDetail extends Fragment {
     TextView storeItem;
     @BindView(R.id.txt_item_detail_sold_store)
     TextView storeSold;
+    @BindView(R.id.main_flash_time_in_item_detail)
+    LinearLayout mainFlashTimeInItemDetail;
 
     //RecyclerView
     @BindView(R.id.recycler_related_product)
@@ -94,6 +101,7 @@ public class FragmentItemDetail extends Fragment {
         progressLoading = new ProgressDialogCustom(getActivity());
         setRetroFit();
         setViewRecyclerView();
+        calendarCurrent = Calendar.getInstance();
     }
 
     private void setRetroFit() {
@@ -135,6 +143,7 @@ public class FragmentItemDetail extends Fragment {
                         storeFeedback.setText(dataApiItemDetail.response.store.feedback + "%");
                         storeItem.setText(dataApiItemDetail.response.store.items);
                         storeSold.setText(dataApiItemDetail.response.store.sold);
+                        timeFlashDeals(dataApiItemDetail.response.end_datetime);
                         progressLoading.onHide();
                     }
                 }
@@ -143,9 +152,19 @@ public class FragmentItemDetail extends Fragment {
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
                 progressLoading.onHide();
-                System.out.println("======================> " + t.toString());
             }
         });
+    }
+
+    private void timeFlashDeals(String time){
+        int timeFlash = Integer.parseInt(time);
+        if (timeFlash != 0){
+            mainFlashTimeInItemDetail.setVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_flash_one_secont);
+            mainFlashTimeInItemDetail.setAnimation(animation);
+        }else{
+            mainFlashTimeInItemDetail.setVisibility(View.GONE);
+        }
     }
 
 }

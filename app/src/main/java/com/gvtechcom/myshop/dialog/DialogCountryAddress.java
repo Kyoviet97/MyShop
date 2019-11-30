@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerCountryAddress;
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
 
@@ -48,10 +49,6 @@ public class DialogCountryAddress extends AppCompatDialog {
     public void setPosition(int position) {
         this.position = position;
     }
-
-//    public void setLsCountry(List<CountryInfo> lsCountry) {
-//        this.lsCountry = lsCountry;
-//    }
 
     public DialogCountryAddress(Context context, List<CountryInfoModel.Data> responseCountries) {
         super(context);
@@ -152,6 +149,4 @@ public class DialogCountryAddress extends AppCompatDialog {
         }
         return responseCountryList;
     }
-
-
 }

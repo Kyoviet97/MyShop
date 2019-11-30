@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Network.APIServer;
@@ -50,7 +51,11 @@ public class OtpFrragment extends Fragment {
     private String PhoneNumberBundle;
 
     private ProgressDialogCustom progressDialogCustom;
-    ToastDialog toastDialog;
+    private ToastDialog toastDialog;
+    private AccountActivity accountActivity;
+
+    @BindView(R.id.layout_main_register)
+    ConstraintLayout layoutMainRegister;
 
     @BindView(R.id.image_account)
     ImageView imageAccount;
@@ -118,7 +123,9 @@ public class OtpFrragment extends Fragment {
             PhoneNumberBundle = bundle.getString("PhoneNumber");
         }
 
-        txtDieuKhoan.setText(Html.fromHtml("<u>Terms and Conditions</u>"));
+        accountActivity = (AccountActivity) getActivity();
+        accountActivity.onListenKeyboard(accountActivity, layoutMainRegister);
+
         setGiaoDien();
         stopCount = false;
 
@@ -203,9 +210,10 @@ public class OtpFrragment extends Fragment {
 
     private void setGiaoDien() {
         imageAccount.setImageResource(R.drawable.ic_logo_xac_nhan);
+        txtDieuKhoan.setText(Html.fromHtml("<u>Terms & Conditions</u>"));
         textViewMessageUpEdt.setText("Enter the verification code sent to your " + PhoneNumberBundle);
         editTextAccount.setHint("OTP code...");
-        txtTextViewMessageDownEdt.setText("Resend OTP code");
+        txtTextViewMessageDownEdt.setText("Resend OTP code" + '\n');
         txtTextViewMessageDownEdt.setTextColor(Color.parseColor("#FFAF23"));
         buttonAccount.setText("Confirm");
         textViewMessageDownBtn.setText(Html.fromHtml("<u>Change phone number</u>"));

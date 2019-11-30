@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
@@ -56,6 +57,11 @@ public class FragmentChangePass extends Fragment {
 
     private ToastDialog toastDialog;
 
+    private AccountActivity accountActivity;
+
+    @BindView(R.id.layout_main_create_pass_word)
+    ConstraintLayout layoutMainRegister;
+
     @BindView(R.id.button_change_pass)
     Button buttonChangePass;
 
@@ -84,6 +90,9 @@ public class FragmentChangePass extends Fragment {
     private void init() {
         setGiaoDien();
         setShowPass();
+
+        accountActivity = (AccountActivity) getActivity();
+        accountActivity.onListenKeyboard(accountActivity, layoutMainRegister);
 
         fragmentManager = getFragmentManager();
         progressDialogCustom = new ProgressDialogCustom(getActivity());
@@ -166,6 +175,7 @@ public class FragmentChangePass extends Fragment {
 
     private void setGiaoDien() {
         txtBackChange.setText(Html.fromHtml("<u>Come back</u>"));
+        txtRuleChangePass.setText(Html.fromHtml("<u>Terms & Conditions</u>"));
     }
 
     private void setShowPass() {

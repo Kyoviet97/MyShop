@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Network.APIServer;
@@ -44,7 +45,12 @@ public class ForgotFragment extends Fragment {
     private ProgressDialogCustom progressDialogCustom;
     private ToastDialog toastDialog;
 
+    private AccountActivity accountActivity;
+
     private APIServer apiServer;
+
+    @BindView(R.id.layout_main_register)
+    ConstraintLayout layoutMainRegister;
 
     @BindView(R.id.image_account)
     ImageView image_account;
@@ -76,6 +82,7 @@ public class ForgotFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_giao_dien_account, container, false);
         ButterKnife.bind(this, rootView);
         Retrofit retrofit;
+        accountActivity = (AccountActivity) getActivity();
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
         return rootView;
@@ -84,23 +91,20 @@ public class ForgotFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        txtDieuKhoan.setText(Html.fromHtml("<u>Terms and conditions</u>"));
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         toastDialog = new ToastDialog(getActivity());
+        accountActivity.onListenKeyboard(accountActivity, layoutMainRegister);
         setGiaoDien();
 
     }
 
     private void setGiaoDien(){
-       image_account.setImageResource(R.drawable.ic_forgot);
-
-       textView_message_tren_edt.setText("I want to retrieve my password \nMy phone number is:");
-
-       getTextView_message_duoi_edt.setText("The verification code is only sent when the phone number exists on the account");
-
-       button_account.setText("Password retrieval");
-
-       textView_message_duoi_btn.setText(Html.fromHtml("<u>Come back</u>"));
+        image_account.setImageResource(R.drawable.ic_forgot);
+        txtDieuKhoan.setText(Html.fromHtml("<u>Terms & Conditions</u>"));
+        textView_message_tren_edt.setText("I want to retrieve my password \nMy phone number is:");
+        getTextView_message_duoi_edt.setText("The verification code is only sent when the phone number exists on the account");
+        button_account.setText("Password retrieval");
+        textView_message_duoi_btn.setText(Html.fromHtml("<u>Come back</u>"));
 
     }
 

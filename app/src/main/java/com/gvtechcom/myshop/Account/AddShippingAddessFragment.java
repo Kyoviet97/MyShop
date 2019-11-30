@@ -89,8 +89,10 @@ public class AddShippingAddessFragment extends Fragment {
     EditText edtZipCode;
     @BindView(R.id.swt_set_default_shipping_address)
     SwitchCompat switchDefault;
-    @BindView(R.id.layout_add_shipping)
-    LinearLayout lnLayoutMain;
+    @BindView(R.id.layout_main_add_shipping)
+    LinearLayout layoutMainAddShipping;
+    @BindView(R.id.txt_delete_shipping_address)
+    TextView txtDeleteShippingAddress;
 
     @Nullable
     @Override
@@ -124,9 +126,11 @@ public class AddShippingAddessFragment extends Fragment {
     private void init() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            txtDeleteShippingAddress.setVisibility(View.VISIBLE);
             idAddress = bundle.getString("idAddress");
             getAddressId(idAddress);
         } else {
+            txtDeleteShippingAddress.setVisibility(View.INVISIBLE);
             idAddress = " ";
         }
 
@@ -181,6 +185,7 @@ public class AddShippingAddessFragment extends Fragment {
                     public void onVisibilityChanged(boolean isOpen) {
                         if (isOpen) {
                             mainActivity.setHideButtonNavigation(true);
+                            mainActivity.setupUI(layoutMainAddShipping);
                         } else {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
@@ -437,8 +442,6 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void deleteAddress(String idAddress) {
-        if (idAddress.equals(" ")) {
-        } else {
             DialogCustomMessage dialogCustomMessage = new DialogCustomMessage(getActivity(), "Delete Address", "You agree to delete this address");
             dialogCustomMessage.show();
             dialogCustomMessage.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -487,9 +490,6 @@ public class AddShippingAddessFragment extends Fragment {
                     }
                 }
             });
-
-        }
-
     }
 
     private void setSwitchDefault() {

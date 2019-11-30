@@ -40,6 +40,9 @@ import com.gvtechcom.myshop.dialog.DialogEditGender;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -59,6 +62,7 @@ public class FragmentAccount extends Fragment {
     private ProgressDialogCustom progressDialogCustom;
     private ToastDialog toastDialog;
     private MySharePreferences sharePreferences;
+    private MainActivity mainActivity;
 
     @BindView(R.id.txt_full_name_account)
     TextView txtFullNameAccount;
@@ -74,6 +78,8 @@ public class FragmentAccount extends Fragment {
     Button btnLogoutAccount;
     @BindView(R.id.btn_shipping_address)
     Button btnShippingAddress;
+    @BindView(R.id.main_layout_fragment_account)
+    LinearLayout mainLayoutFragmentAccount;
 
 
     @Nullable
@@ -81,7 +87,6 @@ public class FragmentAccount extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, rootView);
-        MainActivity mainActivity;
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(false, false, false);
         mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
@@ -355,6 +360,7 @@ public class FragmentAccount extends Fragment {
         });
     }
 
+
     private void accountLogout() {
         DialogCustomMessage dialogCustomMessage = new DialogCustomMessage(getActivity(), "Logout Account", "You want to logout");
         dialogCustomMessage.show();
@@ -397,8 +403,6 @@ public class FragmentAccount extends Fragment {
                 }
             }
         });
-
-
     }
 
 

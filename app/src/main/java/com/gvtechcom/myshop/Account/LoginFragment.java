@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -37,6 +38,9 @@ import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.input.CustomInputText;
 import com.mylibrary.ui.input.DrawableClickListener;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +89,7 @@ public class LoginFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         toastDialog = new ToastDialog(getActivity());
+        mainActivity = (AccountActivity) getActivity();
         return rootView;
     }
 
@@ -92,16 +97,15 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
-
     }
 
     private void init() {
-        mainActivity = (AccountActivity) getActivity();
-        mainActivity.setupUI(LayoutMainFragmentLogin);
 
         Retrofit retrofit;
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
+
+        onListenKeyboard();
 
         buttonRegister();
         buttonForgotPassword();
@@ -240,6 +244,19 @@ public class LoginFragment extends Fragment {
                 toastDialog.onShow("An error occurred, please try again later");
             }
         });
+    }
+
+    private void onListenKeyboard() {
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (isOpen) {
+                            mainActivity.setupUI(LayoutMainFragmentLogin);
+                        }
+                    }
+                });
     }
 
     @Override
