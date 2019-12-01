@@ -592,6 +592,7 @@ public class FragmentHomeContent extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        isStopCountDownTimerFlashDeals = false;
         setTimeFlashDeals();
     }
 }
