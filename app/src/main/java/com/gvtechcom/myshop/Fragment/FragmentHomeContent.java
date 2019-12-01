@@ -593,6 +593,7 @@ public class FragmentHomeContent extends Fragment {
     public void onResume() {
         super.onResume();
         isStopCountDownTimerFlashDeals = false;
+        System.out.println("=====================");
         setTimeFlashDeals();
     }
 }
