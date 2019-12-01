@@ -27,10 +27,17 @@
         android:background="@drawable/shadow_layout">
     </View>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_update_notify"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_notify_update"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_update_notify"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

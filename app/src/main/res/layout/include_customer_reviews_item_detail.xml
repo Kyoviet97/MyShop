@@ -49,12 +49,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <TextView
+                android:id="@+id/txt_user_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sf_pro_text_regular"
                 android:textSize="@dimen/_15sp"
                 android:textColor="#9B9B9B"
-                android:text="Albe******"/>
+                android:hint="Loading..."/>
         </LinearLayout>
 
         <LinearLayout
@@ -62,29 +63,32 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <TextView
+                android:id="@+id/txt_date_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:fontFamily="@font/sf_pro_text_regular"
                 android:textSize="@dimen/_15sp"
                 android:textColor="#9B9B9B"
-                android:text="20 Sep 2019"/>
+                android:hint="Loading..."/>
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/img_start_use_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_2dp"
         android:src="@drawable/ic_star_small_item_detail"/>
 
     <TextView
+        android:id="@+id/txt_content_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_5dp"
         android:textColor="#4A4A4A"
         android:textSize="@dimen/_15sp"
         android:fontFamily="@font/sf_pro_text_regular"
-        android:text="Everything is well quickly came all matches. Recommend the seller"/>
+        android:hint="Loading..."/>
 
 </LinearLayout>

@@ -2,11 +2,13 @@ package com.gvtechcom.myshop.Fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,9 @@ public class FragmentItemDetail extends Fragment {
     private String idProduct;
     private ProgressDialogCustom progressLoading;
     private Calendar calendarCurrent;
+    private static Integer soldQuantity = 1;
+    private CountDownTimer countDownTimerFlashDealsDetail;
+    private Boolean stopCountDownTimerFlashDealsDetail = false;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -64,6 +69,38 @@ public class FragmentItemDetail extends Fragment {
     TextView storeSold;
     @BindView(R.id.main_flash_time_in_item_detail)
     LinearLayout mainFlashTimeInItemDetail;
+    @BindView(R.id.txt_vote_star)
+    TextView txtvoteStar;
+
+    // Quantily
+    @BindView(R.id.img_lost_sold_product_to_buy)
+    ImageView imgLostSoldProductToBuy;
+    @BindView(R.id.txt_sold_product_to_buy)
+    TextView txtSoilProductToBuy;
+    @BindView(R.id.img_add_sold_product_to_buy)
+    ImageView imgAddSolfProductToBuy;
+
+    //Time Flash
+    @BindView(R.id.txt_count_hours_item_detail)
+    TextView txtCountHoursItemDetail;
+    @BindView(R.id.txt_count_minute_item_detail)
+    TextView txtCountMinuteItemDetail;
+    @BindView(R.id.txt_count_seconds_item_detail)
+    TextView txtCountSecondsItemDetail;
+
+
+    //Use Review
+    @BindView(R.id.txt_user_review)
+    TextView txtUserReview;
+    @BindView(R.id.txt_date_rating)
+    TextView txtDateReview;
+    @BindView(R.id.txt_content_review)
+    TextView txtContentReview;
+    @BindView(R.id.img_start_use_rating)
+    ImageView imgStartUseRating;
+
+    @BindView(R.id.img_vote_start_item_detail)
+    ImageView imgVoteStar;
 
     //RecyclerView
     @BindView(R.id.recycler_related_product)
@@ -91,6 +128,7 @@ public class FragmentItemDetail extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init();
         callApiItemDataDetails(idProduct);
+        setSoldQuntity();
     }
 
     private void init() {
@@ -144,6 +182,9 @@ public class FragmentItemDetail extends Fragment {
                         storeItem.setText(dataApiItemDetail.response.store.items);
                         storeSold.setText(dataApiItemDetail.response.store.sold);
                         timeFlashDeals(dataApiItemDetail.response.end_datetime);
+                        Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
+                        setStartNumber(voteStar);
+                        setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
                         progressLoading.onHide();
                     }
                 }
@@ -156,15 +197,146 @@ public class FragmentItemDetail extends Fragment {
         });
     }
 
-    private void timeFlashDeals(String time){
+    private void timeFlashDeals(String time) {
         int timeFlash = Integer.parseInt(time);
-        if (timeFlash != 0){
+        if (timeFlash != 0) {
             mainFlashTimeInItemDetail.setVisibility(View.VISIBLE);
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_flash_one_secont);
             mainFlashTimeInItemDetail.setAnimation(animation);
-        }else{
+            setTimeFlashDeals();
+        } else {
             mainFlashTimeInItemDetail.setVisibility(View.GONE);
         }
     }
 
+    private void setStartNumber(Double vote) {
+        if (vote > 4.5) {
+            txtvoteStar.setText("5");
+            imgVoteStar.setImageResource(R.drawable.vote_fine_star);
+        } else {
+            if (vote > 4) {
+                txtvoteStar.setText("4.5");
+                imgVoteStar.setImageResource(R.drawable.vote_four_half_star);
+            } else {
+                if (vote >= 3.5) {
+                    txtvoteStar.setText("4");
+                    imgVoteStar.setImageResource(R.drawable.vote_four_star);
+                } else {
+                    if (vote > 3) {
+                        txtvoteStar.setText("3.5");
+                        imgVoteStar.setImageResource(R.drawable.vote_three_half_star);
+                    } else {
+                        if (vote > 2.5) {
+                            txtvoteStar.setText("3");
+                            imgVoteStar.setImageResource(R.drawable.vote_three_star);
+                        } else {
+                            if (vote > 2) {
+                                txtvoteStar.setText("2.5");
+                                imgVoteStar.setImageResource(R.drawable.vote_two_half_star);
+                            } else {
+                                if (vote > 1.5) {
+                                    txtvoteStar.setText("2");
+                                    imgVoteStar.setImageResource(R.drawable.vote_two_star);
+                                } else {
+                                    if (vote > 1) {
+                                        txtvoteStar.setText("1.5");
+                                        imgVoteStar.setImageResource(R.drawable.vote_one_half_star);
+                                    } else {
+                                        txtvoteStar.setText("1");
+                                        imgVoteStar.setImageResource(R.drawable.vote_one_star);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void setTimeFlashDeals() {
+        countDownTimerFlashDealsDetail = new CountDownTimer(600000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (stopCountDownTimerFlashDealsDetail == true) {
+                    countDownTimerFlashDealsDetail.cancel();
+                } else {
+                    Calendar calendarFlashDeals = Calendar.getInstance();
+                    Calendar calendarCurent = Calendar.getInstance();
+                    int timeEnd = Integer.parseInt(dataApiItemDetail.response.end_datetime);
+                    calendarFlashDeals.setTimeInMillis(timeEnd * 1000L);
+
+                    int day = ((calendarFlashDeals.get(Calendar.DATE) - calendarCurent.get(Calendar.DATE)));
+                    String hours = String.valueOf((((day - 1) * 24) - 1));
+                    String minutes = String.valueOf((59 - calendarCurent.get(Calendar.MINUTE)));
+                    String seconds = String.valueOf((59 - calendarCurent.get(Calendar.SECOND)));
+
+                    if (hours.length() < 2){
+                        txtCountHoursItemDetail.setText("0" + hours);
+                    }else {
+                        txtCountHoursItemDetail.setText(hours);
+                    }
+
+
+                    if (minutes.length() < 2){
+                        txtCountMinuteItemDetail.setText("0" + minutes);
+                    }else {
+                        txtCountMinuteItemDetail.setText(minutes);
+                    }
+
+                    if (seconds.length() < 2){
+                        txtCountSecondsItemDetail.setText("0" + seconds);
+                    }else {
+                        txtCountSecondsItemDetail.setText(seconds);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        }.start();
+
+    }
+
+    private void setSoldQuntity() {
+        imgLostSoldProductToBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (soldQuantity > 1) {
+                    soldQuantity--;
+                    txtSoilProductToBuy.setText(soldQuantity.toString());
+                    imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail_select);
+                    if (soldQuantity == 1) {
+                        imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail);
+                        imgLostSoldProductToBuy.setClickable(false);
+                    }
+                }
+            }
+        });
+
+        imgAddSolfProductToBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                soldQuantity ++;
+                txtSoilProductToBuy.setText(soldQuantity.toString());
+                imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail_select);
+                imgLostSoldProductToBuy.setClickable(true);
+
+            }
+        });
+    }
+
+    private void setUserRating(String name, String date, String content, Double star){
+        txtUserReview.setText(name);
+        txtDateReview.setText(date);
+        txtContentReview.setText(content);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopCountDownTimerFlashDealsDetail = true;
+    }
 }

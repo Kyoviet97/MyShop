@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerViewShipping;
 import com.gvtechcom.myshop.MainActivity;
@@ -48,7 +49,8 @@ public class ShippingAddressFragment extends Fragment {
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private MainActivity mainActivity;
-    private List<BaseGetAPIShippingAddress.Data> dataFullAddress;
+    @BindView(R.id.swipe_refresh_layout_shipping_address)
+    SwipeRefreshLayout swipeRefreshLayoutShippingAddress;
 
 
     @Nullable
@@ -65,6 +67,12 @@ public class ShippingAddressFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         init();
         getApiAddress();
+        swipeRefreshLayoutShippingAddress.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getApiAddress();
+            }
+        });
     }
 
     @OnClick({R.id.btn_add_an_address, R.id.img_back_shipping_address})
@@ -132,7 +140,6 @@ public class ShippingAddressFragment extends Fragment {
                         progressDialogCustom.onHide();
 
                         if (response.body().response.data == null) {
-                            System.out.println("========================NULL");
                         } else {
                             List<BaseGetAPIShippingAddress.Data> dataAllAddressList = new ArrayList<>();
                             dataAllAddressList = response.body().response.data;
@@ -140,6 +147,7 @@ public class ShippingAddressFragment extends Fragment {
                             adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
                             clickAdapter();
                             recyclerView.setAdapter(adapterRecyclerViewShipping);
+                            swipeRefreshLayoutShippingAddress.setRefreshing(false);
                         }
                     }
                 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerUpdateNotify;
@@ -45,6 +46,8 @@ public class FragmentUpdate extends Fragment {
 
     @BindView(R.id.recycler_update_notify)
     RecyclerView recyclerUpdateNotify;
+    @BindView(R.id.swipe_refresh_layout_notify_update)
+    SwipeRefreshLayout swipeRefreshLayoutNotifyUpdate;
 
 
     @Override
@@ -76,6 +79,12 @@ public class FragmentUpdate extends Fragment {
         if (dataUpdateNotify != null){
             setAdapterUpdateNotifi(dataUpdateNotify.response.data);
         }
+        swipeRefreshLayoutNotifyUpdate.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataUpdateNotify();
+            }
+        });
     }
 
     private void init() {
@@ -88,6 +97,7 @@ public class FragmentUpdate extends Fragment {
     private void setAdapterUpdateNotifi(List<UpdateNotifyModel.DataUpdateNoty> lsUpdateNotifi) {
         adapterRecyclerUpdateNotify = new AdapterRecyclerUpdateNotify(getActivity(), lsUpdateNotifi);
         recyclerUpdateNotify.setAdapter(adapterRecyclerUpdateNotify);
+        swipeRefreshLayoutNotifyUpdate.setRefreshing(false);
         adapterRecyclerUpdateNotify.setOnClickItem(new AdapterRecyclerUpdateNotify.onClickItem() {
             @Override
             public void onClick(String idNotify) {
@@ -99,6 +109,26 @@ public class FragmentUpdate extends Fragment {
                 fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentNotifyDetail);
                 fragmentTransaction.addToBackStack("NotifyAndUpdate");
                 fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void getDataUpdateNotify() {
+        Call<UpdateNotifyModel.UpdateNotifyModelParser> updateNotifyModelCall = apiServer.GetDataUpdateNotify();
+        updateNotifyModelCall.enqueue(new Callback<UpdateNotifyModel.UpdateNotifyModelParser>() {
+            @Override
+            public void onResponse(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Response<UpdateNotifyModel.UpdateNotifyModelParser> response) {
+                if (response.body().code != 200) {
+                } else {
+                    dataUpdateNotify = response.body();
+                    if (dataUpdateNotify != null){
+                        setAdapterUpdateNotifi(dataUpdateNotify.response.data);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Throwable t) {
             }
         });
     }

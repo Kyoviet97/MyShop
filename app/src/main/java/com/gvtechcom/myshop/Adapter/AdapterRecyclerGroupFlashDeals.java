@@ -2,6 +2,7 @@ package com.gvtechcom.myshop.Adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,17 +37,30 @@ public class AdapterRecyclerGroupFlashDeals extends RecyclerView.Adapter<Adapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Typeface face = null;
+        if (position == 0) {
+            holder.imgCheckNameGroub.setVisibility(View.VISIBLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                face = context.getResources().getFont(R.font.sf_pro_text_semibold);
+                holder.txtNameGroup.setTypeface(face);
+            }
+        } else {
+            holder.imgCheckNameGroub.setVisibility(View.INVISIBLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                face = context.getResources().getFont(R.font.sf_pro_text_regular);
+                holder.txtNameGroup.setTypeface(face);
+            }
+        }
         holder.txtNameGroup.setText(lsFlashNameGroups.get(position).product_group_name);
         if (lsFlashNameGroups.get(position).icSelect != null) {
             if (lsFlashNameGroups.get(position).icSelect) {
                 holder.imgCheckNameGroub.setVisibility(View.VISIBLE);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     face = context.getResources().getFont(R.font.sf_pro_text_semibold);
                 }
                 holder.txtNameGroup.setTypeface(face);
             } else {
                 holder.imgCheckNameGroub.setVisibility(View.INVISIBLE);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     face = context.getResources().getFont(R.font.sf_pro_text_regular);
                 }
                 holder.txtNameGroup.setTypeface(face);

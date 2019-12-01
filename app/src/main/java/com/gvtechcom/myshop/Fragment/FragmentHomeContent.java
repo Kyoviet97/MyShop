@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -58,6 +60,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +77,10 @@ public class FragmentHomeContent extends Fragment {
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
 
-    private int page = 2;
+    private CountDownTimer countDownTimerFlashDeals;
+    private Boolean isStopCountDownTimerFlashDeals = false;
+
+    private int page = 1;
 
     private FragmentManager fragmentManager;
 
@@ -107,6 +113,8 @@ public class FragmentHomeContent extends Fragment {
     private Boolean isStopHandel;
     private Runnable update;
 
+    @BindView(R.id.swipe_refresh_home_content)
+    SwipeRefreshLayout swipeRefreshHomeContent;
     @BindView(R.id.card_view_flash_deals)
     CardView cardViewFlashDeals;
     @BindView(R.id.view_pager_slide)
@@ -158,7 +166,7 @@ public class FragmentHomeContent extends Fragment {
         ButterKnife.bind(this, rootView);
         MainActivity mainActivity;
         mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(true, false, true) ;
+        mainActivity.setDisplayNavigationBar(true, false, true);
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, " apple watch", R.color.color_StatusBar, "#D1D8E0");
@@ -178,6 +186,7 @@ public class FragmentHomeContent extends Fragment {
         setItemSlideBanner();
 
         loadItemFlashDeals();
+
         setTimeFlashDeals();
 
         setItemJustForYou();
@@ -208,6 +217,25 @@ public class FragmentHomeContent extends Fragment {
                 setAdapterItemsYouLove(lsProductItemYouLove);
             }
         }
+        swipeRefreshHomeContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                page = 1;
+                setItemSlideBanner();
+
+                loadItemFlashDeals();
+                setTimeFlashDeals();
+
+                setItemJustForYou();
+
+                setItemFeaturedCategorie();
+
+                setItemTopNewFeaturedStore();
+
+            }
+        });
+
     }
 
     private void setRecyclerView() {
@@ -248,17 +276,17 @@ public class FragmentHomeContent extends Fragment {
         indicatorSlide.setStrokeWidth(0);
 
         NUM_PAGES = imageModelArrayList.size();
-                handler = new Handler();
-                update = new Runnable() {
+        handler = new Handler();
+        update = new Runnable() {
             public void run() {
-              if (isStopHandel == true){
+                if (isStopHandel == true) {
                     handler.removeCallbacks(update);
-              }else {
-                  if (currentPage == NUM_PAGES) {
-                      currentPage = 0;
-                  }
-                  viewPagerSlide.setCurrentItem(currentPage++, true);
-              }
+                } else {
+                    if (currentPage == NUM_PAGES) {
+                        currentPage = 0;
+                    }
+                    viewPagerSlide.setCurrentItem(currentPage++, true);
+                }
             }
         };
         Timer swipeTimer = new Timer();
@@ -295,16 +323,55 @@ public class FragmentHomeContent extends Fragment {
             adapterFlashDeals.setOnItemClickListener(new AdapterFlashDeals.ItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                  setOnClickItemDetails(lsProductFlashDeals.get(position).getProductId());
+                    setOnClickItemDetails(lsProductFlashDeals.get(position).getProductId());
                 }
             });
         }
     }
 
     private void setTimeFlashDeals() {
-        Calendar calendar = Calendar.getInstance();
-        Calendar calendarCurent = Calendar.getInstance();
-        calendar.setTimeInMillis((obj.getResponse().getFlashDeals().getEndDatetime()) * 1000L);
+        countDownTimerFlashDeals = new CountDownTimer(600000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (isStopCountDownTimerFlashDeals == true) {
+                    countDownTimerFlashDeals.cancel();
+                } else {
+                    Calendar calendarFlashDeals = Calendar.getInstance();
+                    Calendar calendarCurent = Calendar.getInstance();
+                    calendarFlashDeals.setTimeInMillis((obj.getResponse().getFlashDeals().getEndDatetime()) * 1000L);
+
+                    int day = ((calendarFlashDeals.get(Calendar.DATE) - calendarCurent.get(Calendar.DATE)));
+                    String hours = String.valueOf((((day - 1) * 24) - 1));
+                    String minutes = String.valueOf((59 - calendarCurent.get(Calendar.MINUTE)));
+                    String seconds = String.valueOf((59 - calendarCurent.get(Calendar.SECOND)));
+
+                    if (hours.length() < 2){
+                        txtCountHours.setText("0" + hours);
+                    }else {
+                        txtCountHours.setText(hours);
+                    }
+
+
+                    if (minutes.length() < 2){
+                        txtCountMinute.setText("0" + minutes);
+                    }else {
+                        txtCountMinute.setText(minutes);
+                    }
+
+                    if (seconds.length() < 2){
+                        txtCountSeconds.setText("0" + seconds);
+                    }else {
+                        txtCountSeconds.setText(seconds);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        }.start();
+
     }
 
     private void setItemJustForYou() {
@@ -368,16 +435,18 @@ public class FragmentHomeContent extends Fragment {
             setGlideImage(obj.getResponse().getStoresYouLove().get(obj.getResponse().getStoresYouLove().size() - 1).image, imgStoreYouLoveTwo);
 
         }
+
+        swipeRefreshHomeContent.setRefreshing(false);
     }
 
-        private void setClickCategori(View v, String idProduct){
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setOnClickItemDetails(idProduct);
-                }
-            });
-        }
+    private void setClickCategori(View v, String idProduct) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setOnClickItemDetails(idProduct);
+            }
+        });
+    }
 
     private void setAdapterItemsYouLove(List<ItemYouLoveModel.Product> lsItemYouLove) {
         if (adapterItemsYouLove == null) {
@@ -472,16 +541,16 @@ public class FragmentHomeContent extends Fragment {
                 });
     }
 
-    private void setOnClickItemDetails(String idProduct){
-      fragmentManager = getFragmentManager();
-      FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      Fragment fragmentItemDetails = new FragmentItemDetail();
-      Bundle bundle = new Bundle();
-      bundle.putString("idProduct", idProduct);
-      fragmentItemDetails.setArguments(bundle);
-      fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentItemDetails);
-      fragmentTransaction.addToBackStack("home");
-      fragmentTransaction.commit();
+    private void setOnClickItemDetails(String idProduct) {
+        fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragmentItemDetails = new FragmentItemDetail();
+        Bundle bundle = new Bundle();
+        bundle.putString("idProduct", idProduct);
+        fragmentItemDetails.setArguments(bundle);
+        fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.addToBackStack("home");
+        fragmentTransaction.commit();
     }
 
     private void setGlideImage(String url, View view) {
@@ -493,8 +562,8 @@ public class FragmentHomeContent extends Fragment {
     }
 
     @OnClick({R.id.btn_browse_categories, R.id.txt_flash_deals_default})
-    void OnClick(View view){
-        switch (view.getId()){
+    void OnClick(View view) {
+        switch (view.getId()) {
             case R.id.btn_browse_categories:
                 fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -517,5 +586,12 @@ public class FragmentHomeContent extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         isStopHandel = true;
+        isStopCountDownTimerFlashDeals = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setTimeFlashDeals();
     }
 }

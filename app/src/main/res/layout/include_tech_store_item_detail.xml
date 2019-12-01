@@ -11,7 +11,7 @@
         android:id="@+id/txt_item_detail_store_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ABC Tech Store"
+        android:hint="Loading..."
         android:textSize="@dimen/_15sp"
         android:fontFamily="@font/sf_pro_text_semibold"
         android:textColor="#4A4A4A"/>
@@ -32,7 +32,7 @@
                 android:id="@+id/txt_item_detail_feedback_store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="94.2%"
+                android:hint="Loading..."
                 android:textSize="@dimen/_15sp"
                 android:fontFamily="@font/sf_pro_text_semibold"
                 android:textColor="#4A4A4A"/>
@@ -62,7 +62,7 @@
                     android:id="@+id/txt_item_detail_items_store"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2123"
+                    android:hint="Loading..."
                     android:textSize="@dimen/_15sp"
                     android:fontFamily="@font/sf_pro_text_semibold"
                     android:textColor="#4A4A4A"/>
@@ -87,7 +87,7 @@
                     android:id="@+id/txt_item_detail_sold_store"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="222222"
+                    android:hint="Loading..."
                     android:textSize="@dimen/_15sp"
                     android:gravity="right"
                     android:fontFamily="@font/sf_pro_text_semibold"
