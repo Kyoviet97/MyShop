@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.JustForYou;
+import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.List;
@@ -19,11 +21,11 @@ import butterknife.BindView;
 
 public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategory.ViewHolder> {
     private Context context;
-    private List<JustForYou> lsData;
+    private List<JustForYou> lsProductByCategory;
 
-    public AdapterViewCategory(Context context, List<JustForYou> lsData) {
+    public AdapterViewCategory(Context context, List<JustForYou> lsProductByCategory) {
         this.context = context;
-        this.lsData = lsData;
+        this.lsProductByCategory = lsProductByCategory;
     }
 
     @NonNull
@@ -36,12 +38,11 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
     }
 
     @Override
     public int getItemCount() {
-        return lsData.size();
+        return lsProductByCategory.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

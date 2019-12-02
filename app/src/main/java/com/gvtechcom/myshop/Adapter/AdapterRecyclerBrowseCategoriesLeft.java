@@ -64,8 +64,26 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
             imageView_browse_category_left = itemView.findViewById(R.id.img_browse_categories_left);
             txt_browse_category_left = itemView.findViewById(R.id.txt_browse_categories_left);
             linearLayout = itemView.findViewById(R.id.layout_browse_categories_left);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (setOnClickItem != null){
+                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).category_id, getAdapterPosition());
+                    }
+                }
+            });
 
 
         }
+    }
+
+    public interface setOnClickItem{
+        void onClickItem(String categoryId, int position);
+    }
+
+    private setOnClickItem setOnClickItem;
+
+    public void setOnClickItem(setOnClickItem clickItem){
+        this.setOnClickItem = clickItem;
     }
 }

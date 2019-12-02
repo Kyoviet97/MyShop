@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:background="#F2F2F2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_browse_categories_left"
         android:layout_width="@dimen/_80dp"
-        android:background="@android:color/white"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/_16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
         <TextView
@@ -28,7 +27,20 @@
             android:fontFamily="@font/sf_pro_text_semibold"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_name_trademark"
+            android:id="@+id/recycler_top_brands_browse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/color_StatusBar"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_name_sub_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"/>

@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gvtechcom.myshop.Adapter.AdapterItemSubCategory;
+import com.gvtechcom.myshop.Adapter.AdapterNameSubCategory;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerBrowseCategoriesLeft;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
@@ -35,10 +37,14 @@ public class FragmentBrowseCategories extends Fragment {
     private Retrofit retrofit;
     private List<BrowseCategoriesModel> dataBrowseCategories;
     private AdapterRecyclerBrowseCategoriesLeft adapterRecyclerBrowseCategoriesLeft;
+    private AdapterNameSubCategory adapterNameSubCategory;
     private MainActivity mainActivity;
 
     @BindView(R.id.recycler_browse_categories_left)
     RecyclerView RecyclerViewBrowseLeft;
+
+    @BindView(R.id.recycler_name_sub_category)
+    RecyclerView recyclerNameSubCategory;
 
     @Nullable
     @Override
@@ -67,6 +73,9 @@ public class FragmentBrowseCategories extends Fragment {
     private void setRecyclerView(){
         LinearLayoutManager layoutManagerRecyclerLeft = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         RecyclerViewBrowseLeft.setLayoutManager(layoutManagerRecyclerLeft);
+
+        LinearLayoutManager layoutManagerRecyclerNameSubCategory = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+        recyclerNameSubCategory.setLayoutManager(layoutManagerRecyclerNameSubCategory);
     }
 
     private void setRetrofit(){
@@ -86,13 +95,24 @@ public class FragmentBrowseCategories extends Fragment {
                     if (dataBrowseCategories != null){
                         adapterRecyclerBrowseCategoriesLeft = new AdapterRecyclerBrowseCategoriesLeft(getActivity(), dataBrowseCategories);
                         RecyclerViewBrowseLeft.setAdapter(adapterRecyclerBrowseCategoriesLeft);
+                        setOnClickItemAdapter();
+
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<BrowseCategoriesModel.BrowseCategoriesModelParser> call, Throwable t) {
-                System.out.println("=====================>" + t.toString());
+            }
+        });
+    }
+
+    private void setOnClickItemAdapter(){
+        adapterRecyclerBrowseCategoriesLeft.setOnClickItem(new AdapterRecyclerBrowseCategoriesLeft.setOnClickItem() {
+            @Override
+            public void onClickItem(String categoryId, int position) {
+                adapterNameSubCategory = new AdapterNameSubCategory(getActivity(), dataBrowseCategories.get(position).children);
+                recyclerNameSubCategory.setAdapter(adapterNameSubCategory);
             }
         });
     }

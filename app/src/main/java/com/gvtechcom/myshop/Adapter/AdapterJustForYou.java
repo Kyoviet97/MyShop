@@ -41,8 +41,8 @@ public class AdapterJustForYou extends RecyclerView.Adapter<AdapterJustForYou.Vi
                 .error(R.drawable.banner_image_slide)
                 .into(holder.imageViewJustForYou);
         holder.infoJustForYou.setText(lsJustForYou.get(position).getName());
-        holder.priceJustForYou.setText(lsJustForYou.get(position).getPrice());
-        holder.soldJustForYou.setText(lsJustForYou.get(position).getSold());
+        holder.priceJustForYou.setText("$" + lsJustForYou.get(position).getPrice());
+        holder.soldJustForYou.setText(lsJustForYou.get(position).getSold() + "sold");
 
 
     }

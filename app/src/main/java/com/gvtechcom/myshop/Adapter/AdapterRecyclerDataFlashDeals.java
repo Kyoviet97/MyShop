@@ -42,7 +42,7 @@ public class AdapterRecyclerDataFlashDeals extends RecyclerView.Adapter<AdapterR
                 .into(holder.imgFlashDeals);
         holder.productName.setText(lsProductsData.get(position).product_name);
         holder.priceSale.setText("$" +lsProductsData.get(position).price_sale);
-        holder.sold.setText(lsProductsData.get(position).sold);
+        holder.sold.setText(lsProductsData.get(position).sold + "sold");
 
     }
 

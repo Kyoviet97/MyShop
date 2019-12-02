@@ -10,6 +10,8 @@ import com.gvtechcom.myshop.Model.FlashDealsDetails;
 import com.gvtechcom.myshop.Model.GetAddressIdAddress;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
+import com.gvtechcom.myshop.Model.JustForYou;
+import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.Model.UpdateNotifyModel;
 
 import retrofit2.Call;
@@ -226,6 +228,9 @@ public interface APIServer {
                                                                                @Query("type_app") String type_app);
     @GET("detail-product")
     Call<ItemDetailsModel.ItemDetailsModelParser> GetApiItemDetails(@Query("product_id") String product_id);
+
+    @GET("product/get-by-category")
+    Call<BaseGetApiData> GetProductByCategory(@Query("category_id") String category_id);
 
 
     @GET("categories")

@@ -45,8 +45,8 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
                 .override(200,200)
                 .into(holder.imageViewItemsYouLove);
         holder.infoItemsYouLove.setText(lsItemYouLove.get(position).product_name);
-        holder.priceItemsYouLove.setText(lsItemYouLove.get(position).price);
-        holder.soldItemsYouLove.setText(lsItemYouLove.get(position).sold);
+        holder.priceItemsYouLove.setText("$" + lsItemYouLove.get(position).price);
+        holder.soldItemsYouLove.setText(lsItemYouLove.get(position).sold + "sold");
     }
 
     @Override
