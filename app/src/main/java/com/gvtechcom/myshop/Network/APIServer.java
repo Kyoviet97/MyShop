@@ -230,7 +230,7 @@ public interface APIServer {
     Call<ItemDetailsModel.ItemDetailsModelParser> GetApiItemDetails(@Query("product_id") String product_id);
 
     @GET("product/get-by-category")
-    Call<BaseGetApiData> GetProductByCategory(@Query("category_id") String category_id);
+    Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewCategory(@Query("category_id") String category_id);
 
 
     @GET("categories")

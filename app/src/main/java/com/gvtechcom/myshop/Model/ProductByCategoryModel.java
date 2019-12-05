@@ -7,7 +7,7 @@ public class ProductByCategoryModel {
     public List<String> top_brands;
     public Integer current_page;
     public Integer total;
-    public List<Product> products;
+    public List<Products> products;
 
     public class Products{
         public String product_id;

@@ -344,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else {
+            finish();
         }
     }
 

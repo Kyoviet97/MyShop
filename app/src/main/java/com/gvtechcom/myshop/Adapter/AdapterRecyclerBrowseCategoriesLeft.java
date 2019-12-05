@@ -41,12 +41,11 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
                 .load(lsBrowseCategories.get(position).category_image)
                 .placeholder(R.drawable.banner_image_slide)
                 .error(R.drawable.banner_image_slide)
+                .override(250, 250)
                 .into(holder.imageView_browse_category_left);
         holder.txt_browse_category_left.setText(lsBrowseCategories.get(position).category_name);
 
         holder.linearLayout.setBackgroundColor(Color.WHITE);
-
-
     }
 
     @Override
@@ -72,7 +71,6 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
                     }
                 }
             });
-
 
         }
     }

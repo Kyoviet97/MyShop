@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.JustForYou;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
@@ -21,12 +22,14 @@ import butterknife.BindView;
 
 public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategory.ViewHolder> {
     private Context context;
-    private List<JustForYou> lsProductByCategory;
+    private ProductByCategoryModel lsProductByCategory;
 
-    public AdapterViewCategory(Context context, List<JustForYou> lsProductByCategory) {
+    public AdapterViewCategory(Context context, ProductByCategoryModel lsProductByCategory) {
         this.context = context;
         this.lsProductByCategory = lsProductByCategory;
     }
+
+
 
     @NonNull
     @Override
@@ -38,11 +41,20 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Glide.with(context)
+                .load(lsProductByCategory.products.get(position).image)
+                .placeholder(R.drawable.banner_image_slide)
+                .error(R.drawable.banner_image_slide)
+                .into(holder.imageViewJustForYou);
+
+        holder.infoJustForYou.setText(lsProductByCategory.products.get(position).product_name);
+        holder.priceJustForYou.setText("$" + lsProductByCategory.products.get(position).price);
+        holder.soldJustForYou.setText(lsProductByCategory.products.get(position).sold + " sold");
     }
 
     @Override
     public int getItemCount() {
-        return lsProductByCategory.size();
+        return lsProductByCategory.products.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +67,26 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
             infoJustForYou = (TextView) itemView.findViewById(R.id.txt_info_just_for_you);
             priceJustForYou = (TextView) itemView.findViewById(R.id.txt_price_just_for_you);
             soldJustForYou = (TextView) itemView.findViewById(R.id.txt_sold_just_for_you);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (setOnClickListener != null){
+                        setOnClickListener.setOnClickListener(lsProductByCategory.products.get(getAdapterPosition()).product_id);
+                    }
+                }
+            });
         }
+
+    }
+
+    public interface SetOnClickListener{
+        void setOnClickListener(String idCategory);
+    }
+
+    private SetOnClickListener setOnClickListener;
+
+    public void setOnClickListener(SetOnClickListener onClickListener){
+        this.setOnClickListener = onClickListener;
     }
 }

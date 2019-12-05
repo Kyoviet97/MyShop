@@ -9,7 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="2"
-        android:padding="@dimen/_5dp"
+        android:background="@android:color/white"
+        android:paddingLeft="@dimen/_10dp"
+        android:paddingRight="@dimen/_10dp"
+        android:paddingBottom="@dimen/_10dp"
+        android:paddingTop="@dimen/_20dp"
         android:orientation="horizontal">
 
        <LinearLayout
@@ -68,9 +72,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_category_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+   <androidx.core.widget.NestedScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/recycler_view_category_main"
+           android:nestedScrollingEnabled="false"
+           android:paddingTop="@dimen/_5dp"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"/>
+
+   </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterRelatesProduct;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
@@ -41,9 +42,8 @@ public class FragmentItemDetail extends Fragment {
     private View rootView;
     private APIServer apiServer;
     private MainActivity mainActivity;
-    private ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail;
     private AdapterRelatesProduct adapterRelatesProduct;
-    private String idProduct;
+    private String jsonData;
     private ProgressDialogCustom progressLoading;
     private Calendar calendarCurrent;
     private static Integer soldQuantity = 1;
@@ -109,10 +109,7 @@ public class FragmentItemDetail extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            this.idProduct = bundle.getString("idProduct");
-        }
+
     }
 
     @Nullable
@@ -127,7 +124,7 @@ public class FragmentItemDetail extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
-        callApiItemDataDetails(idProduct);
+        callApiItemDataDetails();
         setSoldQuntity();
     }
 
@@ -160,41 +157,30 @@ public class FragmentItemDetail extends Fragment {
         }
     }
 
-    private void callApiItemDataDetails(String productId) {
-        progressLoading.onShow(false, "Loading...");
-        Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(productId);
-        callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
-            @Override
-            public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
-                if (response.body().code != 200) {
-                    progressLoading.onHide();
-                    Toast.makeText(mainActivity, response.body().message, Toast.LENGTH_SHORT).show();
-                } else {
-                    dataApiItemDetail = response.body();
-                    if (dataApiItemDetail != null) {
-                        txtItemDetailDescription.setText(dataApiItemDetail.response.description);
-                        txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
-                        txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
-                        txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
-                        setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
-                        storeName.setText(dataApiItemDetail.response.store.store_name);
-                        storeFeedback.setText(dataApiItemDetail.response.store.feedback + "%");
-                        storeItem.setText(dataApiItemDetail.response.store.items);
-                        storeSold.setText(dataApiItemDetail.response.store.sold);
-                        timeFlashDeals(dataApiItemDetail.response.end_datetime);
-                        Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
-                        setStartNumber(voteStar);
-                        setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
-                        progressLoading.onHide();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
+    private void callApiItemDataDetails() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Gson gson = new Gson();
+            this.jsonData = bundle.getString("idProduct");
+            ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
+            if (dataApiItemDetail != null) {
+                txtItemDetailDescription.setText(dataApiItemDetail.response.description);
+                txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
+                txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
+                txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
+                setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
+                storeName.setText(dataApiItemDetail.response.store.store_name);
+                storeFeedback.setText(dataApiItemDetail.response.store.feedback + "%");
+                storeItem.setText(dataApiItemDetail.response.store.items);
+                storeSold.setText(dataApiItemDetail.response.store.sold);
+                timeFlashDeals(dataApiItemDetail.response.end_datetime);
+                Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
+                setStartNumber(voteStar);
+                setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
                 progressLoading.onHide();
+            } else {
             }
-        });
+        }
     }
 
     private void timeFlashDeals(String time) {
@@ -203,7 +189,6 @@ public class FragmentItemDetail extends Fragment {
             mainFlashTimeInItemDetail.setVisibility(View.VISIBLE);
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_flash_one_secont);
             mainFlashTimeInItemDetail.setAnimation(animation);
-            setTimeFlashDeals();
         } else {
             mainFlashTimeInItemDetail.setVisibility(View.GONE);
         }
@@ -254,52 +239,6 @@ public class FragmentItemDetail extends Fragment {
         }
     }
 
-    private void setTimeFlashDeals() {
-        countDownTimerFlashDealsDetail = new CountDownTimer(600000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                if (stopCountDownTimerFlashDealsDetail == true) {
-                    countDownTimerFlashDealsDetail.cancel();
-                } else {
-                    Calendar calendarFlashDeals = Calendar.getInstance();
-                    Calendar calendarCurent = Calendar.getInstance();
-                    int timeEnd = Integer.parseInt(dataApiItemDetail.response.end_datetime);
-                    calendarFlashDeals.setTimeInMillis(timeEnd * 1000L);
-
-                    int day = ((calendarFlashDeals.get(Calendar.DATE) - calendarCurent.get(Calendar.DATE)));
-                    String hours = String.valueOf((((day - 1) * 24) - 1));
-                    String minutes = String.valueOf((59 - calendarCurent.get(Calendar.MINUTE)));
-                    String seconds = String.valueOf((59 - calendarCurent.get(Calendar.SECOND)));
-
-                    if (hours.length() < 2){
-                        txtCountHoursItemDetail.setText("0" + hours);
-                    }else {
-                        txtCountHoursItemDetail.setText(hours);
-                    }
-
-
-                    if (minutes.length() < 2){
-                        txtCountMinuteItemDetail.setText("0" + minutes);
-                    }else {
-                        txtCountMinuteItemDetail.setText(minutes);
-                    }
-
-                    if (seconds.length() < 2){
-                        txtCountSecondsItemDetail.setText("0" + seconds);
-                    }else {
-                        txtCountSecondsItemDetail.setText(seconds);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFinish() {
-            }
-        }.start();
-
-    }
-
     private void setSoldQuntity() {
         imgLostSoldProductToBuy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,7 +258,7 @@ public class FragmentItemDetail extends Fragment {
         imgAddSolfProductToBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                soldQuantity ++;
+                soldQuantity++;
                 txtSoilProductToBuy.setText(soldQuantity.toString());
                 imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail_select);
                 imgLostSoldProductToBuy.setClickable(true);
@@ -328,7 +267,7 @@ public class FragmentItemDetail extends Fragment {
         });
     }
 
-    private void setUserRating(String name, String date, String content, Double star){
+    private void setUserRating(String name, String date, String content, Double star) {
         txtUserReview.setText(name);
         txtDateReview.setText(date);
         txtContentReview.setText(content);
@@ -338,5 +277,6 @@ public class FragmentItemDetail extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         stopCountDownTimerFlashDealsDetail = true;
+
     }
 }

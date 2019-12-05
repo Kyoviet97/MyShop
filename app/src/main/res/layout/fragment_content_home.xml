@@ -341,7 +341,6 @@
                         android:nestedScrollingEnabled="false"
                         android:paddingLeft="@dimen/_5dp"
                         android:paddingRight="@dimen/_5dp" />
-
                 </LinearLayout>
 
 

@@ -1,7 +1,6 @@
 package com.gvtechcom.myshop.Adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.R;
 
 import java.util.List;
 
-import retrofit2.Retrofit;
 
 public class AdapterItemSubCategory extends RecyclerView.Adapter<AdapterItemSubCategory.ViewHolder> {
     private Context context;
@@ -45,16 +42,20 @@ public class AdapterItemSubCategory extends RecyclerView.Adapter<AdapterItemSubC
                 .error(R.drawable.banner_image_slide)
                 .override(250, 250)
                 .into(holder.imgSubCategoryChidren);
+
         holder.txtSubCategoryChidren.setText(lsSubCategoryChildren.get(position).category_name);
+
     }
 
     @Override
     public int getItemCount() {
         return lsSubCategoryChildren.size();
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgSubCategoryChidren;
         private TextView txtSubCategoryChidren;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgSubCategoryChidren = itemView.findViewById(R.id.img_sub_category_chidren);

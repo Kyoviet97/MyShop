@@ -41,6 +41,7 @@ import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.FeaturedCategories;
 import com.gvtechcom.myshop.Model.FlashDealsModel;
 import com.gvtechcom.myshop.Model.ImageModel;
+import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
 import com.gvtechcom.myshop.Model.JustForYou;
 import com.gvtechcom.myshop.Model.Product;
@@ -323,7 +324,7 @@ public class FragmentHomeContent extends Fragment {
             adapterFlashDeals.setOnItemClickListener(new AdapterFlashDeals.ItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    setOnClickItemDetails(lsProductFlashDeals.get(position).getProductId());
+                    callApiDataItemDetail(lsProductFlashDeals.get(position).getProductId());
                 }
             });
         }
@@ -345,25 +346,24 @@ public class FragmentHomeContent extends Fragment {
                     String minutes = String.valueOf((59 - calendarCurent.get(Calendar.MINUTE)));
                     String seconds = String.valueOf((59 - calendarCurent.get(Calendar.SECOND)));
 
-                    if (hours.length() < 2){
+                    if (hours.length() < 2) {
                         txtCountHours.setText("0" + hours);
-                    }else {
+                    } else {
                         txtCountHours.setText(hours);
                     }
 
 
-                    if (minutes.length() < 2){
+                    if (minutes.length() < 2) {
                         txtCountMinute.setText("0" + minutes);
-                    }else {
+                    } else {
                         txtCountMinute.setText(minutes);
                     }
 
-                    if (seconds.length() < 2){
+                    if (seconds.length() < 2) {
                         txtCountSeconds.setText("0" + seconds);
-                    }else {
+                    } else {
                         txtCountSeconds.setText(seconds);
                     }
-
                 }
             }
 
@@ -381,7 +381,7 @@ public class FragmentHomeContent extends Fragment {
             adapterJustForYou.setItemClickListener(new AdapterJustForYou.ItemClickListener() {
                 @Override
                 public void onClickListener(String idProduct) {
-                    setOnClickItemDetails(idProduct);
+                    callApiDataItemDetail(idProduct);
                 }
             });
             recyclerJustForYou.setAdapter(adapterJustForYou);
@@ -443,7 +443,7 @@ public class FragmentHomeContent extends Fragment {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setOnClickItemDetails(idProduct);
+                callApiDataItemDetail(idProduct);
             }
         });
     }
@@ -455,7 +455,7 @@ public class FragmentHomeContent extends Fragment {
             adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
                 @Override
                 public void onClickListener(String productId) {
-                    setOnClickItemDetails(productId);
+                    callApiDataItemDetail(productId);
                 }
             });
         } else {
@@ -541,16 +541,38 @@ public class FragmentHomeContent extends Fragment {
                 });
     }
 
-    private void setOnClickItemDetails(String idProduct) {
+    private void setDataItemDetails(String jsonData) {
         fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
-        bundle.putString("idProduct", idProduct);
+        bundle.putString("idProduct", jsonData);
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
+    }
+
+    private void callApiDataItemDetail(String idProduct) {
+        Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
+        callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
+            @Override
+            public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
+                if (response.body().code != 200) {
+                } else {
+                    if (response.body().response != null) {
+                        Gson gson = new Gson();
+                        String jsonData = gson.toJson(response.body());
+                        setDataItemDetails(jsonData);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
+
+            }
+        });
     }
 
     private void setGlideImage(String url, View view) {
@@ -561,7 +583,7 @@ public class FragmentHomeContent extends Fragment {
                 .into((ImageView) view);
     }
 
-    @OnClick({R.id.btn_browse_categories, R.id.txt_flash_deals_default})
+    @OnClick({R.id.btn_browse_categories, R.id.txt_flash_deals_default, R.id.btn_flash_deals})
     void OnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_browse_categories:
@@ -573,6 +595,8 @@ public class FragmentHomeContent extends Fragment {
                 break;
 
             case R.id.txt_flash_deals_default:
+
+            case R.id.btn_flash_deals:
                 fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransactionFlashDeal = fragmentManager.beginTransaction();
                 fragmentTransactionFlashDeal.replace(R.id.content_home_frame_layout, new FragmentFlashDetails());
@@ -593,7 +617,6 @@ public class FragmentHomeContent extends Fragment {
     public void onResume() {
         super.onResume();
         isStopCountDownTimerFlashDeals = false;
-        System.out.println("=====================");
         setTimeFlashDeals();
     }
 }
