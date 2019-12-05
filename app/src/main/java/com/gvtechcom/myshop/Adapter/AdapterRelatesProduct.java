@@ -59,6 +59,25 @@ public class AdapterRelatesProduct extends RecyclerView.Adapter<AdapterRelatesPr
             infoJustForYou = (TextView) itemView.findViewById(R.id.txt_info_just_for_you);
             priceJustForYou = (TextView) itemView.findViewById(R.id.txt_price_just_for_you);
             soldJustForYou = (TextView) itemView.findViewById(R.id.txt_sold_just_for_you);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (setOnItemClickListener != null){
+                        setOnItemClickListener.onItemClick(lsItemRelatesProduct.get(getAdapterPosition()).product_id);
+                    }
+                }
+            });
         }
+    }
+
+    public interface SetOnItemClickListener{
+        void onItemClick(String idProduct);
+    }
+
+    private SetOnItemClickListener setOnItemClickListener;
+
+    public void setOnItemClickListener(SetOnItemClickListener setOnItemClickListener){
+        this.setOnItemClickListener = setOnItemClickListener;
     }
 }

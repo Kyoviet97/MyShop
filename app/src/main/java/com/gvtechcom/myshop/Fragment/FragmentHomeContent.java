@@ -331,20 +331,28 @@ public class FragmentHomeContent extends Fragment {
     }
 
     private void setTimeFlashDeals() {
-        countDownTimerFlashDeals = new CountDownTimer(600000, 1000) {
+        Calendar calendarFlashDeals = Calendar.getInstance();
+        Calendar calendarCurent = Calendar.getInstance();
+
+        calendarFlashDeals.setTimeInMillis((obj.getResponse().getFlashDeals().getEndDatetime()) * 1000L);
+        int calendarFlashDealsMili = (int) calendarFlashDeals.getTimeInMillis();
+        int timeDown = (int) (calendarFlashDealsMili - calendarCurent.getTimeInMillis());
+
+
+        countDownTimerFlashDeals = new CountDownTimer(timeDown, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (isStopCountDownTimerFlashDeals == true) {
                     countDownTimerFlashDeals.cancel();
                 } else {
-                    Calendar calendarFlashDeals = Calendar.getInstance();
-                    Calendar calendarCurent = Calendar.getInstance();
-                    calendarFlashDeals.setTimeInMillis((obj.getResponse().getFlashDeals().getEndDatetime()) * 1000L);
+                    Calendar calendarCurent1 = Calendar.getInstance();
+                    calendarCurent1.getTimeInMillis();
+                    int time1 = (int) calendarFlashDeals.getTimeInMillis();
+                    int timeDown = (int) (time1 - calendarCurent1.getTimeInMillis());
 
-                    int day = ((calendarFlashDeals.get(Calendar.DATE) - calendarCurent.get(Calendar.DATE)));
-                    String hours = String.valueOf((((day - 1) * 24) - 1));
-                    String minutes = String.valueOf((59 - calendarCurent.get(Calendar.MINUTE)));
-                    String seconds = String.valueOf((59 - calendarCurent.get(Calendar.SECOND)));
+                    String hours = String.valueOf(((timeDown / 1000) / 3600));
+                    String minutes = String.valueOf((((timeDown / 1000) % 3600) / 60));
+                    String seconds = String.valueOf(((timeDown / 1000) % 60));
 
                     if (hours.length() < 2) {
                         txtCountHours.setText("0" + hours);
@@ -507,7 +515,6 @@ public class FragmentHomeContent extends Fragment {
                             page = page + 1;
                             progessbar_footer.setAnimation(animation_side_down);
                             progessbar_footer.setVisibility(View.GONE);
-
                         }
                     }
                 }
@@ -548,7 +555,7 @@ public class FragmentHomeContent extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("idProduct", jsonData);
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }
@@ -567,7 +574,6 @@ public class FragmentHomeContent extends Fragment {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
 

@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -259,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setColorStatusTran(boolean isColorTran) {
         if (isColorTran) {
             StatusBarCompat.translucentStatusBar(this, true);
@@ -312,7 +315,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupUI(View view) {
 
-        // Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View v, MotionEvent event) {

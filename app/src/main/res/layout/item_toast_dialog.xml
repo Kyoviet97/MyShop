@@ -15,16 +15,36 @@
       app:contentPaddingRight="@dimen/_5dp"
       app:cardCornerRadius="@dimen/_5dp">
 
-      <TextView
-          android:id="@+id/txt_messages_toast_dialog"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="@font/sf_pro_text_medium"
-          android:textSize="@dimen/_14sp"
-          android:layout_gravity="center"
-          android:text="sdsdsdsdsd"
-          android:textColor="@color/color_StatusBar"
-          android:gravity="center"/>
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:orientation="vertical"
+         android:gravity="center">
+
+         <TextView
+             android:id="@+id/txt_messages_toast_dialog"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:fontFamily="@font/sf_pro_text_medium"
+             android:textSize="@dimen/_14sp"
+             android:layout_gravity="center"
+             android:text="Thông báo"
+             android:textColor="@color/color_StatusBar"
+             android:gravity="center"/>
+
+
+         <Button
+             android:id="@+id/button_ok_toast_dialog"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="@drawable/bkg_btn_click_dang_ky"
+             android:text="Yes"
+             android:layout_marginTop="@dimen/_20dp"
+             android:textAllCaps="false"
+             android:textSize="@dimen/_16sp"
+             android:textColor="@android:color/white"/>
+
+     </LinearLayout>
 
   </androidx.cardview.widget.CardView>
 

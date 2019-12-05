@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.Fragment;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -14,18 +15,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterRelatesProduct;
+import com.gvtechcom.myshop.Adapter.AdapterViewCategory;
+import com.gvtechcom.myshop.Interface.ListtenOnDestroyView;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.util.Calendar;
@@ -45,10 +51,10 @@ public class FragmentItemDetail extends Fragment {
     private AdapterRelatesProduct adapterRelatesProduct;
     private String jsonData;
     private ProgressDialogCustom progressLoading;
-    private Calendar calendarCurrent;
     private static Integer soldQuantity = 1;
-    private CountDownTimer countDownTimerFlashDealsDetail;
-    private Boolean stopCountDownTimerFlashDealsDetail = false;
+    private ListtenOnDestroyView listtenOnDestroyView;
+    private Boolean fromViewCategory = false;
+    private ToastDialog toastDialog;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -71,6 +77,9 @@ public class FragmentItemDetail extends Fragment {
     LinearLayout mainFlashTimeInItemDetail;
     @BindView(R.id.txt_vote_star)
     TextView txtvoteStar;
+
+    @BindView(R.id.scroll_item_detail)
+    NestedScrollView nestedScrollViewItemDetail;
 
     // Quantily
     @BindView(R.id.img_lost_sold_product_to_buy)
@@ -117,26 +126,32 @@ public class FragmentItemDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_item_detail, container, false);
         ButterKnife.bind(this, rootView);
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.setDisplayNavigationBar(false, false, false);
+        mainActivity.setHideButtonNavigation(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mainActivity.setColorStatusTran(true);
+        }
+        progressLoading = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        init();
-        callApiItemDataDetails();
-        setSoldQuntity();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            init();
+        }
+
     }
 
     private void init() {
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(false, false, false);
-        mainActivity.setHideButtonNavigation(true);
-        mainActivity.setColorStatusTran(true);
-        progressLoading = new ProgressDialogCustom(getActivity());
         setRetroFit();
         setViewRecyclerView();
-        calendarCurrent = Calendar.getInstance();
+        checkData();
+        setSoldQuntity();
+
     }
 
     private void setRetroFit() {
@@ -152,35 +167,72 @@ public class FragmentItemDetail extends Fragment {
 
     private void setAdapterRelatesProduct(List<ItemDetailsModel.RelatesProduct> lsRelatesProduct) {
         adapterRelatesProduct = new AdapterRelatesProduct(getActivity(), lsRelatesProduct);
-        if (adapterRelatesProduct != null && lsRelatesProduct != null) {
+        if (lsRelatesProduct != null) {
             recyclerRelatedProduct.setAdapter(adapterRelatesProduct);
+            adapterRelatesProduct.setOnItemClickListener(new AdapterRelatesProduct.SetOnItemClickListener() {
+                @Override
+                public void onItemClick(String idProduct) {
+                    callNewApiItemDetail(idProduct);
+                }
+            });
+
         }
     }
 
-    private void callApiItemDataDetails() {
+    private void checkData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
+            this.fromViewCategory = bundle.getBoolean("fromViewCategory", false);
             Gson gson = new Gson();
             this.jsonData = bundle.getString("idProduct");
             ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
-            if (dataApiItemDetail != null) {
-                txtItemDetailDescription.setText(dataApiItemDetail.response.description);
-                txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
-                txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
-                txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
-                setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
-                storeName.setText(dataApiItemDetail.response.store.store_name);
-                storeFeedback.setText(dataApiItemDetail.response.store.feedback + "%");
-                storeItem.setText(dataApiItemDetail.response.store.items);
-                storeSold.setText(dataApiItemDetail.response.store.sold);
-                timeFlashDeals(dataApiItemDetail.response.end_datetime);
-                Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
-                setStartNumber(voteStar);
-                setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
-                progressLoading.onHide();
-            } else {
-            }
+            setDataItemDataDetails(dataApiItemDetail);
         }
+    }
+
+    private void setDataItemDataDetails(ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail) {
+        if (dataApiItemDetail != null) {
+            txtItemDetailDescription.setText(dataApiItemDetail.response.description);
+            txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
+            txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
+            txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
+            setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
+            storeName.setText(dataApiItemDetail.response.store.store_name);
+            storeFeedback.setText(dataApiItemDetail.response.store.feedback + "%");
+            storeItem.setText(dataApiItemDetail.response.store.items);
+            storeSold.setText(dataApiItemDetail.response.store.sold);
+            timeFlashDeals(dataApiItemDetail.response.end_datetime);
+            Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
+            setStartNumber(voteStar);
+            setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
+            progressLoading.onHide();
+        } else {
+        }
+    }
+
+    private void callNewApiItemDetail(String idProduct) {
+        Call<ItemDetailsModel.ItemDetailsModelParser> call = apiServer.GetApiItemDetails(idProduct);
+        call.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
+            @Override
+            public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
+                if (response.body().code != 200) {
+                    toastDialog.onShow(response.body().message);
+                } else {
+                    ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = response.body();
+                    if (dataApiItemDetail != null) {
+                        setDataItemDataDetails(dataApiItemDetail);
+                        nestedScrollViewItemDetail.scrollTo(0, 0);
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
+
+            }
+        });
     }
 
     private void timeFlashDeals(String time) {
@@ -189,6 +241,53 @@ public class FragmentItemDetail extends Fragment {
             mainFlashTimeInItemDetail.setVisibility(View.VISIBLE);
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_flash_one_secont);
             mainFlashTimeInItemDetail.setAnimation(animation);
+
+            Calendar calendarFlashDeals = Calendar.getInstance();
+            Calendar calendarCurent = Calendar.getInstance();
+
+            calendarFlashDeals.setTimeInMillis((Integer.parseInt(time)) * 1000L);
+            int calendarFlashDealsMili = (int) calendarFlashDeals.getTimeInMillis();
+            int timeDown = (int) (calendarFlashDealsMili - calendarCurent.getTimeInMillis());
+
+            CountDownTimer countDownTimer = new CountDownTimer(timeDown, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Calendar calendarCurent1 = Calendar.getInstance();
+                    calendarCurent1.getTimeInMillis();
+                    int time1 = (int) calendarFlashDeals.getTimeInMillis();
+                    int timeDown = (int) (time1 - calendarCurent1.getTimeInMillis());
+
+                    String hours = String.valueOf(((timeDown / 1000) / 3600));
+                    String minutes = String.valueOf((((timeDown / 1000) % 3600) / 60));
+                    String seconds = String.valueOf(((timeDown / 1000) % 60));
+
+                    if (hours.length() < 2) {
+                        txtCountHoursItemDetail.setText("0" + hours);
+                    } else {
+                        txtCountHoursItemDetail.setText(hours);
+                    }
+
+
+                    if (minutes.length() < 2) {
+                        txtCountMinuteItemDetail.setText("0" + minutes);
+                    } else {
+                        txtCountMinuteItemDetail.setText(minutes);
+                    }
+
+                    if (seconds.length() < 2) {
+                        txtCountSecondsItemDetail.setText("0" + seconds);
+                    } else {
+                        txtCountSecondsItemDetail.setText(seconds);
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+
+                }
+            }.start();
+
+
         } else {
             mainFlashTimeInItemDetail.setVisibility(View.GONE);
         }
@@ -267,6 +366,10 @@ public class FragmentItemDetail extends Fragment {
         });
     }
 
+    public void setasCallBack(ListtenOnDestroyView listtenOnDestroyView) {
+        this.listtenOnDestroyView = listtenOnDestroyView;
+    }
+
     private void setUserRating(String name, String date, String content, Double star) {
         txtUserReview.setText(name);
         txtDateReview.setText(date);
@@ -276,7 +379,9 @@ public class FragmentItemDetail extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        stopCountDownTimerFlashDealsDetail = true;
-
+        if (fromViewCategory) {
+            listtenOnDestroyView.isDistroy(true);
+        }
     }
+
 }

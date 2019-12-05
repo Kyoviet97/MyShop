@@ -8,6 +8,7 @@
     android:background="#F2F2F2">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_item_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -358,6 +359,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_product_children_item_detail"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_12dp"
                     android:layout_height="@dimen/_50dp"/>

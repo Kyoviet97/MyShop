@@ -48,6 +48,7 @@ public class FragmentBrowseCategories extends Fragment {
     private MainActivity mainActivity;
     private ToastDialog toastDialog;
     private FragmentViewCategory fragmentViewCategory;
+    private FragmentItemDetail fragmentItemDetail;
 
     @BindView(R.id.recycler_browse_categories_left)
     RecyclerView RecyclerViewBrowseLeft;
@@ -78,6 +79,8 @@ public class FragmentBrowseCategories extends Fragment {
         setRetrofit();
         setRecyclerView();
         callApiBrowse();
+
+        fragmentItemDetail = new FragmentItemDetail();
     }
 
 
