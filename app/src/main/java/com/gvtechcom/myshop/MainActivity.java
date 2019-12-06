@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void Fragment_Home() {
+
         check_fragment = 1;
         navigationSelected("home");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

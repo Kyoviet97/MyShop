@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.gvtechcom.myshop.Fragment.FragmentBrowseCategories;
 import com.gvtechcom.myshop.Fragment.FragmentViewCategory;
-import com.gvtechcom.myshop.Interface.ClassSendDataInterface;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.Network.APIServer;

@@ -23,6 +23,7 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import butterknife.BindView;
@@ -37,6 +38,7 @@ public class FragmentNotifyDetail extends Fragment {
     private APIServer apiServer;
     private String idNotify;
     private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
     @BindView(R.id.title_update_notify_details)
     TextView titleUpdateNotifyDetails;
     @BindView(R.id.start_datetime_update_notify_details)
@@ -65,6 +67,7 @@ public class FragmentNotifyDetail extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         setRetrofit();
+        toastDialog = new ToastDialog(getActivity());
         callApiNotifyDetail(idNotify);
     }
 
@@ -79,7 +82,7 @@ public class FragmentNotifyDetail extends Fragment {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setDefaultFontSize(50);
+        webSettings.setDefaultFontSize(45);
 
 
         final Activity activity = getActivity();
@@ -102,7 +105,7 @@ public class FragmentNotifyDetail extends Fragment {
             public void onResponse(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Response<UpdateNotifyModel.UpdateNotifyModelParser> response) {
                 if (response.body().code != 200) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
+                    toastDialog.onShow(response.body().message);
                 } else {
                     titleUpdateNotifyDetails.setText(response.body().response.title);
                     startDatetimeUpdateNotifyDetails.setText(response.body().response.start_datetime);

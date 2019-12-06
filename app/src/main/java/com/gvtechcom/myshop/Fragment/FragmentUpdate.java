@@ -23,6 +23,7 @@ import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.lang.reflect.Type;
@@ -43,6 +44,7 @@ public class FragmentUpdate extends Fragment {
     private ProgressDialogCustom progressDialogCustom;
     private MySharePreferences mySharePreferences;
     private FragmentManager fragmentManager;
+    private ToastDialog toastDialog;
 
     @BindView(R.id.recycler_update_notify)
     RecyclerView recyclerUpdateNotify;
@@ -92,6 +94,7 @@ public class FragmentUpdate extends Fragment {
         recyclerUpdateNotify.setLayoutManager(linearLayoutManager);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         fragmentManager = getFragmentManager();
+        toastDialog = new ToastDialog(getActivity());
     }
 
     private void setAdapterUpdateNotifi(List<UpdateNotifyModel.DataUpdateNoty> lsUpdateNotifi) {
@@ -119,6 +122,7 @@ public class FragmentUpdate extends Fragment {
             @Override
             public void onResponse(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Response<UpdateNotifyModel.UpdateNotifyModelParser> response) {
                 if (response.body().code != 200) {
+                    toastDialog.onShow(response.body().message);
                 } else {
                     dataUpdateNotify = response.body();
                     if (dataUpdateNotify != null){

@@ -7,19 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterNameSubCategory;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerBrowseCategoriesLeft;
-import com.gvtechcom.myshop.Adapter.DataIdCategory;
-import com.gvtechcom.myshop.Interface.ClassSendDataInterface;
-import com.gvtechcom.myshop.Interface.SendIdCatergory;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;

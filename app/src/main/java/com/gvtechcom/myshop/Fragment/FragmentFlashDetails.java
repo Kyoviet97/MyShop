@@ -43,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentFlashDetails extends Fragment{
+public class FragmentFlashDetails extends Fragment {
     private View rootView;
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
@@ -102,8 +102,7 @@ public class FragmentFlashDetails extends Fragment{
             adapterRecyclerDataFlashDeals = new AdapterRecyclerDataFlashDeals(getActivity(), lsFlashDealsProductData);
             recyclerViewFlashDeals.setAdapter(adapterRecyclerDataFlashDeals);
             setOnClickAdapterData();
-        }
-        else {
+        } else {
             adapterRecyclerDataFlashDeals.upDateDataAdapterFlashDeals(lsFlashDealsProductData);
         }
     }
@@ -130,7 +129,7 @@ public class FragmentFlashDetails extends Fragment{
         Animation animation_slide_Down = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_progressbar);
         if (page == 1) {
             progressDialogCustom.onShow(false, "Loading...");
-        }else {
+        } else {
             progressbarLoadApiFooter.setAnimation(animation_slide_up);
             progressbarLoadApiFooter.setVisibility(View.VISIBLE);
         }
@@ -158,9 +157,9 @@ public class FragmentFlashDetails extends Fragment{
                         for (int i = 0; i <= lsFlashDealsProductData.size(); i++) {
                             if (i != lsFlashDealsProductData.size()) {
                                 lsFlashDealsProductDataTotal.add(lsFlashDealsProductData.get(i));
-                                if (lsFlashDealsProductDataTotal.size() == response.body().response.total){
+                                if (lsFlashDealsProductDataTotal.size() == response.body().response.total) {
                                     dataNull = true;
-                                }else {
+                                } else {
                                     dataNull = false;
                                 }
                             } else {
@@ -210,7 +209,7 @@ public class FragmentFlashDetails extends Fragment{
                 for (int i = 0; i < lsNameGroub.size(); i++) {
                     FlashDealsDetails.ProductGroups dataNameGroub = lsNameGroub.get(i);
                     if (i == positon) {
-                      dataNameGroub.icSelect = true;
+                        dataNameGroub.icSelect = true;
                     } else dataNameGroub.icSelect = false;
                     adapterRecyclerGroupFlashDeals.notifyDataSetChanged();
                 }
@@ -223,11 +222,11 @@ public class FragmentFlashDetails extends Fragment{
         });
     }
 
-    private void setOnClickAdapterData(){
+    private void setOnClickAdapterData() {
         adapterRecyclerDataFlashDeals.setOnClickItemRecyclerView(new OnClickRecyclerView() {
             @Override
             public void onClick(String idProduct) {
-               callApiDataItemDetail(idProduct);
+                callApiDataItemDetail(idProduct);
             }
         });
     }
@@ -246,6 +245,7 @@ public class FragmentFlashDetails extends Fragment{
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
 
