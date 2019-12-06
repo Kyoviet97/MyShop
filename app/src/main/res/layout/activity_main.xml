@@ -75,11 +75,11 @@
 
 
 
-    <LinearLayout
+    <View
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/shadow_layout"
+        android:background="#BBBBBB"
         app:layout_constraintBottom_toTopOf="@+id/button_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     EditText searchViewNavigation;
     @BindView(R.id.img_shopping_cart)
     ImageView imgShoppingCart;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CommitTransaction")
     @Override
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.img_btn_back_navigation:
-                    fragmentManager.popBackStack();
+                fragmentManager.popBackStack();
                 break;
         }
     }
@@ -201,34 +202,34 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void Fragment_Home() {
         check_fragment = 1;
-            navigationSelected("home");
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentHomeContent(), "frag_home");
-            fragmentTransaction.commit();
+        navigationSelected("home");
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentHomeContent(), "frag_home");
+        fragmentTransaction.commit();
     }
 
     private void Fragment_Messages() {
         check_fragment = 2;
-            navigationSelected("messager");
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentMessages(), "frag_messages");
-            fragmentTransaction.commit();
+        navigationSelected("messager");
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentMessages(), "frag_messages");
+        fragmentTransaction.commit();
     }
 
     private void Fragment_Orders() {
         check_fragment = 3;
-            navigationSelected("orders");
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentOrders(), "frag_orders");
-            fragmentTransaction.commit();
+        navigationSelected("orders");
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentOrders(), "frag_orders");
+        fragmentTransaction.commit();
     }
 
     private void Fragment_Update() {
         check_fragment = 4;
-            navigationSelected("update");
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentUpdate(), "frag_update");
-            fragmentTransaction.commit();
+        navigationSelected("update");
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentUpdate(), "frag_update");
+        fragmentTransaction.commit();
     }
 
     private void Fragment_Account() {
@@ -236,10 +237,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
         boolean account_key = sharedPreferences.getBoolean("account", false);
         if (account_key) {
-                navigationSelected("account");
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
-                fragmentTransaction.commit();
+            navigationSelected("account");
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
+            fragmentTransaction.commit();
         } else {
             Intent intent = new Intent(MainActivity.this, AccountActivity.class);
             startActivity(intent);
@@ -304,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setColorNavigationBar(int iconBack, int colorSearch, String hintSearch, int color, String codeString){
+    public void setColorNavigationBar(int iconBack, int colorSearch, String hintSearch, int color, String codeString) {
         navigationTop.setBackgroundResource(color);
         imgBtnBackNavigation.setImageResource(iconBack);
         searchViewNavigation.setBackgroundResource(colorSearch);

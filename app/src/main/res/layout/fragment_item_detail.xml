@@ -140,6 +140,16 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/name_product_ietm_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_20sp"
+                    android:textColor="#4A4A4A"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:hint="Loading..."
+                    android:background="@color/color_tran"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

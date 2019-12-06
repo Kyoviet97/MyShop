@@ -28,7 +28,6 @@ import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.JustForYou;
 import com.gvtechcom.myshop.Model.Product;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
-import com.gvtechcom.myshop.Model.Response;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 
@@ -36,8 +35,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class FragmentViewCategory extends Fragment implements ListtenOnDestroyView{
+public class FragmentViewCategory extends Fragment{
     private View rootiew;
     private AdapterViewCategory adapterViewCategory;
     private MainActivity mainActivity;
@@ -72,9 +74,6 @@ public class FragmentViewCategory extends Fragment implements ListtenOnDestroyVi
             adapterViewCategory = new AdapterViewCategory(getActivity(), dataViewCategory);
             setOnClickAdapter();
             recyclerViewViewCategoryMain.setAdapter(adapterViewCategory);
-            fragmentManager = getFragmentManager();
-            fragmentItemDetail = new FragmentItemDetail();
-            fragmentItemDetail.setasCallBack(this);
 
         }
 
@@ -89,6 +88,8 @@ public class FragmentViewCategory extends Fragment implements ListtenOnDestroyVi
         adapterViewCategory.setOnClickListener(new AdapterViewCategory.SetOnClickListener() {
             @Override
             public void setOnClickListener(String idCategory) {
+                fragmentManager = getFragmentManager();
+                fragmentItemDetail = new FragmentItemDetail();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("fromViewCategory", true);
@@ -98,18 +99,5 @@ public class FragmentViewCategory extends Fragment implements ListtenOnDestroyVi
                 fragmentTransaction.commit();
             }
         });
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void isDistroy(Boolean isDistroy) {
-       if (isDistroy == true){
-           mainActivity = (MainActivity) getActivity();
-           mainActivity.setColorStatusTran(true);
-           mainActivity.setDisplayNavigationBar(true, true, false);
-           mainActivity.setColorIconDarkMode(true, R.color.white);
-           mainActivity.setHideButtonNavigation(false );
-           mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white, "#E8A7A7A7");
-       }
     }
 }

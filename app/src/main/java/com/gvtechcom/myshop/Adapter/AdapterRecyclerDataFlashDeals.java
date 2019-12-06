@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.gvtechcom.myshop.Interface.OnClickRecyclerView;
 import com.gvtechcom.myshop.Model.FlashDealsDetails;
 import com.gvtechcom.myshop.R;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class AdapterRecyclerDataFlashDeals extends RecyclerView.Adapter<AdapterRecyclerDataFlashDeals.ViewHolder>{
     private Context context;
     private List<FlashDealsDetails.ProductsData> lsProductsData;
+    private OnClickRecyclerView onClickRecyclerView;
 
     public AdapterRecyclerDataFlashDeals(Context context, List<FlashDealsDetails.ProductsData> lsProductsData) {
         this.context = context;
@@ -67,7 +69,21 @@ public class AdapterRecyclerDataFlashDeals extends RecyclerView.Adapter<AdapterR
             productName = itemView.findViewById(R.id.txt_info_just_for_you);
             priceSale = itemView.findViewById(R.id.txt_price_just_for_you);
             sold = itemView.findViewById(R.id.txt_sold_just_for_you);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onClickRecyclerView != null){
+                        onClickRecyclerView.onClick(lsProductsData.get(getAdapterPosition()).product_id);
+                    }
+                }
+            });
         }
     }
+
+    public void setOnClickItemRecyclerView(OnClickRecyclerView onClickItemRecyclerView){
+        this.onClickRecyclerView = onClickItemRecyclerView;
+    }
+
+
 
 }

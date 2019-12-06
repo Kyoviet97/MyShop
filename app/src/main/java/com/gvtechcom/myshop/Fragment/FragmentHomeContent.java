@@ -555,7 +555,7 @@ public class FragmentHomeContent extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("idProduct", jsonData);
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }

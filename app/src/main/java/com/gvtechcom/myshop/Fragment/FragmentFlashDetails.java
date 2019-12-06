@@ -1,6 +1,8 @@
 package com.gvtechcom.myshop.Fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,10 +20,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerDataFlashDeals;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerGroupFlashDeals;
+import com.gvtechcom.myshop.Interface.OnClickRecyclerView;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.FlashDealsDetails;
+import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
@@ -38,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentFlashDetails extends Fragment {
+public class FragmentFlashDetails extends Fragment{
     private View rootView;
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
@@ -48,6 +53,8 @@ public class FragmentFlashDetails extends Fragment {
     private List<FlashDealsDetails.ProductsData> lsFlashDealsProductData;
     private List<FlashDealsDetails.ProductsData> lsFlashDealsProductDataTotal;
     private int page = 1;
+    private FragmentManager fragmentManager;
+
     Boolean isLoadMore = true;
     Boolean dataNull = false;
     @BindView(R.id.recyclerView_product_group_name)
@@ -94,7 +101,9 @@ public class FragmentFlashDetails extends Fragment {
         if (adapterRecyclerDataFlashDeals == null) {
             adapterRecyclerDataFlashDeals = new AdapterRecyclerDataFlashDeals(getActivity(), lsFlashDealsProductData);
             recyclerViewFlashDeals.setAdapter(adapterRecyclerDataFlashDeals);
-        } else {
+            setOnClickAdapterData();
+        }
+        else {
             adapterRecyclerDataFlashDeals.upDateDataAdapterFlashDeals(lsFlashDealsProductData);
         }
     }
@@ -214,4 +223,45 @@ public class FragmentFlashDetails extends Fragment {
         });
     }
 
+    private void setOnClickAdapterData(){
+        adapterRecyclerDataFlashDeals.setOnClickItemRecyclerView(new OnClickRecyclerView() {
+            @Override
+            public void onClick(String idProduct) {
+               callApiDataItemDetail(idProduct);
+            }
+        });
+    }
+
+    private void callApiDataItemDetail(String idProduct) {
+        Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
+        callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
+            @Override
+            public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
+                if (response.body().code != 200) {
+                } else {
+                    if (response.body().response != null) {
+                        Gson gson = new Gson();
+                        String jsonData = gson.toJson(response.body());
+                        setDataItemDetails(jsonData);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setDataItemDetails(String jsonData) {
+        fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragmentItemDetails = new FragmentItemDetail();
+        Bundle bundle = new Bundle();
+        bundle.putString("idProduct", jsonData);
+        fragmentItemDetails.setArguments(bundle);
+        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.addToBackStack("home");
+        fragmentTransaction.commit();
+    }
 }

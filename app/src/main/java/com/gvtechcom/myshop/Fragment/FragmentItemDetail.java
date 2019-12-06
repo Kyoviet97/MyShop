@@ -77,6 +77,8 @@ public class FragmentItemDetail extends Fragment {
     LinearLayout mainFlashTimeInItemDetail;
     @BindView(R.id.txt_vote_star)
     TextView txtvoteStar;
+    @BindView(R.id.name_product_ietm_detail)
+    TextView nameProductIetmDetail;
 
     @BindView(R.id.scroll_item_detail)
     NestedScrollView nestedScrollViewItemDetail;
@@ -193,6 +195,7 @@ public class FragmentItemDetail extends Fragment {
     private void setDataItemDataDetails(ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail) {
         if (dataApiItemDetail != null) {
             txtItemDetailDescription.setText(dataApiItemDetail.response.description);
+            nameProductIetmDetail.setText(dataApiItemDetail.response.name);
             txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
             txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
             txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
@@ -222,15 +225,12 @@ public class FragmentItemDetail extends Fragment {
                     if (dataApiItemDetail != null) {
                         setDataItemDataDetails(dataApiItemDetail);
                         nestedScrollViewItemDetail.scrollTo(0, 0);
-
                     }
                 }
-
             }
 
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
-
             }
         });
     }
@@ -361,7 +361,6 @@ public class FragmentItemDetail extends Fragment {
                 txtSoilProductToBuy.setText(soldQuantity.toString());
                 imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail_select);
                 imgLostSoldProductToBuy.setClickable(true);
-
             }
         });
     }
@@ -379,8 +378,19 @@ public class FragmentItemDetail extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mainActivity.setColorStatusTran(true);
+        }
+        mainActivity.setHideButtonNavigation(false );
+
         if (fromViewCategory) {
-            listtenOnDestroyView.isDistroy(true);
+            mainActivity.setColorIconDarkMode(true, R.color.white);
+            mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white, "#E8A7A7A7");
+            mainActivity.setDisplayNavigationBar(true, true, false);
+        }else {
+            mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+            mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "  apple watch", R.color.color_StatusBar, "#E8A7A7A7");
+            mainActivity.setDisplayNavigationBar(true, false, true);
         }
     }
 
