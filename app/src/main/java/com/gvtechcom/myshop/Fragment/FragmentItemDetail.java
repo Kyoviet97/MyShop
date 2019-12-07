@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.gvtechcom.myshop.Adapter.AdapterChildrenOfProduct;
 import com.gvtechcom.myshop.Adapter.AdapterProductChildren;
 import com.gvtechcom.myshop.Adapter.AdapterRelatesProduct;
 import com.gvtechcom.myshop.Adapter.AdapterViewCategory;
@@ -194,6 +195,17 @@ public class FragmentItemDetail extends Fragment {
     private void setDataRecyclerProductChildren(List<ItemDetailsModel.Product> lsProductChildren){
         AdapterProductChildren adapterProductChildren = new AdapterProductChildren(getActivity(), lsProductChildren);
         recyclerProductChildrenItemDetail.setAdapter(adapterProductChildren);
+        adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
+            @Override
+            public void dataSend(List<ItemDetailsModel.Children> lsProductChildren) {
+                System.out.println("===================>" + lsProductChildren.size());
+                AdapterChildrenOfProduct adapterChildrenOfProduct = new AdapterChildrenOfProduct(getActivity(), lsProductChildren);
+//                recyclerProductChildrenItemDetail = new RecyclerView(getActivity());
+//                recyclerProductChildrenItemDetail.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//                recyclerProductChildrenItemDetail.setAdapter(adapterChildrenOfProduct);
+//                layoutRecyclerProductChildren.addView(recyclerProductChildrenItemDetail);
+            }
+        });
     }
 
 
@@ -217,7 +229,6 @@ public class FragmentItemDetail extends Fragment {
             txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
             txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
             txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
-            setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
             storeName.setText(dataApiItemDetail.response.store.store_name);
             storeFeedback.setText(dataApiItemDetail.response.store.feedback + "%");
             storeItem.setText(dataApiItemDetail.response.store.items);
@@ -226,6 +237,8 @@ public class FragmentItemDetail extends Fragment {
             Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
             setStartNumber(voteStar);
             setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
+            setDataRecyclerProductChildren(dataApiItemDetail.response.product);
+            setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
             progressLoading.onHide();
         } else {
         }

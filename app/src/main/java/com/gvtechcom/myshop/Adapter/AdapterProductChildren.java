@@ -38,25 +38,7 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Random r = new Random();
-        int random = r.nextInt(5);
-        switch (random){
-            case 0:
-                holder.cardViewBackground.setCardBackgroundColor(Color.RED);
-                break;
-            case 1:
-                holder.cardViewBackground.setCardBackgroundColor(Color.BLUE);
-                break;
-            case 2:
-                holder.cardViewBackground.setCardBackgroundColor(Color.YELLOW);
-                break;
-            case 3:
-                holder.cardViewBackground.setCardBackgroundColor(Color.GREEN);
-                break;
-            case 4:
-                holder.cardViewBackground.setCardBackgroundColor(Color.BLACK );
-                break;
-        }
+        holder.cardViewBackground.setCardBackgroundColor(Color.BLUE);
 
         Glide.with(context)
                 .load(lsProductChildren.get(position).image)
@@ -77,7 +59,35 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
             super(itemView);
             imgProductChildren = itemView.findViewById(R.id.img_product_children);
             cardViewBackground = itemView.findViewById(R.id.card_view_backgroundColor);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (sendListChildren != null) {
+                        if (lsProductChildren.get(getAdapterPosition()).children == null) {
+                            System.out.println("====================> k co data");
+                        } else {
+                            if (lsProductChildren.get(getAdapterPosition()).children.size() > 0) {
+                                sendListChildren.dataSend(lsProductChildren.get(getAdapterPosition()).children);
+                            } else {
+                                System.out.println("===================>" + "size nho hon 1");
+                            }
+                        }
+                    }
+                }
+            });
         }
+    }
+
+    public interface SendListChildren{
+        void dataSend(List<ItemDetailsModel.Children> lsProductChildren);
+    }
+
+    private SendListChildren sendListChildren;
+
+    public void getDataListChildren(SendListChildren sendListChildren){
+        this.sendListChildren = sendListChildren;
     }
 
 
