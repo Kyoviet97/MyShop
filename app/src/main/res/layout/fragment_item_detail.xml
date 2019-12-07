@@ -374,6 +374,14 @@
                     android:layout_marginTop="@dimen/_12dp"
                     android:layout_height="@dimen/_50dp"/>
 
+                <LinearLayout
+                    android:id="@+id/layout_recycler_product_children"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:orientation="vertical">
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -437,8 +445,8 @@
             //Customer Reviews
             <include layout="@layout/include_customer_reviews_item_detail"/>
 
-            // Question and Answers
-            <include layout="@layout/include_questions_answers_item_detail"/>
+<!--            // Question and Answers-->
+<!--            <include layout="@layout/include_questions_answers_item_detail"/>-->
 
             // ABC Tect Store
             <include layout="@layout/include_tech_store_item_detail"/>
@@ -450,8 +458,8 @@
                 android:text="Related Products"
                 android:textSize="@dimen/_22sp"
                 android:textColor="#4A4A4A"
-                android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginBottom="@dimen/_11dp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginBottom="@dimen/_5dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
                 android:fontFamily="@font/sf_pro_display_bold"/>

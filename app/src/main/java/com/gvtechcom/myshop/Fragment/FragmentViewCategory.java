@@ -74,7 +74,6 @@ public class FragmentViewCategory extends Fragment{
             adapterViewCategory = new AdapterViewCategory(getActivity(), dataViewCategory);
             setOnClickAdapter();
             recyclerViewViewCategoryMain.setAdapter(adapterViewCategory);
-
         }
 
     }

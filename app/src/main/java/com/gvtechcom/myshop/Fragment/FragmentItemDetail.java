@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.gvtechcom.myshop.Adapter.AdapterProductChildren;
 import com.gvtechcom.myshop.Adapter.AdapterRelatesProduct;
 import com.gvtechcom.myshop.Adapter.AdapterViewCategory;
 import com.gvtechcom.myshop.Interface.ListtenOnDestroyView;
@@ -55,6 +56,10 @@ public class FragmentItemDetail extends Fragment {
     private ListtenOnDestroyView listtenOnDestroyView;
     private Boolean fromViewCategory = false;
     private ToastDialog toastDialog;
+
+
+    @BindView(R.id.layout_recycler_product_children)
+    LinearLayout layoutRecyclerProductChildren;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -116,6 +121,8 @@ public class FragmentItemDetail extends Fragment {
     //RecyclerView
     @BindView(R.id.recycler_related_product)
     RecyclerView recyclerRelatedProduct;
+    @BindView(R.id.recycler_product_children_item_detail)
+    RecyclerView recyclerProductChildrenItemDetail;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -165,6 +172,9 @@ public class FragmentItemDetail extends Fragment {
     private void setViewRecyclerView() {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerRelatedProduct.setLayoutManager(linearLayoutManager);
+
+        LinearLayoutManager layoutManagerRecyclerProductChildren = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+        recyclerProductChildrenItemDetail.setLayoutManager(layoutManagerRecyclerProductChildren);
     }
 
     private void setAdapterRelatesProduct(List<ItemDetailsModel.RelatesProduct> lsRelatesProduct) {
@@ -181,6 +191,13 @@ public class FragmentItemDetail extends Fragment {
         }
     }
 
+    private void setDataRecyclerProductChildren(List<ItemDetailsModel.Product> lsProductChildren){
+        AdapterProductChildren adapterProductChildren = new AdapterProductChildren(getActivity(), lsProductChildren);
+        recyclerProductChildrenItemDetail.setAdapter(adapterProductChildren);
+    }
+
+
+
     private void checkData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -189,6 +206,7 @@ public class FragmentItemDetail extends Fragment {
             this.jsonData = bundle.getString("idProduct");
             ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
             setDataItemDataDetails(dataApiItemDetail);
+            setDataRecyclerProductChildren(dataApiItemDetail.response.product);
         }
     }
 
