@@ -71,7 +71,7 @@ public class AdapterRecyclerViewShipping extends RecyclerView.Adapter<AdapterRec
                 @Override
                 public void onClick(View v) {
                     if (onItemClickedListener != null) {
-                        onItemClickedListener.onItemClick(responseAddresses.get(getAdapterPosition()).id);
+                        onItemClickedListener.onItemClick(getAdapterPosition());
                     }
                 }
             });
@@ -79,7 +79,7 @@ public class AdapterRecyclerViewShipping extends RecyclerView.Adapter<AdapterRec
     }
 
     public interface OnItemClickedListener {
-        void onItemClick(String idAddress);
+        void onItemClick(int position);
     }
 
     private OnItemClickedListener onItemClickedListener;

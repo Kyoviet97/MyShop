@@ -11,6 +11,10 @@ public class BaseGetAPIShippingAddress {
 
     public class Data implements Comparable<Data>{
         public String id;
+        public String ward_id;
+        public String district_id;
+        public String city_id;
+        public String country_id;
         public String telephone;
         public String name;
         public Integer is_default;

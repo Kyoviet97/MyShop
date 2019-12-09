@@ -70,6 +70,10 @@ public class DialogDistricAddress extends AppCompatDialog {
         super(context);
         setCancelable(false);
         setContentView(R.layout.custom_dialog_address);
+        int width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+        int height = (int) (getContext().getResources().getDisplayMetrics().heightPixels * 0.75);
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        getWindow().setLayout(width, height);
         ButterKnife.bind(this);
         setRecyclerView();
         setAdapter(lsDistric);

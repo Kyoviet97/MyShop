@@ -49,6 +49,8 @@ public class ShippingAddressFragment extends Fragment {
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private MainActivity mainActivity;
+    private List<BaseGetAPIShippingAddress.Data> dataAllAddressList;
+
     @BindView(R.id.swipe_refresh_layout_shipping_address)
     SwipeRefreshLayout swipeRefreshLayoutShippingAddress;
 
@@ -141,7 +143,7 @@ public class ShippingAddressFragment extends Fragment {
 
                         if (response.body().response.data == null) {
                         } else {
-                            List<BaseGetAPIShippingAddress.Data> dataAllAddressList = new ArrayList<>();
+                            dataAllAddressList = new ArrayList<>();
                             dataAllAddressList = response.body().response.data;
                             Collections.sort(dataAllAddressList);
                             adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
@@ -163,11 +165,15 @@ public class ShippingAddressFragment extends Fragment {
     private void clickAdapter() {
         adapterRecyclerViewShipping.setOnItemClickedListener(new AdapterRecyclerViewShipping.OnItemClickedListener() {
             @Override
-            public void onItemClick(String idAddress) {
+            public void onItemClick(int position) {
                 Fragment fragmentAddShipping = new AddShippingAddessFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 Bundle bundle = new Bundle();
-                bundle.putString("idAddress", idAddress);
+                bundle.putString("idAddress", dataAllAddressList.get(position).id);
+                bundle.putString("idCountry", dataAllAddressList.get(position).country_id);
+                bundle.putString("idCity", dataAllAddressList.get(position).city_id);
+                bundle.putString("idDistrict", dataAllAddressList.get(position).district_id);
+                bundle.putString("idWard", dataAllAddressList.get(position).ward_id);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentAddShipping.setArguments(bundle);
                 fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentAddShipping);

@@ -140,9 +140,11 @@ public class FragmentAccount extends Fragment {
                 setClickShippingAddress();
                 break;
             case R.id.btn_share_to_friends:
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentUpdateNotify());
-                fragmentTransaction.commit();
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
+                startActivity(Intent.createChooser(sharingIntent, "Share"));
                 break;
 
         }
