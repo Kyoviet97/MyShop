@@ -34,18 +34,16 @@ public class AdapterChildrenOfProduct extends RecyclerView.Adapter<AdapterChildr
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        
+
     }
 
     @Override
     public int getItemCount() {
         return childrenList.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgProductChildren;
         private CardView cardViewBackground;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProductChildren = itemView.findViewById(R.id.img_product_children);

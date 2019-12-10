@@ -111,7 +111,6 @@ public class AddShippingAddessFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setSwitchDefault();
         setRetrofit();
         init();
         getApiCountryAddress();
@@ -230,7 +229,6 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void getApiCountryAddress() {
-//        progressDialogCustom.onShow(false, "Loading...");
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
@@ -258,7 +256,6 @@ public class AddShippingAddessFragment extends Fragment {
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
-
         Call<CountryInfoModel.CountryInfoModelParser> call = apiServer.GetListDistrict(String.valueOf(getTime.getCalendar()), getMD5.md5(timeSign), "Android", idCity);
         call.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
@@ -271,7 +268,6 @@ public class AddShippingAddessFragment extends Fragment {
                     dataDistric = response.body().response.data;
                 }
             }
-
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
                 toastDialog.onShow("An error occurred, please try again later");
@@ -490,30 +486,6 @@ public class AddShippingAddessFragment extends Fragment {
                     }
                 }
             });
-    }
-
-    private void setSwitchDefault() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            if (bundle.getBoolean("Default")) {
-                switchDefault.setChecked(true);
-                isDefault = 1;
-            } else {
-                switchDefault.setChecked(false);
-                isDefault = 0;
-            }
-
-        }
-        switchDefault.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    isDefault = 1;
-                } else {
-                    isDefault = 0;
-                }
-            }
-        });
     }
 
     private void callApiCreateAdrress(String fullName, String phoneCode, String phoneNumber, String address, String country

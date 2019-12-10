@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -158,6 +159,8 @@ public class FragmentHomeContent extends Fragment {
     ProgressBar progessbar_footer;
     @BindView(R.id.txt_flash_deals_default)
     TextView txtFlashDealsDetails;
+    @BindView(R.id.btn_coins_coupons)
+    LinearLayout btnCoinsCoupons;
 
 
     @Nullable
@@ -197,6 +200,16 @@ public class FragmentHomeContent extends Fragment {
         setItemTopNewFeaturedStore();
 
         getNestedScrollChange();
+
+        btnCoinsCoupons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentViewBrand());
+                fragmentTransaction.addToBackStack("home_content");
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     private void init() {
@@ -233,7 +246,6 @@ public class FragmentHomeContent extends Fragment {
                 setItemFeaturedCategorie();
 
                 setItemTopNewFeaturedStore();
-
             }
         });
 
@@ -553,7 +565,7 @@ public class FragmentHomeContent extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
-        bundle.putString("idProduct", jsonData);
+        bundle.putString("dataJson", jsonData);
         fragmentItemDetails.setArguments(bundle);
         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");

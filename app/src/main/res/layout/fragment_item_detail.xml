@@ -459,7 +459,7 @@
                 android:textSize="@dimen/_22sp"
                 android:textColor="#4A4A4A"
                 android:layout_marginTop="@dimen/_10dp"
-                android:layout_marginBottom="@dimen/_5dp"
+                android:layout_marginBottom="@dimen/_4dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
                 android:fontFamily="@font/sf_pro_display_bold"/>

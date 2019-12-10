@@ -28,7 +28,10 @@ import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.JustForYou;
 import com.gvtechcom.myshop.Model.Product;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
+import com.gvtechcom.myshop.Network.APIServer;
+import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
+import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 
 import java.util.List;
@@ -38,11 +41,13 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class FragmentViewCategory extends Fragment{
     private View rootiew;
     private AdapterViewCategory adapterViewCategory;
     private MainActivity mainActivity;
+    private APIServer apiServer;
 
     private GoToItemDetail goToItemDetail = new GoToItemDetail();
 
@@ -65,6 +70,8 @@ public class FragmentViewCategory extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setRetrofit();
+
         setRecyclerView();
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -78,6 +85,12 @@ public class FragmentViewCategory extends Fragment{
 
     }
 
+    private void setRetrofit() {
+        Retrofit retrofit;
+        retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
+        apiServer = retrofit.create(APIServer.class);
+    }
+
     private void setRecyclerView() {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerViewViewCategoryMain.setLayoutManager(linearLayoutManager);
@@ -87,15 +100,37 @@ public class FragmentViewCategory extends Fragment{
         adapterViewCategory.setOnClickListener(new AdapterViewCategory.SetOnClickListener() {
             @Override
             public void setOnClickListener(String idCategory) {
-                fragmentManager = getFragmentManager();
-                fragmentItemDetail = new FragmentItemDetail();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("fromViewCategory", true);
-                fragmentItemDetail.setArguments(bundle);
-                fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetail);
-                fragmentTransaction.addToBackStack("home");
-                fragmentTransaction.commit();
+                callApiDataItemDetail(idCategory);
+            }
+        });
+    }
+
+    private void callApiDataItemDetail(String idProduct) {
+        Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
+        callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
+            @Override
+            public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
+                if (response.body().code != 200) {
+                } else {
+                    if (response.body().response != null) {
+                        Gson gson = new Gson();
+                        String jsonData = gson.toJson(response.body());
+                        fragmentManager = getFragmentManager();
+                        fragmentItemDetail = new FragmentItemDetail();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("fromViewCategory", true);
+                        bundle.putString("dataJson", jsonData);
+                        fragmentItemDetail.setArguments(bundle);
+                        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetail);
+                        fragmentTransaction.addToBackStack("home");
+                        fragmentTransaction.commit();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
+
             }
         });
     }

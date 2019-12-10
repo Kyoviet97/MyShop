@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -65,6 +67,12 @@ public class FragmentFlashDetails extends Fragment {
     NestedScrollView ScrollViewFlashDealsDetaild;
     @BindView(R.id.progressbar_load_api_footer)
     ProgressBar progressbarLoadApiFooter;
+    @BindView(R.id.img_top_image)
+    ImageView imgTopImage;
+    @BindView(R.id.img_icon)
+    ImageView imgIcon;
+    @BindView(R.id.txt_title)
+    TextView txtTitle;
 
     @Nullable
     @Override
@@ -73,7 +81,10 @@ public class FragmentFlashDetails extends Fragment {
         ButterKnife.bind(this, rootView);
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, true, false);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "   apple watch", R.color.color_startus_home, "#FCC39D");
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "  apple watch", R.color.color_startus_home, "#FCC39D");
+        imgTopImage.setBackgroundResource(R.drawable.rectangle);
+        imgIcon.setImageResource(R.drawable.ic_flash_deals_default);
+        txtTitle.setText("FLASH DEAL!!");
         return rootView;
     }
 
@@ -258,10 +269,12 @@ public class FragmentFlashDetails extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
-        bundle.putString("idProduct", jsonData);
+        bundle.putString("dataJson", jsonData);
         fragmentItemDetails.setArguments(bundle);
         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }
+
+
 }

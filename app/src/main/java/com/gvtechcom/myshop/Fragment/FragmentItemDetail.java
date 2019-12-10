@@ -54,7 +54,6 @@ public class FragmentItemDetail extends Fragment {
     private String jsonData;
     private ProgressDialogCustom progressLoading;
     private static Integer soldQuantity = 1;
-    private ListtenOnDestroyView listtenOnDestroyView;
     private Boolean fromViewCategory = false;
     private ToastDialog toastDialog;
 
@@ -125,12 +124,6 @@ public class FragmentItemDetail extends Fragment {
     @BindView(R.id.recycler_product_children_item_detail)
     RecyclerView recyclerProductChildrenItemDetail;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -153,7 +146,6 @@ public class FragmentItemDetail extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             init();
         }
-
     }
 
     private void init() {
@@ -161,7 +153,6 @@ public class FragmentItemDetail extends Fragment {
         setViewRecyclerView();
         checkData();
         setSoldQuntity();
-
     }
 
     private void setRetroFit() {
@@ -173,7 +164,6 @@ public class FragmentItemDetail extends Fragment {
     private void setViewRecyclerView() {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerRelatedProduct.setLayoutManager(linearLayoutManager);
-
         LinearLayoutManager layoutManagerRecyclerProductChildren = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         recyclerProductChildrenItemDetail.setLayoutManager(layoutManagerRecyclerProductChildren);
     }
@@ -198,12 +188,7 @@ public class FragmentItemDetail extends Fragment {
         adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
             @Override
             public void dataSend(List<ItemDetailsModel.Children> lsProductChildren) {
-                System.out.println("===================>" + lsProductChildren.size());
-                AdapterChildrenOfProduct adapterChildrenOfProduct = new AdapterChildrenOfProduct(getActivity(), lsProductChildren);
-//                recyclerProductChildrenItemDetail = new RecyclerView(getActivity());
-//                recyclerProductChildrenItemDetail.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//                recyclerProductChildrenItemDetail.setAdapter(adapterChildrenOfProduct);
-//                layoutRecyclerProductChildren.addView(recyclerProductChildrenItemDetail);
+
             }
         });
     }
@@ -215,7 +200,7 @@ public class FragmentItemDetail extends Fragment {
         if (bundle != null) {
             this.fromViewCategory = bundle.getBoolean("fromViewCategory", false);
             Gson gson = new Gson();
-            this.jsonData = bundle.getString("idProduct");
+            this.jsonData = bundle.getString("dataJson");
             ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
             setDataItemDataDetails(dataApiItemDetail);
             setDataRecyclerProductChildren(dataApiItemDetail.response.product);
@@ -240,7 +225,6 @@ public class FragmentItemDetail extends Fragment {
             setDataRecyclerProductChildren(dataApiItemDetail.response.product);
             setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
             progressLoading.onHide();
-        } else {
         }
     }
 
@@ -394,10 +378,6 @@ public class FragmentItemDetail extends Fragment {
                 imgLostSoldProductToBuy.setClickable(true);
             }
         });
-    }
-
-    public void setasCallBack(ListtenOnDestroyView listtenOnDestroyView) {
-        this.listtenOnDestroyView = listtenOnDestroyView;
     }
 
     private void setUserRating(String name, String date, String content, Double star) {
