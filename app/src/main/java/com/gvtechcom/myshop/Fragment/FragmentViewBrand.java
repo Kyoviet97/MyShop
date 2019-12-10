@@ -37,7 +37,6 @@ public class FragmentViewBrand extends Fragment {
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_brown, "   apple watch", R.color.color_starttus_bar_brown, "#9D9690");
         mainActivity.setColorIconDarkMode(false, R.color.color_starttus_bar_brown);
         imgTopImage.setBackgroundResource(R.drawable.rectangle_view_brand);
-        txtTitle.setText("Xiaomi Official Store");
         imgIcon.setImageResource(R.drawable.ic_flash_deals_default);
         return rootView;
     }
