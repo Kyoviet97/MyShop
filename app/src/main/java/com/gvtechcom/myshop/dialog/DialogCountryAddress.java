@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop.dialog;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,6 +16,9 @@ import com.gvtechcom.myshop.Adapter.AdapterRecyclerCountryAddress;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.R;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +58,11 @@ public class DialogCountryAddress extends AppCompatDialog {
         super(context);
         setCancelable(false);
         setContentView(R.layout.custom_dialog_address);
+        int width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+        int height = (int) (getContext().getResources().getDisplayMetrics().heightPixels * 0.75);
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        getWindow().setLayout(width, height);
+
         ButterKnife.bind(this);
         settingRecyclerView();
         this.lsCountry = responseCountries;

@@ -49,6 +49,7 @@ public class DialogCityAddress extends AppCompatDialog {
                 dismiss();
                 break;
             case R.id.btn_select_address:
+                setSelect(true);
                 dismiss();
                 break;
         }
@@ -59,6 +60,10 @@ public class DialogCityAddress extends AppCompatDialog {
         super(context);
         setCancelable(false);
         setContentView(R.layout.custom_dialog_address);
+        int width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+        int height = (int) (getContext().getResources().getDisplayMetrics().heightPixels * 0.75);
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        getWindow().setLayout(width, height);
         ButterKnife.bind(this);
         this.cityList = cityList;
         this.nameCity = nameCityaOld;
@@ -88,6 +93,7 @@ public class DialogCityAddress extends AppCompatDialog {
 
         setOnclickAdapter();
     }
+
 
     private void setOnclickAdapter() {
         adapterRecyclerCityAddress.setOnItemClickedListener(new AdapterRecyclerCityAddress.OnItemClickedListener() {
