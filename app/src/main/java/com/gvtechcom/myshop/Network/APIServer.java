@@ -211,6 +211,12 @@ public interface APIServer {
     Call<ItemYouLoveModel.ItemYouLoveModelParser> GetItemYouLove(@Query("page") Integer page,
                                                                     @Query("address_id") Integer per_page);
 
+
+    @GET("searches")
+    Call<ItemYouLoveModel.ItemYouLoveModelParser> GetDataSearch(@Query("page") Integer page,
+                                                                 @Query("per_page") Integer per_page,
+                                                                    @Query("keyword") String keyWord);
+
     @GET("notifications")
     Call<UpdateNotifyModel.UpdateNotifyModelParser> GetDataUpdateNotify();
 

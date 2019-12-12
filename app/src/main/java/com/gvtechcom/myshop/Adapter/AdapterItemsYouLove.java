@@ -60,10 +60,10 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewItemsYouLove = (ImageView) itemView.findViewById(R.id.img_just_for_you);
-            infoItemsYouLove = (TextView) itemView.findViewById(R.id.txt_info_just_for_you);
-            priceItemsYouLove = (TextView) itemView.findViewById(R.id.txt_price_just_for_you);
-            soldItemsYouLove = (TextView) itemView.findViewById(R.id.txt_sold_just_for_you);
+            imageViewItemsYouLove = itemView.findViewById(R.id.img_just_for_you);
+            infoItemsYouLove = itemView.findViewById(R.id.txt_info_just_for_you);
+            priceItemsYouLove = itemView.findViewById(R.id.txt_price_just_for_you);
+            soldItemsYouLove = itemView.findViewById(R.id.txt_sold_just_for_you);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

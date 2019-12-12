@@ -119,7 +119,7 @@ public class FragmentViewCategory extends Fragment{
                         fragmentItemDetail = new FragmentItemDetail();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         Bundle bundle = new Bundle();
-                        bundle.putBoolean("fromViewCategory", true);
+                        bundle.putString("fromToFragment", "homeViewCategory");
                         bundle.putString("dataJson", jsonData);
                         fragmentItemDetail.setArguments(bundle);
                         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetail);

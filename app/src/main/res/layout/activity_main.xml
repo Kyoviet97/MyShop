@@ -40,6 +40,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30dp"
             android:drawableLeft="@drawable/ic_search"
+            android:drawablePadding="@dimen/_4dp"
+            android:fontFamily="@font/sf_pro_text_medium"
+            android:textColor="#4A4A4A"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
             android:background="@drawable/bkg_search_color_white"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
@@ -50,7 +56,8 @@
             android:layout_toLeftOf="@+id/img_shopping_cart"
             android:layout_toEndOf="@+id/img_btn_back_navigation"
             android:layout_toRightOf="@+id/img_btn_back_navigation"
-            tools:layout_editor_absoluteY="0dp" />
+            tools:layout_editor_absoluteY="0dp">
+        </EditText>
 
         <ImageView
             android:id="@+id/img_shopping_cart"

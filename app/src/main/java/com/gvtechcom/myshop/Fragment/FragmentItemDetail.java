@@ -54,7 +54,7 @@ public class FragmentItemDetail extends Fragment {
     private String jsonData;
     private ProgressDialogCustom progressLoading;
     private static Integer soldQuantity = 1;
-    private Boolean fromViewCategory = false;
+    private String fromToFragment = "";
     private ToastDialog toastDialog;
 
 
@@ -188,7 +188,7 @@ public class FragmentItemDetail extends Fragment {
         adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
             @Override
             public void dataSend(List<ItemDetailsModel.Children> lsProductChildren) {
-
+                System.out.println("=================>" + lsProductChildren.size());
             }
         });
     }
@@ -198,7 +198,7 @@ public class FragmentItemDetail extends Fragment {
     private void checkData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            this.fromViewCategory = bundle.getBoolean("fromViewCategory", false);
+            this.fromToFragment = bundle.getString("fromToFragment", "");
             Gson gson = new Gson();
             this.jsonData = bundle.getString("dataJson");
             ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
@@ -282,13 +282,11 @@ public class FragmentItemDetail extends Fragment {
                         txtCountHoursItemDetail.setText(hours);
                     }
 
-
                     if (minutes.length() < 2) {
                         txtCountMinuteItemDetail.setText("0" + minutes);
                     } else {
                         txtCountMinuteItemDetail.setText(minutes);
                     }
-
                     if (seconds.length() < 2) {
                         txtCountSecondsItemDetail.setText("0" + seconds);
                     } else {
@@ -392,16 +390,32 @@ public class FragmentItemDetail extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mainActivity.setColorStatusTran(true);
         }
-        mainActivity.setHideButtonNavigation(false );
+        mainActivity.setHideButtonNavigation(false);
 
-        if (fromViewCategory) {
-            mainActivity.setColorIconDarkMode(true, R.color.white);
-            mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white, "#E8A7A7A7");
-            mainActivity.setDisplayNavigationBar(true, true, false);
-        }else {
-            mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
-            mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "  apple watch", R.color.color_StatusBar, "#E8A7A7A7");
-            mainActivity.setDisplayNavigationBar(true, false, true);
+        switch (fromToFragment) {
+            case "homeViewCategory":
+                mainActivity.setColorIconDarkMode(true, R.color.white);
+                mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "apple watch", R.color.white, "#E8A7A7A7");
+                mainActivity.setDisplayNavigationBar(true, true, false);
+                break;
+
+            case "homeContent":
+                mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+                mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#E8A7A7A7");
+                mainActivity.setDisplayNavigationBar(true, false, true);
+                break;
+
+            case "viewBrand":
+                mainActivity.setColorIconDarkMode(false, R.color.color_starttus_bar_brown);
+                mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_brown, "apple watch", R.color.color_starttus_bar_brown, "#E8A7A7A7");
+                mainActivity.setDisplayNavigationBar(true, false, true);
+                break;
+
+            case "flashDeals":
+                mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+                mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_orange, "apple watch", R.color.color_StatusBar, "#FCC39D");
+                mainActivity.setDisplayNavigationBar(true, true, false);
+                break;
         }
     }
 

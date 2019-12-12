@@ -81,10 +81,10 @@ public class FragmentFlashDetails extends Fragment {
         ButterKnife.bind(this, rootView);
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, true, false);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "  apple watch", R.color.color_startus_home, "#FCC39D");
-        imgTopImage.setBackgroundResource(R.drawable.rectangle);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "apple watch", R.color.color_startus_home, "#FCC39D");
+        imgTopImage.setBackgroundResource(R.drawable.ic_rectangle_orang);
         imgIcon.setImageResource(R.drawable.ic_flash_deals_default);
-        txtTitle.setText("FLASH DEAL!!");
+        txtTitle.setText("FLASH DEAL!!!");
         return rootView;
     }
 
@@ -270,6 +270,7 @@ public class FragmentFlashDetails extends Fragment {
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
         bundle.putString("dataJson", jsonData);
+        bundle.putString("fromToFragment", "flashDeals");
         fragmentItemDetails.setArguments(bundle);
         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");

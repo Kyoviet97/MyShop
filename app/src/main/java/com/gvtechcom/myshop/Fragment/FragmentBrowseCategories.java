@@ -69,7 +69,7 @@ public class FragmentBrowseCategories extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, true, false);
         mainActivity.setColorIconDarkMode(true, R.color.white);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "  apple watch", R.color.white, "#E8A7A7A7");
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "apple watch", R.color.white, "#9D9690");
         toastDialog = new ToastDialog(getActivity());
         setRetrofit();
         setRecyclerView();

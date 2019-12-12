@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,16 +34,20 @@ import com.gvtechcom.myshop.Fragment.FragmentAccount;
 import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
 import com.gvtechcom.myshop.Fragment.FragmentMessages;
 import com.gvtechcom.myshop.Fragment.FragmentOrders;
+import com.gvtechcom.myshop.Fragment.FragmentSearch;
 import com.gvtechcom.myshop.Fragment.FragmentUpdate;
+import com.gvtechcom.myshop.Fragment.FragmentViewBrand;
+import com.gvtechcom.myshop.Interface.KeywordSearch;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
 import com.mylibrary.ui.statusbar.SystemBarTintManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager;
     private int check_fragment;
+    private KeywordSearch keywordSearchl;
 
     @BindView(R.id.btn_home)
     Button btn_home;
@@ -75,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getFragmentManager();
         Fragment_Home();
         Get_Extra();
+        setEditSearchNavigation(false);
         this.check_fragment = 0;
     }
 
@@ -170,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.popBackStack();
             }
         });
+
     }
+
 
     public void setupStatusBarView(View view) {
         SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
@@ -190,13 +199,6 @@ public class MainActivity extends AppCompatActivity {
                 decor.setSystemUiVisibility(0);
             }
         }
-    }
-
-    public void SharedPreferences(String key, String value) {
-        SharedPreferences sharedPreferences = getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.apply();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -263,6 +265,57 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setEditSearchNavigation(Boolean isSearch) {
+        if (isSearch) {
+            searchViewNavigation.setOnClickListener(null);
+            searchViewNavigation.setFocusableInTouchMode(true);
+            searchViewNavigation.setFocusable(true);
+            searchViewNavigation.addTextChangedListener(textWatcherSearchListener);
+        } else {
+            searchViewNavigation.setText(null);
+            searchViewNavigation.setFocusable(false);
+            searchViewNavigation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(R.id.content_home_frame_layout, new FragmentSearch());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
+        }
+    }
+
+    private final TextWatcher textWatcherSearchListener = new TextWatcher() {
+        final android.os.Handler handler = new android.os.Handler();
+        Runnable runnable;
+
+        public void onTextChanged(final CharSequence s, int start, final int before, int count) {
+            handler.removeCallbacks(runnable);
+        }
+
+        @Override
+        public void afterTextChanged(final Editable s) {
+            if (s.length() > 1){
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        keywordSearchl.dataKeyWord(s.toString());
+                    }
+                };
+                handler.postDelayed(runnable, 1000);
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    };
+
+    public void setKeywordSearchl(KeywordSearch keywordSearchl){
+        this.keywordSearchl = keywordSearchl;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setColorStatusTran(boolean isColorTran) {
         if (isColorTran) {
@@ -313,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
         searchViewNavigation.setHint(hintSearch);
         searchViewNavigation.setHintTextColor(Color.parseColor(codeString));
     }
-
 
     public void setupUI(View view) {
 

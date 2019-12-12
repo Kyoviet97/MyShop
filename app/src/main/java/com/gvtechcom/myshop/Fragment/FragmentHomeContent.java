@@ -52,6 +52,8 @@ import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.dialog.ToastDialog;
+import com.mylibrary.ui.progress.ProgressDialogCustom;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -78,6 +80,9 @@ public class FragmentHomeContent extends Fragment {
     private Boolean isLoadMore = true;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
+
+    private ProgressDialogCustom progressDialogCustom;
+    private ToastDialog toastDialog;
 
     private CountDownTimer countDownTimerFlashDeals;
     private Boolean isStopCountDownTimerFlashDeals = false;
@@ -173,7 +178,7 @@ public class FragmentHomeContent extends Fragment {
         mainActivity.setDisplayNavigationBar(true, false, true);
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, " apple watch", R.color.color_StatusBar, "#D1D8E0");
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
         return rootView;
     }
 
@@ -201,18 +206,11 @@ public class FragmentHomeContent extends Fragment {
 
         getNestedScrollChange();
 
-        btnCoinsCoupons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentViewBrand());
-                fragmentTransaction.addToBackStack("home_content");
-                fragmentTransaction.commit();
-            }
-        });
     }
 
     private void init() {
+        progressDialogCustom = new ProgressDialogCustom(getActivity());
+        toastDialog = new ToastDialog(getActivity());
         onListenKeyboard();
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -415,10 +413,7 @@ public class FragmentHomeContent extends Fragment {
             adapterFeaturedCategories.setItemClickListenr(new AdapterFeaturedCategories.ItemClickListener() {
                 @Override
                 public void itemClick(String idProduct) {
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentItemDetail());
-                    fragmentTransaction.addToBackStack("home_content");
-                    fragmentTransaction.commit();
+                    callApiDataItemDetail(idProduct);
                 }
             });
             recyclerViewFeaturedCategories.setAdapter(adapterFeaturedCategories);
@@ -445,8 +440,8 @@ public class FragmentHomeContent extends Fragment {
         if (obj.getResponse().getFeatureBrands().size() > 1) {
             setGlideImage(obj.getResponse().getFeatureBrands().get(obj.getResponse().getFeatureBrands().size() - 2).image, imgFeatureBrandsOne);
             setGlideImage(obj.getResponse().getFeatureBrands().get(obj.getResponse().getFeatureBrands().size() - 1).image, imgFeatureBrandsTwo);
-//            setClickCategori(imgFeatureBrandsOne, obj.getResponse().getFeatureBrands().get(obj.getResponse().getNewsForYou().size() - 2).brand_id);
-//            setClickCategori(imgFeatureBrandsTwo, obj.getResponse().getFeatureBrands().get(obj.getResponse().getNewsForYou().size() - 1).brand_id);
+            setClickCategori(imgFeatureBrandsOne, obj.getResponse().getFeatureBrands().get(obj.getResponse().getFeatureBrands().size() - 2).brand_id);
+            setClickCategori(imgFeatureBrandsTwo, obj.getResponse().getFeatureBrands().get(obj.getResponse().getFeatureBrands().size() - 1).brand_id);
 
         }
 
@@ -566,6 +561,8 @@ public class FragmentHomeContent extends Fragment {
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
         bundle.putString("dataJson", jsonData);
+        bundle.putString("fromToFragment", "homeContent");
+        progressDialogCustom.onHide();
         fragmentItemDetails.setArguments(bundle);
         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
@@ -573,11 +570,14 @@ public class FragmentHomeContent extends Fragment {
     }
 
     private void callApiDataItemDetail(String idProduct) {
+        progressDialogCustom.onShow(false, "");
         Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
         callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
             @Override
             public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
                 if (response.body().code != 200) {
+                    progressDialogCustom.onHide();
+                    toastDialog.onShow(response.body().message);
                 } else {
                     if (response.body().response != null) {
                         Gson gson = new Gson();
@@ -588,7 +588,7 @@ public class FragmentHomeContent extends Fragment {
             }
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
-
+                progressDialogCustom.onHide();
             }
         });
     }
