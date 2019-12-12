@@ -1,5 +1,6 @@
 package com.gvtechcom.myshop.Fragment;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,8 +59,8 @@ public class FragmentItemDetail extends Fragment {
     private ToastDialog toastDialog;
 
 
-    @BindView(R.id.layout_recycler_product_children)
-    LinearLayout layoutRecyclerProductChildren;
+    @BindView(R.id.layout_add_view_recycler)
+    LinearLayout layoutAddViewRecycler;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -188,11 +189,19 @@ public class FragmentItemDetail extends Fragment {
         adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
             @Override
             public void dataSend(List<ItemDetailsModel.Children> lsProductChildren) {
-                System.out.println("=================>" + lsProductChildren.size());
+                addingView();
+                System.out.println("===============>" + lsProductChildren.get(0)._id);
             }
         });
     }
 
+
+    public void addingView (){
+        TextView tv = new TextView(getActivity());
+        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        tv.setText("sample text");
+        layoutAddViewRecycler.addView(tv);
+    }
 
 
     private void checkData() {

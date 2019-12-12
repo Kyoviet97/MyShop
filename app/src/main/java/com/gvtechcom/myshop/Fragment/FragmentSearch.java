@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
@@ -65,6 +67,12 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
     @BindView(R.id.scroll_search_fragment)
     NestedScrollView scrollSearch;
 
+    @BindView(R.id.txt_no_result)
+    TextView txtNoResult;
+
+    @BindView(R.id.progressbar_no_result)
+    ProgressBar progressbarNoResult;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +91,6 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         setRetrofit();
         setRecyclerView();
-        callApiSearch("");
     }
 
     private void setRetrofit() {
@@ -104,7 +111,6 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
         } else {
             adapterItemsYouLove.UpdateAdapter(dataAdapter);
         }
-
         adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
             @Override
             public void onClickListener(String productId) {
@@ -114,18 +120,25 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
     }
 
     private void callApiSearch(String keyWord) {
+        txtNoResult.setVisibility(View.GONE);
+        progressDialogCustom.onShow(false, "");
         Call<ItemYouLoveModel.ItemYouLoveModelParser> callApi = apiServer.GetDataSearch(1, 10, keyWord);
         callApi.enqueue(new Callback<ItemYouLoveModel.ItemYouLoveModelParser>() {
             @Override
             public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {
                 if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     setDataAdapter(response.body().response.products);
+                    progressDialogCustom.onHide();
+                    if (response.body().response.products.size() == 0){
+                        txtNoResult.setVisibility(View.VISIBLE);
+                    }
+                    mainActivity.hideSoftKeyboard(getActivity());
                 }
             }
 
             @Override
             public void onFailure(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Throwable t) {
-
+                progressDialogCustom.onHide();
             }
         });
     }
@@ -169,7 +182,6 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
         });
     }
 
-
     private void onListenKeyboard() {
         KeyboardVisibilityEvent.setEventListener(
                 getActivity(),
@@ -178,40 +190,18 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
                     public void onVisibilityChanged(boolean isOpen) {
                         if (isOpen) {
                             mainActivity.setHideButtonNavigation(true);
-                            setupUI(mainLayoutSearch);
-
+                            mainActivity.setupUI(mainLayoutSearch);
                         } else {
-                            mainActivity.setHideButtonNavigation(false);
+                           Handler handler = new Handler();
+                            final Runnable r = new Runnable() {
+                                public void run() {
+                                    mainActivity.setHideButtonNavigation(false);
+                                }
+                            };
+                            handler.postDelayed(r, 500);
                         }
                     }
                 });
-    }
-
-    public void setupUI(View view) {
-
-        if (!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(getActivity());
-                    return false;
-                }
-            });
-        }
-
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                View innerView = ((ViewGroup) view).getChildAt(i);
-                setupUI(innerView);
-            }
-        }
-    }
-
-
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override

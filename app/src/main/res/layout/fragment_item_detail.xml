@@ -375,7 +375,7 @@
                     android:layout_height="@dimen/_50dp"/>
 
                 <LinearLayout
-                    android:id="@+id/layout_recycler_product_children"
+                    android:id="@+id/layout_add_view_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12dp"
