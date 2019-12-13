@@ -55,6 +55,7 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgProductChildren;
         private CardView cardViewBackground;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProductChildren = itemView.findViewById(R.id.img_product_children);
@@ -63,16 +64,9 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (sendListChildren != null) {
-                        if (lsProductChildren.get(getAdapterPosition()).children == null) {
-                            System.out.println("====================> k co data");
-                        } else {
-                            if (lsProductChildren.get(getAdapterPosition()).children.size() > 0) {
-                                sendListChildren.dataSend(lsProductChildren.get(getAdapterPosition()).children);
-                            } else {
-                                System.out.println("===================>" + "size nho hon 1");
-                            }
+                        if (lsProductChildren.get(getAdapterPosition()).children.size() > 0) {
+                            sendListChildren.dataSend(lsProductChildren.get(getAdapterPosition()).children);
                         }
                     }
                 }

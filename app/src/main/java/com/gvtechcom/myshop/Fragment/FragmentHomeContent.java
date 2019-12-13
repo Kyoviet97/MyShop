@@ -52,6 +52,7 @@ import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -102,7 +103,7 @@ public class FragmentHomeContent extends Fragment {
     private AdapterFlashDeals adapterFlashDeals;
     private List<Product> lsProductFlashDeals;
 
-    List<ItemYouLoveModel.Product> lsProductItemYouLove;
+    private List<ItemYouLoveModel.Product> lsProductItemYouLove;
 
     private List<JustForYou> lsJustForYou;
     private AdapterJustForYou adapterJustForYou;
@@ -135,9 +136,9 @@ public class FragmentHomeContent extends Fragment {
     @BindView(R.id.recycler_view_items_you_love)
     RecyclerView recyclerItemsYouLove;
     @BindView(R.id.Nested_scroll_view)
-    NestedScrollView NestedScrollView;
+    NestedScrollView nestedScrollView;
     @BindView(R.id.FeaturedTextView)
-    TextView FeaturedTextView;
+    TextView featuredTextView;
     @BindView(R.id.txt_count_hours)
     TextView txtCountHours;
     @BindView(R.id.txt_count_minute)
@@ -449,6 +450,7 @@ public class FragmentHomeContent extends Fragment {
             setGlideImage(obj.getResponse().getStoresYouLove().get(obj.getResponse().getStoresYouLove().size() - 2).image, imgStoreYouLoveOne);
             setGlideImage(obj.getResponse().getStoresYouLove().get(obj.getResponse().getStoresYouLove().size() - 1).image, imgStoreYouLoveTwo);
 
+
         }
 
         swipeRefreshHomeContent.setRefreshing(false);
@@ -481,11 +483,11 @@ public class FragmentHomeContent extends Fragment {
 
     private void getNestedScrollChange() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            NestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    int NestedScrollHight = (NestedScrollView.getChildAt(0).getHeight() - NestedScrollView.getHeight());
-                    if (isLoadMore == true && scrollY == NestedScrollHight) {
+                    int nestedScrollHight = (nestedScrollView.getChildAt(0).getHeight() - nestedScrollView.getHeight());
+                    if (isLoadMore == true && scrollY == nestedScrollHight) {
                         isLoadMore = false;
                         loadmore();
                         new Handler().postDelayed(new Runnable() {
@@ -575,10 +577,8 @@ public class FragmentHomeContent extends Fragment {
         callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
             @Override
             public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
-                if (response.body().code != 200) {
-                    progressDialogCustom.onHide();
-                    toastDialog.onShow(response.body().message);
-                } else {
+                progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     if (response.body().response != null) {
                         Gson gson = new Gson();
                         String jsonData = gson.toJson(response.body());
@@ -586,6 +586,7 @@ public class FragmentHomeContent extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
                 progressDialogCustom.onHide();

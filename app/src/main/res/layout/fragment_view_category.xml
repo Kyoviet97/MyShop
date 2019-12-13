@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/color_main_bkg"
     android:layout_width="match_parent"
@@ -73,8 +74,11 @@
         android:layout_height="wrap_content"/>
 
    <androidx.core.widget.NestedScrollView
+       android:id="@+id/netScroll_view_category"
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
+       android:layout_height="match_parent"
+       android:scrollbars="none"
+       android:layout_weight="1">
 
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/recycler_view_category_main"
@@ -84,5 +88,18 @@
            android:layout_height="match_parent"/>
 
    </androidx.core.widget.NestedScrollView>
+
+
+    <ProgressBar
+        android:id="@+id/progressbar_load_api_view_category_footer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30dp"
+        android:background="@color/navigation_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/bkg_progressbar"/>
 
 </LinearLayout>

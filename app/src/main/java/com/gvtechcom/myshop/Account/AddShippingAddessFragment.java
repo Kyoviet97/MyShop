@@ -29,6 +29,7 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.DialogCityAddress;
 import com.gvtechcom.myshop.dialog.DialogCountryAddress;
 import com.gvtechcom.myshop.dialog.DialogCustomMessage;
@@ -237,13 +238,10 @@ public class AddShippingAddessFragment extends Fragment {
         CallCountry.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
-                if (response.body().code != 200) {
-                    toastDialog.onShow(response.body().message);
-                } else {
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     countryInfoModel = response.body();
                 }
             }
-
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
                 toastDialog.onShow("An error occurred, please try again later");
@@ -252,7 +250,6 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void getApiDistric(String idCity) {
-        progressDialogCustom.onShow(false, "Loading...");
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));
@@ -260,11 +257,7 @@ public class AddShippingAddessFragment extends Fragment {
         call.enqueue(new Callback<CountryInfoModel.CountryInfoModelParser>() {
             @Override
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
-                if (response.body().code != 200) {
-                    progressDialogCustom.onHide();
-                    toastDialog.onShow(response.body().message);
-                } else {
-                    progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     dataDistric = response.body().response.data;
                 }
             }
@@ -276,7 +269,6 @@ public class AddShippingAddessFragment extends Fragment {
     }
 
     private void getApiWard(String idWard) {
-        progressDialogCustom.onShow(false, "Loading...");
         GetMD5 getMD5 = new GetMD5();
         GetTime getTime = new GetTime();
         String timeSign = String.valueOf((getTime.getCalendar() + 30000));

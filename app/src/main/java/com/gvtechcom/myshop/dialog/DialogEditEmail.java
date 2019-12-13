@@ -1,14 +1,19 @@
 package com.gvtechcom.myshop.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialog;
 
+import com.gvtechcom.myshop.Account.AccountActivity;
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -45,6 +50,9 @@ public class DialogEditEmail extends AppCompatDialog {
 
     @BindView(R.id.txt_message_change_fullname_account)
     TextView txtMessageChangeFullnameAccount;
+
+    @BindView(R.id.layout_main_edit_dialog)
+    LinearLayout layoutMainEditDialog;
 
     public DialogEditEmail(Context context, String email) {
         super(context, R.style.Theme_Dialog);

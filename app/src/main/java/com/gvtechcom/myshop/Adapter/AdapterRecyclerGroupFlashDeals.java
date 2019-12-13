@@ -74,8 +74,8 @@ public class AdapterRecyclerGroupFlashDeals extends RecyclerView.Adapter<Adapter
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNameGroup;
-        ImageView imgCheckNameGroub;
+        private TextView txtNameGroup;
+        private ImageView imgCheckNameGroub;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

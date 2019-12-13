@@ -236,7 +236,12 @@ public interface APIServer {
     Call<ItemDetailsModel.ItemDetailsModelParser> GetApiItemDetails(@Query("product_id") String product_id);
 
     @GET("product/get-by-category")
-    Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewCategory(@Query("category_id") String category_id);
+    Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewCategory(@Query("category_id") String category_id,
+                                                                              @Query("page") Integer page,
+                                                                              @Query("per_page") Integer per_page);
+
+    @GET("product/get-by-store")
+    Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewBrands(@Query("category_id") String category_id);
 
 
     @GET("categories")

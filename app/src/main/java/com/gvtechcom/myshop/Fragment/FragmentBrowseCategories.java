@@ -117,7 +117,7 @@ public class FragmentBrowseCategories extends Fragment {
 
     private void callApiViewCategory(String idCategoty) {
         Gson gson = new Gson();
-        Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoty);
+        Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoty, 1, 8);
         call.enqueue(new Callback<ProductByCategoryModel.ProductByCategoryModelParser>() {
             @Override
             public void onResponse(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Response<ProductByCategoryModel.ProductByCategoryModelParser> response) {
@@ -129,6 +129,7 @@ public class FragmentBrowseCategories extends Fragment {
                         String jsonData = gson.toJson(dataViewCategor);
                         Bundle bundle = new Bundle();
                         bundle.putString("jsonDataViewCategory", jsonData);
+                        bundle.putString("idCategoty", idCategoty);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentViewCategory = new FragmentViewCategory();
                         fragmentViewCategory.setArguments(bundle);
@@ -141,7 +142,6 @@ public class FragmentBrowseCategories extends Fragment {
             }
             @Override
             public void onFailure(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Throwable t) {
-
             }
         });
     }

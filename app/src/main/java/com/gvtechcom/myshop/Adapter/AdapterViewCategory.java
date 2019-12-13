@@ -22,13 +22,17 @@ import butterknife.BindView;
 
 public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategory.ViewHolder> {
     private Context context;
-    private ProductByCategoryModel lsProductByCategory;
+    private List<ProductByCategoryModel.Products> lsProductByCategory;
 
-    public AdapterViewCategory(Context context, ProductByCategoryModel lsProductByCategory) {
+    public AdapterViewCategory(Context context, List<ProductByCategoryModel.Products> ls){
         this.context = context;
-        this.lsProductByCategory = lsProductByCategory;
+        this.lsProductByCategory = ls;
     }
 
+    public void upDateAdapter(List<ProductByCategoryModel.Products> lsProductByCategoryUpdate){
+        this.lsProductByCategory = lsProductByCategoryUpdate;
+        notifyDataSetChanged();
+    }
 
 
     @NonNull
@@ -42,19 +46,20 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
-                .load(lsProductByCategory.products.get(position).image)
+                .load(lsProductByCategory.get(position).image)
                 .placeholder(R.drawable.banner_image_slide)
+                .override(200, 200)
                 .error(R.drawable.banner_image_slide)
                 .into(holder.imageViewJustForYou);
-
-        holder.infoJustForYou.setText(lsProductByCategory.products.get(position).product_name);
-        holder.priceJustForYou.setText("$" + lsProductByCategory.products.get(position).price);
-        holder.soldJustForYou.setText(lsProductByCategory.products.get(position).sold + " sold");
+        holder.infoJustForYou.setText(lsProductByCategory.get(position).product_name);
+        holder.priceJustForYou.setText("$" + lsProductByCategory.get(position).price);
+        holder.soldJustForYou.setText(lsProductByCategory.get(position).sold + " sold");
     }
+
 
     @Override
     public int getItemCount() {
-        return lsProductByCategory.products.size();
+        return lsProductByCategory.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,21 +68,20 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewJustForYou = (ImageView) itemView.findViewById(R.id.img_just_for_you);
-            infoJustForYou = (TextView) itemView.findViewById(R.id.txt_info_just_for_you);
-            priceJustForYou = (TextView) itemView.findViewById(R.id.txt_price_just_for_you);
-            soldJustForYou = (TextView) itemView.findViewById(R.id.txt_sold_just_for_you);
+            imageViewJustForYou = itemView.findViewById(R.id.img_just_for_you);
+            infoJustForYou = itemView.findViewById(R.id.txt_info_just_for_you);
+            priceJustForYou = itemView.findViewById(R.id.txt_price_just_for_you);
+            soldJustForYou = itemView.findViewById(R.id.txt_sold_just_for_you);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (setOnClickListener != null){
-                        setOnClickListener.setOnClickListener(lsProductByCategory.products.get(getAdapterPosition()).product_id);
+                    if (setOnClickListener != null) {
+                        setOnClickListener.setOnClickListener(lsProductByCategory.get(getAdapterPosition()).product_id);
                     }
                 }
             });
         }
-
     }
 
     public interface SetOnClickListener{

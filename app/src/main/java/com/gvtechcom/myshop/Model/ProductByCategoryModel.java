@@ -9,7 +9,7 @@ public class ProductByCategoryModel {
     public Integer total;
     public List<Products> products;
 
-    public class Products{
+    public class Products {
         public String product_id;
         public String product_name;
         public String image;
@@ -17,7 +17,7 @@ public class ProductByCategoryModel {
         public Integer sold;
     }
 
-    public class ProductByCategoryModelParser{
+    public class ProductByCategoryModelParser {
         public Integer status;
         public String content;
         public ProductByCategoryModel data;

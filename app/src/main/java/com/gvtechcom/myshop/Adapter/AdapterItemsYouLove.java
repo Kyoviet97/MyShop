@@ -25,7 +25,7 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
         this.lsItemYouLove = lsItemYouLove;
     }
 
-    public void UpdateAdapter(List<ItemYouLoveModel.Product> lsUpdate){
+    public void UpdateAdapter(List<ItemYouLoveModel.Product> lsUpdate) {
         this.lsItemYouLove = lsUpdate;
         notifyDataSetChanged();
     }
@@ -42,7 +42,7 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
                 .load(lsItemYouLove.get(position).image)
-                .override(200,200)
+                .override(200, 200)
                 .into(holder.imageViewItemsYouLove);
         holder.infoItemsYouLove.setText(lsItemYouLove.get(position).product_name);
         holder.priceItemsYouLove.setText("$" + lsItemYouLove.get(position).price);
@@ -54,10 +54,9 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
         return lsItemYouLove.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView imageViewItemsYouLove;
-        TextView infoItemsYouLove, priceItemsYouLove, soldItemsYouLove;
-
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageViewItemsYouLove;
+        private TextView infoItemsYouLove, priceItemsYouLove, soldItemsYouLove;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewItemsYouLove = itemView.findViewById(R.id.img_just_for_you);
@@ -67,22 +66,21 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (itemClickListener != null){
+                    if (itemClickListener != null) {
                         itemClickListener.onClickListener(lsItemYouLove.get(getAdapterPosition()).product_id);
                     }
                 }
             });
         }
-
     }
 
-    public interface ItemClickListener{
+    public interface ItemClickListener {
         void onClickListener(String productId);
     }
 
     private ItemClickListener itemClickListener;
 
-    public void setOnItemClickListener(ItemClickListener itemClickListener){
+    public void setOnItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 

@@ -66,7 +66,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
             @Override
             public void setItemClick(String idCategoci) {
                 Gson gson = new Gson();
-                Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoci);
+                Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoci, 1, 20);
                 call.enqueue(new Callback<ProductByCategoryModel.ProductByCategoryModelParser>() {
                     @Override
                     public void onResponse(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Response<ProductByCategoryModel.ProductByCategoryModelParser> response) {

@@ -25,6 +25,7 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.sql.SQLOutput;
@@ -50,7 +51,6 @@ public class ShippingAddressFragment extends Fragment {
     private Fragment fragment;
     private MainActivity mainActivity;
     private List<BaseGetAPIShippingAddress.Data> dataAllAddressList;
-
     @BindView(R.id.swipe_refresh_layout_shipping_address)
     SwipeRefreshLayout swipeRefreshLayoutShippingAddress;
 
@@ -93,15 +93,12 @@ public class ShippingAddressFragment extends Fragment {
     private void init() {
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
-
         Retrofit retrofit;
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
-
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_shipping_address);
         setViewRecycler();
-
         fragment = new ShippingAddressFragment();
     }
 
@@ -130,17 +127,12 @@ public class ShippingAddressFragment extends Fragment {
         call.enqueue(new Callback<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser>() {
             @Override
             public void onResponse(Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call, Response<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> response) {
-                System.out.println("========>" + response.toString());
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
                     Toast.makeText(getActivity(), "Hết phiên đăng nhập!", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (response.body().code != 200) {
+                    if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                         progressDialogCustom.onHide();
-                        Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
-                    } else {
-                        progressDialogCustom.onHide();
-
                         if (response.body().response.data == null) {
                         } else {
                             dataAllAddressList = new ArrayList<>();

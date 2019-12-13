@@ -4,6 +4,7 @@ public class Const {
     public static final String BASE_URL = "https://api.ecommercegv.xyz/";
     public static final String BASE_URL_REGISTER = "user/register-phone";
     public static final String PRIVATE_CODE_SIGN = "2418848e3b63ecf110619452815d3211";
+    public static final Integer TOTAL_PRODUCT = 8;
 
 
     public static final String TAB_HOME = "TAB_HOME";

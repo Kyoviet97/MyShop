@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.gvtechcom.myshop.Account.AccountActivity;
 import com.gvtechcom.myshop.Account.FragmentUpdateNotify;
 import com.gvtechcom.myshop.Account.ShippingAddressFragment;
 import com.gvtechcom.myshop.MainActivity;
@@ -90,6 +92,7 @@ public class FragmentAccount extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(false, false, false);
         mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
+        mainActivity.setupUI(mainLayoutFragmentAccount);
         return rootView;
     }
 
@@ -257,6 +260,11 @@ public class FragmentAccount extends Fragment {
                 } else {
                     getDataLocal();
                 }
+                InputMethodManager inputManager = null;
+                inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (getActivity().getCurrentFocus() != null) {
+                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
             }
         });
     }
@@ -362,7 +370,6 @@ public class FragmentAccount extends Fragment {
         });
     }
 
-
     private void accountLogout() {
         DialogCustomMessage dialogCustomMessage = new DialogCustomMessage(getActivity(), "Logout Account", "You want to logout");
         dialogCustomMessage.show();
@@ -406,6 +413,5 @@ public class FragmentAccount extends Fragment {
             }
         });
     }
-
 
 }
