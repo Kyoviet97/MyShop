@@ -34,6 +34,8 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.ShowProgressBar;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
@@ -153,7 +155,7 @@ public class FragmentItemDetail extends Fragment {
         setRetroFit();
         setViewRecyclerView();
         checkData();
-        setSoldQuntity();
+        setSoldQuantity();
     }
 
     private void setRetroFit() {
@@ -238,13 +240,13 @@ public class FragmentItemDetail extends Fragment {
     }
 
     private void callNewApiItemDetail(String idProduct) {
+        ShowProgressBar.showProgress(getActivity());
         Call<ItemDetailsModel.ItemDetailsModelParser> call = apiServer.GetApiItemDetails(idProduct);
         call.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
             @Override
             public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
-                if (response.body().code != 200) {
-                    toastDialog.onShow(response.body().message);
-                } else {
+                ShowProgressBar.hideProgress();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = response.body();
                     if (dataApiItemDetail != null) {
                         setDataItemDataDetails(dataApiItemDetail);
@@ -255,6 +257,7 @@ public class FragmentItemDetail extends Fragment {
 
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
+                ShowProgressBar.hideProgress();
             }
         });
     }
@@ -360,7 +363,7 @@ public class FragmentItemDetail extends Fragment {
         }
     }
 
-    private void setSoldQuntity() {
+    private void setSoldQuantity() {
         imgLostSoldProductToBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

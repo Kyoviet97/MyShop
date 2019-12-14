@@ -1,7 +1,5 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -9,14 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,14 +21,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterItemsYouLove;
+import com.gvtechcom.myshop.Adapter.AdapterKeyWordsSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
+import com.gvtechcom.myshop.Model.KeywordsModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
@@ -50,13 +47,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class   FragmentSearch extends Fragment implements KeywordSearch {
+public class FragmentSearch extends Fragment implements KeywordSearch {
     private View rootView;
     private MainActivity mainActivity;
     private AdapterItemsYouLove adapterItemsYouLove;
+    private AdapterKeyWordsSearch adapterKeyWordsSearch;
     private APIServer apiServer;
     private FragmentManager fragmentManager;
-    private ProgressDialogCustom progressDialogCustom;
+    private int page;
+    private Boolean isLoadMore = true;
 
     @BindView(R.id.main_layout_search)
     LinearLayout mainLayoutSearch;
@@ -70,14 +69,13 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
     @BindView(R.id.txt_no_result)
     TextView txtNoResult;
 
-    @BindView(R.id.progressbar_no_result)
-    ProgressBar progressbarNoResult;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
         mainActivity = (MainActivity) getActivity();
+        mainActivity.setDisplayNavigationBar(true, true, false);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_white, "apple watch", R.color.color_startus_home, "#FCC39D");
         ButterKnife.bind(this, rootView);
         return rootView;
     }
@@ -85,12 +83,13 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.page = 1;
         mainActivity.setEditSearchNavigation(true);
         mainActivity.setKeywordSearchl(this);
         onListenKeyboard();
-        progressDialogCustom = new ProgressDialogCustom(getActivity());
         setRetrofit();
         setRecyclerView();
+        callApiKeywords();
     }
 
     private void setRetrofit() {
@@ -100,7 +99,8 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
     }
 
     private void setRecyclerView() {
-        LinearLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+//        LinearLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerViewSearch.setLayoutManager(layoutManager);
     }
 
@@ -119,18 +119,40 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
         });
     }
 
+    private void callApiKeywords(){
+        Call<KeywordsModel.KeywordParser> keywordSearchCall = apiServer.GetApiKeywordsSearch();
+        keywordSearchCall.enqueue(new Callback<KeywordsModel.KeywordParser>() {
+            @Override
+            public void onResponse(Call<KeywordsModel.KeywordParser> call, Response<KeywordsModel.KeywordParser> response) {
+               if ( ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)){
+                    adapterKeyWordsSearch = new AdapterKeyWordsSearch(response.body().dataKeywordsModel);
+                    recyclerViewSearch.setAdapter(adapterKeyWordsSearch);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KeywordsModel.KeywordParser> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void callApiSearch(String keyWord) {
         txtNoResult.setVisibility(View.GONE);
-        progressDialogCustom.onShow(false, "");
-        Call<ItemYouLoveModel.ItemYouLoveModelParser> callApi = apiServer.GetDataSearch(1, 10, keyWord);
+        ShowProgressBar.showProgress(getActivity());
+        Call<ItemYouLoveModel.ItemYouLoveModelParser> callApi = apiServer.GetDataSearch(page, 8, keyWord);
         callApi.enqueue(new Callback<ItemYouLoveModel.ItemYouLoveModelParser>() {
             @Override
             public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {
+                ShowProgressBar.hideProgress();
                 if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     setDataAdapter(response.body().response.products);
-                    progressDialogCustom.onHide();
-                    if (response.body().response.products.size() == 0){
+                    if (response.body().response.products.size() == 0) {
                         txtNoResult.setVisibility(View.VISIBLE);
+                    }else{
+                        if (response.body().response.products.size() > Const.TOTAL_PRODUCT){
+                            getNestedScrollChange();
+                        }
                     }
                     mainActivity.hideSoftKeyboard(getActivity());
                 }
@@ -138,7 +160,7 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
 
             @Override
             public void onFailure(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Throwable t) {
-                progressDialogCustom.onHide();
+                ShowProgressBar.hideProgress();
             }
         });
     }
@@ -150,7 +172,7 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
         Bundle bundle = new Bundle();
         bundle.putString("dataJson", jsonData);
         bundle.putString("fromToFragment", "homeContent");
-        progressDialogCustom.onHide();
+        ShowProgressBar.hideProgress();
         fragmentItemDetails.setArguments(bundle);
         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
@@ -158,28 +180,46 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
     }
 
     private void callApiDataItemDetail(String idProduct) {
-        progressDialogCustom.onShow(false, "");
+        ShowProgressBar.showProgress(getActivity());
         Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
         callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
             @Override
             public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
                 if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
-                    progressDialogCustom.onHide();
                     if (response.body().response != null) {
                         Gson gson = new Gson();
                         String jsonData = gson.toJson(response.body());
                         setDataItemDetails(jsonData);
                     }
-                } else {
-                    progressDialogCustom.onHide();
                 }
             }
 
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
-                progressDialogCustom.onHide();
+                ShowProgressBar.hideProgress();
             }
         });
+    }
+
+    private void getNestedScrollChange() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollSearch.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    int nestedScrollHight = (scrollSearch.getChildAt(0).getHeight() - scrollSearch.getHeight());
+                    if (isLoadMore == true && scrollY == nestedScrollHight) {
+                        isLoadMore = false;
+                        System.out.println("================> 11111111111111111111");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                isLoadMore = true;
+                            }
+                        }, 1000);
+                    }
+                }
+            });
+        }
     }
 
     private void onListenKeyboard() {
@@ -192,7 +232,7 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
                             mainActivity.setHideButtonNavigation(true);
                             mainActivity.setupUI(mainLayoutSearch);
                         } else {
-                           Handler handler = new Handler();
+                            Handler handler = new Handler();
                             final Runnable r = new Runnable() {
                                 public void run() {
                                     mainActivity.setHideButtonNavigation(false);
@@ -212,6 +252,6 @@ public class   FragmentSearch extends Fragment implements KeywordSearch {
 
     @Override
     public void dataKeyWord(String keyWord) {
-        callApiSearch(keyWord);
+//        callApiSearch(keyWord);
     }
 }

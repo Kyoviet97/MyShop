@@ -22,7 +22,9 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
+import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class FragmentBrowseCategories extends Fragment {
     private ToastDialog toastDialog;
     private FragmentViewCategory fragmentViewCategory;
     private FragmentItemDetail fragmentItemDetail;
+    private ProgressDialogCustom progressDialogCustom;
 
     @BindView(R.id.recycler_browse_categories_left)
     RecyclerView RecyclerViewBrowseLeft;
@@ -71,6 +74,7 @@ public class FragmentBrowseCategories extends Fragment {
         mainActivity.setColorIconDarkMode(true, R.color.white);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "apple watch", R.color.white, "#9D9690");
         toastDialog = new ToastDialog(getActivity());
+        progressDialogCustom  = new ProgressDialogCustom(getActivity());
         setRetrofit();
         setRecyclerView();
         callApiBrowse();
@@ -116,14 +120,14 @@ public class FragmentBrowseCategories extends Fragment {
     }
 
     private void callApiViewCategory(String idCategoty) {
+        progressDialogCustom.onShow(false, "");
         Gson gson = new Gson();
         Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoty, 1, 8);
         call.enqueue(new Callback<ProductByCategoryModel.ProductByCategoryModelParser>() {
             @Override
             public void onResponse(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Response<ProductByCategoryModel.ProductByCategoryModelParser> response) {
-                if (response.body().status != 200) {
-                    toastDialog.onShow(response.body().content);
-                } else {
+                progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)) {
                     ProductByCategoryModel dataViewCategor = response.body().data;
                     if (dataViewCategor != null) {
                         String jsonData = gson.toJson(dataViewCategor);
@@ -142,6 +146,7 @@ public class FragmentBrowseCategories extends Fragment {
             }
             @Override
             public void onFailure(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Throwable t) {
+                progressDialogCustom.onHide();
             }
         });
     }

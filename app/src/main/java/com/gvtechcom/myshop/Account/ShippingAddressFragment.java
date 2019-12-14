@@ -26,6 +26,7 @@ import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
+import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.sql.SQLOutput;
@@ -111,6 +112,7 @@ public class ShippingAddressFragment extends Fragment {
     }
 
     private void getApiAddress() {
+        swipeRefreshLayoutShippingAddress.setRefreshing(false);
         progressDialogCustom.onShow(false, "Loading...");
         MySharePreferences preferences = new MySharePreferences();
         String AccessToken = preferences.GetSharePref(getActivity(), "access_token");
@@ -129,7 +131,8 @@ public class ShippingAddressFragment extends Fragment {
             public void onResponse(Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> call, Response<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), "Hết phiên đăng nhập!", Toast.LENGTH_SHORT).show();
+                    ToastDialog toastDialog = new ToastDialog(getActivity());
+                    toastDialog.onShow("Het phien dang nhap");
                 } else {
                     if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                         progressDialogCustom.onHide();
@@ -141,7 +144,6 @@ public class ShippingAddressFragment extends Fragment {
                             adapterRecyclerViewShipping = new AdapterRecyclerViewShipping(dataAllAddressList, getActivity());
                             clickAdapter();
                             recyclerView.setAdapter(adapterRecyclerViewShipping);
-                            swipeRefreshLayoutShippingAddress.setRefreshing(false);
                         }
                     }
                 }

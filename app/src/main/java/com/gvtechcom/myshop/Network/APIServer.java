@@ -11,6 +11,7 @@ import com.gvtechcom.myshop.Model.GetAddressIdAddress;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.ItemYouLoveModel;
 import com.gvtechcom.myshop.Model.JustForYou;
+import com.gvtechcom.myshop.Model.KeywordsModel;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.Model.UpdateNotifyModel;
 
@@ -243,6 +244,8 @@ public interface APIServer {
     @GET("product/get-by-store")
     Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewBrands(@Query("category_id") String category_id);
 
+    @GET("keywords")
+    Call<KeywordsModel.KeywordParser> GetApiKeywordsSearch();
 
     @GET("categories")
     Call<BrowseCategoriesModel.BrowseCategoriesModelParser> GetApiBrowseCategoriesModel();

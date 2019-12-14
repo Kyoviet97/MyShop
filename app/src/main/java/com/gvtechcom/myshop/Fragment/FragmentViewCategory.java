@@ -37,8 +37,10 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
+import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -199,12 +201,13 @@ public class FragmentViewCategory extends Fragment {
     }
 
     private void callApiDataItemDetail(String idProduct) {
+        ShowProgressBar.showProgress(getActivity());
         Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
         callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
             @Override
             public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
-                if (response.body().code != 200) {
-                } else {
+                ShowProgressBar.hideProgress();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     if (response.body().response != null) {
                         Gson gson = new Gson();
                         String jsonData = gson.toJson(response.body());

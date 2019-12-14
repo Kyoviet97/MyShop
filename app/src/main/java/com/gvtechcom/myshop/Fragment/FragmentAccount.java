@@ -143,11 +143,7 @@ public class FragmentAccount extends Fragment {
                 setClickShippingAddress();
                 break;
             case R.id.btn_share_to_friends:
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
-                startActivity(Intent.createChooser(sharingIntent, "Share"));
+                shareEcomToFriends();
                 break;
 
         }
@@ -320,6 +316,14 @@ public class FragmentAccount extends Fragment {
                 txtGenderAccount.setText("Male");
             }
         }
+    }
+
+    private void shareEcomToFriends(){
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text Demo");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Text Demo");
+        startActivity(Intent.createChooser(sharingIntent, "Share eCom to Friends"));
     }
 
     private void loadApiChangeBirthDay(String birthday) {
