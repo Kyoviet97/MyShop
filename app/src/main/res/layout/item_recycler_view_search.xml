@@ -2,13 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_6dp">
 
     <TextView
         android:id="@+id/txt_item_recycler_view_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/_14sp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_18sp"
         android:textColor="#4A4A4A"
+        android:text="As soon as it"
         android:fontFamily="@font/sf_pro_display_regular"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#4A4A4A"/>
 </LinearLayout>

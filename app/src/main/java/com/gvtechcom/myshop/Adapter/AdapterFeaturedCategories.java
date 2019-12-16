@@ -35,21 +35,13 @@ public class AdapterFeaturedCategories extends RecyclerView.Adapter<AdapterFeatu
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context)
-                .load(lsFeaturedCategories.get(position).getImage())
-                .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
-                .into(holder.imageViewFeaturedCategoriesUp);
+            Glide.with(context)
+                    .load(lsFeaturedCategories.get(position).getImage())
+                    .placeholder(R.drawable.banner_image_slide)
+                    .error(R.drawable.banner_image_slide)
+                    .into(holder.imageViewFeaturedCategories);
 
-
-        Glide.with(context)
-                .load(lsFeaturedCategories.get(position).getImage())
-                .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
-                .into(holder.imageViewFeaturedCategoriesDown);
-
-        holder.nameFeaturedCategoriesUp.setText(lsFeaturedCategories.get(position).getName());
-        holder.nameFeaturedCategoriesDown.setText(lsFeaturedCategories.get(position).getName());
+            holder.nameFeaturedCategories.setText(lsFeaturedCategories.get(position).getName());
 
     }
 
@@ -59,15 +51,13 @@ public class AdapterFeaturedCategories extends RecyclerView.Adapter<AdapterFeatu
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewFeaturedCategoriesUp, imageViewFeaturedCategoriesDown;
-        TextView nameFeaturedCategoriesUp, nameFeaturedCategoriesDown;
+        ImageView imageViewFeaturedCategories;
+        TextView nameFeaturedCategories;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewFeaturedCategoriesUp = (ImageView) itemView.findViewById(R.id.image_featured_Categories_up);
-            imageViewFeaturedCategoriesDown = (ImageView) itemView.findViewById(R.id.image_featured_Categories_down);
-            nameFeaturedCategoriesUp = (TextView) itemView.findViewById(R.id.textView_featured_Categories_up);
-            nameFeaturedCategoriesDown = (TextView) itemView.findViewById(R.id.textView_featured_Categories_down);
+            imageViewFeaturedCategories = (ImageView) itemView.findViewById(R.id.image_featured_Categories_up);
+            nameFeaturedCategories = (TextView) itemView.findViewById(R.id.textView_featured_Categories_up);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

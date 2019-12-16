@@ -64,9 +64,9 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (sendListChildren != null) {
+                    if (sendListChildren != null && lsProductChildren.get(getAdapterPosition()).children != null) {
                         if (lsProductChildren.get(getAdapterPosition()).children.size() > 0) {
-                            sendListChildren.dataSend(lsProductChildren.get(getAdapterPosition()).children);
+                            sendListChildren.dataSend(lsProductChildren.get(getAdapterPosition()).children, getAdapterPosition());
                         }
                     }
                 }
@@ -75,7 +75,7 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
     }
 
     public interface SendListChildren{
-        void dataSend(List<ItemDetailsModel.Children> lsProductChildren);
+        void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position);
     }
 
     private SendListChildren sendListChildren;

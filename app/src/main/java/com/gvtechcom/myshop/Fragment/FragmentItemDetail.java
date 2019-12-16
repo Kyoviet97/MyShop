@@ -190,9 +190,9 @@ public class FragmentItemDetail extends Fragment {
         recyclerProductChildrenItemDetail.setAdapter(adapterProductChildren);
         adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
             @Override
-            public void dataSend(List<ItemDetailsModel.Children> lsProductChildren) {
-                addingView();
-                System.out.println("===============>" + lsProductChildren.get(0)._id);
+            public void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position) {
+//                addingView();
+                Toast.makeText(getActivity(), lsProductChildren.get(position)._id, Toast.LENGTH_SHORT).show();
             }
         });
     }

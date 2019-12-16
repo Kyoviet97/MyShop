@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +22,8 @@ import com.gvtechcom.myshop.Adapter.AdapterItemsYouLove;
 import com.gvtechcom.myshop.Adapter.AdapterKeyWordsSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
 import com.gvtechcom.myshop.MainActivity;
+import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
-import com.gvtechcom.myshop.Model.ItemYouLoveModel;
 import com.gvtechcom.myshop.Model.KeywordsModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -33,11 +31,11 @@ import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
-import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,6 +54,7 @@ public class FragmentSearch extends Fragment implements KeywordSearch {
     private FragmentManager fragmentManager;
     private int page;
     private Boolean isLoadMore = true;
+    private KeywordsModel dataKeyword;
 
     @BindView(R.id.main_layout_search)
     LinearLayout mainLayoutSearch;
@@ -104,20 +103,20 @@ public class FragmentSearch extends Fragment implements KeywordSearch {
         recyclerViewSearch.setLayoutManager(layoutManager);
     }
 
-    private void setDataAdapter(List<ItemYouLoveModel.Product> dataAdapter) {
-        if (adapterItemsYouLove == null) {
-            adapterItemsYouLove = new AdapterItemsYouLove(getActivity(), dataAdapter);
-            recyclerViewSearch.setAdapter(adapterItemsYouLove);
-        } else {
-            adapterItemsYouLove.UpdateAdapter(dataAdapter);
-        }
-        adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
-            @Override
-            public void onClickListener(String productId) {
-                callApiDataItemDetail(productId);
-            }
-        });
-    }
+//    private void setDataAdapter(List<ItemYouLoveModel.Product> dataAdapter) {
+//        if (adapterItemsYouLove == null) {
+//            adapterItemsYouLove = new AdapterItemsYouLove(getActivity(), dataAdapter);
+//            recyclerViewSearch.setAdapter(adapterItemsYouLove);
+//        } else {
+//            adapterItemsYouLove.UpdateAdapter(dataAdapter);
+//        }
+//        adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
+//            @Override
+//            public void onClickListener(String productId) {
+//                callApiDataItemDetail(productId);
+//            }
+//        });
+//    }
 
     private void callApiKeywords(){
         Call<KeywordsModel.KeywordParser> keywordSearchCall = apiServer.GetApiKeywordsSearch();
@@ -125,11 +124,11 @@ public class FragmentSearch extends Fragment implements KeywordSearch {
             @Override
             public void onResponse(Call<KeywordsModel.KeywordParser> call, Response<KeywordsModel.KeywordParser> response) {
                if ( ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)){
-                    adapterKeyWordsSearch = new AdapterKeyWordsSearch(response.body().dataKeywordsModel);
+                   dataKeyword = response.body().dataKeywordsModel;
+                    adapterKeyWordsSearch = new AdapterKeyWordsSearch(dataKeyword.lsKeywordsPopular);
                     recyclerViewSearch.setAdapter(adapterKeyWordsSearch);
                 }
             }
-
             @Override
             public void onFailure(Call<KeywordsModel.KeywordParser> call, Throwable t) {
 
@@ -137,33 +136,53 @@ public class FragmentSearch extends Fragment implements KeywordSearch {
         });
     }
 
-    private void callApiSearch(String keyWord) {
-        txtNoResult.setVisibility(View.GONE);
-        ShowProgressBar.showProgress(getActivity());
-        Call<ItemYouLoveModel.ItemYouLoveModelParser> callApi = apiServer.GetDataSearch(page, 8, keyWord);
-        callApi.enqueue(new Callback<ItemYouLoveModel.ItemYouLoveModelParser>() {
-            @Override
-            public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {
-                ShowProgressBar.hideProgress();
-                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
-                    setDataAdapter(response.body().response.products);
-                    if (response.body().response.products.size() == 0) {
-                        txtNoResult.setVisibility(View.VISIBLE);
-                    }else{
-                        if (response.body().response.products.size() > Const.TOTAL_PRODUCT){
-                            getNestedScrollChange();
-                        }
-                    }
-                    mainActivity.hideSoftKeyboard(getActivity());
-                }
-            }
+    private List<String> filterKeyword(String stKeyword){
+        List<String> newData = new ArrayList<>();
+        int i = 0;
+        for (String n : newData)
+            if (n.toLowerCase().contains(stKeyword.toLowerCase())) {
+                newData.add(n);
+                System.out.println("=======================>" + newData.size());
 
-            @Override
-            public void onFailure(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Throwable t) {
-                ShowProgressBar.hideProgress();
             }
-        });
+        return newData;
     }
+
+    private void setAdapterKeyWordsSearch(String key){
+        if (adapterKeyWordsSearch != null){
+            adapterKeyWordsSearch = new AdapterKeyWordsSearch(filterKeyword(key));
+        }else {
+            adapterKeyWordsSearch.upDateAdapter(filterKeyword(key));
+        }
+    }
+
+//    private void callApiSearch(String keyWord) {
+//        txtNoResult.setVisibility(View.GONE);
+//        ShowProgressBar.showProgress(getActivity());
+//        Call<ItemYouLoveModel.ItemYouLoveModelParser> callApi = apiServer.GetDataSearch(page, 8, keyWord);
+//        callApi.enqueue(new Callback<ItemYouLoveModel.ItemYouLoveModelParser>() {
+//            @Override
+//            public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {
+//                ShowProgressBar.hideProgress();
+//                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
+//                    setDataAdapter(response.body().response.products);
+//                    if (response.body().response.products.size() == 0) {
+//                        txtNoResult.setVisibility(View.VISIBLE);
+//                    }else{
+//                        if (response.body().response.products.size() > Const.TOTAL_PRODUCT){
+//                            getNestedScrollChange();
+//                        }
+//                    }
+//                    mainActivity.hideSoftKeyboard(getActivity());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Throwable t) {
+//                ShowProgressBar.hideProgress();
+//            }
+//        });
+//    }
 
     private void setDataItemDetails(String jsonData) {
         fragmentManager = getFragmentManager();
@@ -253,5 +272,7 @@ public class FragmentSearch extends Fragment implements KeywordSearch {
     @Override
     public void dataKeyWord(String keyWord) {
 //        callApiSearch(keyWord);
+        System.out.println("=================>" + keyWord);
+        filterKeyword(keyWord);
     }
 }

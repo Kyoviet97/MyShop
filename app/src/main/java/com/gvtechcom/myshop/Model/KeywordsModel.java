@@ -15,6 +15,14 @@ public class KeywordsModel {
     @SerializedName("keywords_popular")
     public List<String> lsKeywordsPopular;
 
+    public List<String> getLsKeywordsHot() {
+        return lsKeywordsHot;
+    }
+
+    public void setLsKeywordsHot(List<String> lsKeywordsHot) {
+        this.lsKeywordsHot = lsKeywordsHot;
+    }
+
     public class KeywordParser{
         @SerializedName("status")
         public Integer status;

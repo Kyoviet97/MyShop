@@ -260,7 +260,7 @@ public class FragmentHomeContent extends Fragment {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerItemsYouLove.setLayoutManager(linearLayoutManager);
 
-        LinearLayoutManager linearLayoutManagerFeaturedCategories = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager linearLayoutManagerFeaturedCategories = new GridLayoutManager(getActivity(), 2, RecyclerView.HORIZONTAL, false);
         recyclerViewFeaturedCategories.setLayoutManager(linearLayoutManagerFeaturedCategories);
     }
 
@@ -602,7 +602,7 @@ public class FragmentHomeContent extends Fragment {
                 .into((ImageView) view);
     }
 
-    @OnClick({R.id.btn_browse_categories, R.id.txt_flash_deals_default, R.id.btn_flash_deals})
+    @OnClick({R.id.btn_browse_categories, R.id.txt_flash_deals_default, R.id.btn_flash_deals, R.id.btn_coins_coupons})
     void OnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_browse_categories:
@@ -621,6 +621,14 @@ public class FragmentHomeContent extends Fragment {
                 fragmentTransactionFlashDeal.replace(R.id.content_home_frame_layout, new FragmentFlashDetails());
                 fragmentTransactionFlashDeal.addToBackStack("home");
                 fragmentTransactionFlashDeal.commit();
+                break;
+
+            case R.id.btn_coins_coupons:
+                fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
+                fragmentTransaction1.replace(R.id.content_home_frame_layout, new FragmentViewBrand());
+                fragmentTransaction1.addToBackStack("home");
+                fragmentTransaction1.commit();
                 break;
         }
     }
