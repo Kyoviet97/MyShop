@@ -7,12 +7,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.gvtechcom.myshop.Interface.OnClickRecyclerView;
 import com.gvtechcom.myshop.R;
 import java.util.List;
 
 
 public class AdapterKeyWordsSearch extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<String> dataKeyword;
+    private OnClickRecyclerView onClickRecyclerView;
 
     public AdapterKeyWordsSearch(List<String> dataKeyword) {
         this.dataKeyword = dataKeyword;
@@ -46,6 +49,18 @@ public class AdapterKeyWordsSearch extends RecyclerView.Adapter<RecyclerView.Vie
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtKeyword = itemView.findViewById(R.id.txt_item_recycler_view_search);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onClickRecyclerView != null){
+                        onClickRecyclerView.onClick(dataKeyword.get(getAdapterPosition()));
+                    }
+                }
+            });
         }
+    }
+
+    public void setOnClickRecyclerView(OnClickRecyclerView onClickRecyclerView) {
+        this.onClickRecyclerView = onClickRecyclerView;
     }
 }

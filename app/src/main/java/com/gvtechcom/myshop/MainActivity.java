@@ -12,11 +12,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +26,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +41,7 @@ import com.gvtechcom.myshop.Fragment.FragmentOrders;
 import com.gvtechcom.myshop.Fragment.FragmentSearch;
 import com.gvtechcom.myshop.Fragment.FragmentUpdate;
 import com.gvtechcom.myshop.Fragment.FragmentViewBrand;
+import com.gvtechcom.myshop.Interface.ClickActionSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
 import com.mylibrary.ui.statusbar.SystemBarTintManager;
@@ -44,10 +49,11 @@ import com.mylibrary.ui.statusbar.SystemBarTintManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private int check_fragment;
     private KeywordSearch keywordSearchl;
+    private ClickActionSearch clickActionSearch;
 
     @BindView(R.id.btn_home)
     Button btn_home;
@@ -82,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
         Fragment_Home();
         Get_Extra();
         setEditSearchNavigation(false);
+        setActionSearchClick();
         this.check_fragment = 0;
     }
 
@@ -179,7 +186,6 @@ public class MainActivity extends AppCompatActivity{
         });
 
     }
-
 
     public void setupStatusBarView(View view) {
         SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
@@ -279,7 +285,7 @@ public class MainActivity extends AppCompatActivity{
                 public void onClick(View v) {
                     fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.content_home_frame_layout, new FragmentSearch());
+                    fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentSearch());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
@@ -287,33 +293,41 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private final TextWatcher textWatcherSearchListener = new TextWatcher() {
-        final android.os.Handler handler = new android.os.Handler();
-        Runnable runnable;
+    private void setActionSearchClick() {
+        searchViewNavigation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (clickActionSearch != null) {
+                        clickActionSearch.clickActionSearch(searchViewNavigation.getText().toString());
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
+    private final TextWatcher textWatcherSearchListener = new TextWatcher() {
         public void onTextChanged(final CharSequence s, int start, final int before, int count) {
-            handler.removeCallbacks(runnable);
         }
 
         @Override
         public void afterTextChanged(final Editable s) {
-            if (s.length() > 1){
-                runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        keywordSearchl.dataKeyWord(s.toString());
-                    }
-                };
-                handler.postDelayed(runnable, 1000);
-            }
+            keywordSearchl.dataKeyWord(s.toString());
         }
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
     };
 
-    public void setKeywordSearchl(KeywordSearch keywordSearchl){
+    public void setKeywordSearchl(KeywordSearch keywordSearchl) {
         this.keywordSearchl = keywordSearchl;
+    }
+
+    public void setClickActionSearch(ClickActionSearch clickActionSearch) {
+        this.clickActionSearch = clickActionSearch;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -391,7 +405,7 @@ public class MainActivity extends AppCompatActivity{
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
-        if (activity.getCurrentFocus() != null){
+        if (activity.getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
     }

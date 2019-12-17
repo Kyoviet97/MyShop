@@ -43,6 +43,7 @@
             android:drawablePadding="@dimen/_4dp"
             android:fontFamily="@font/sf_pro_text_medium"
             android:textColor="#4A4A4A"
+            android:imeOptions="actionSearch"
             android:singleLine="true"
             android:maxLines="1"
             android:scrollHorizontally="true"

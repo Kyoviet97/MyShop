@@ -3,14 +3,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_4dp">
+    android:layout_margin="@dimen/_2dp">
 
     <TextView
-        android:id="@+id/txt_item_recycler_view_search"
+        android:id="@+id/txt_keyword_hot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="ly giữ nhiệt"
+        android:padding="@dimen/_4dp"
+        android:textColor="#4A4A4A"
+        android:fontFamily="@font/sf_pro_text_medium"
         android:textSize="@dimen/_14sp"
-        android:textColor="#8E8E93"
-        android:text="As soon as it"
-        android:fontFamily="@font/sf_pro_text_medium"/>
+        android:gravity="center"
+        android:background="@android:color/white"/>
+
+
 </LinearLayout>

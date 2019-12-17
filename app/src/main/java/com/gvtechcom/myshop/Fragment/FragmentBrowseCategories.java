@@ -78,7 +78,6 @@ public class FragmentBrowseCategories extends Fragment {
         setRetrofit();
         setRecyclerView();
         callApiBrowse();
-
         fragmentItemDetail = new FragmentItemDetail();
     }
 

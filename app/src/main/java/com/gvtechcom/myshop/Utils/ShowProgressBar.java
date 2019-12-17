@@ -9,7 +9,9 @@ public class ShowProgressBar {
     private static ProgressDialogCustom progressDialogCustom;
 
     public static void showProgress(Context context){
-        progressDialogCustom = new ProgressDialogCustom(context);
+        if (progressDialogCustom == null){
+            progressDialogCustom = new ProgressDialogCustom(context);
+        }
         progressDialogCustom.onShow(false, "");
     }
 
