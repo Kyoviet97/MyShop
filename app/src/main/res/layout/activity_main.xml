@@ -75,6 +75,7 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:visibility="gone"
         android:id="@+id/content_home_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,19 +83,24 @@
     </FrameLayout>
 
 
-
-    <View
-        android:id="@+id/linearLayout6"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager_home"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#BBBBBB"
-        app:layout_constraintBottom_toTopOf="@+id/button_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:orientation="vertical"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout_home"
+        android:layout_width="match_parent"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabSelectedTextColor="#4A4A4A"
+        app:tabTextColor="#9B9B9B"
+        android:layout_height="?actionBarSize"
+        app:tabIndicatorHeight="0dp"/>
 
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/button_navigation"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
@@ -120,7 +126,7 @@
                 android:layout_width="@dimen/_50dp"
                 android:layout_height="@dimen/_50dp"
                 android:background="@drawable/ic_btn_home_selected"
-                android:onClick="ClickButton"></Button>
+                android:onClick="ClickButton"/>
         </LinearLayout>
 
 

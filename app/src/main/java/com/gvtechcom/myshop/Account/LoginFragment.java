@@ -33,7 +33,9 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.Utils.ValidateInput;
+import com.gvtechcom.myshop.dialog.CustomToastDialog;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.input.CustomInputText;
 import com.mylibrary.ui.input.DrawableClickListener;
@@ -57,7 +59,7 @@ public class LoginFragment extends Fragment {
     private APIServer apiServer;
 
     private ProgressDialogCustom progressDialogCustom;
-    private ToastDialog toastDialog;
+    CustomToastDialog customToastDialog;
 
     private FragmentManager fragmentManager;
 
@@ -88,7 +90,7 @@ public class LoginFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, rootView);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
-        toastDialog = new ToastDialog(getActivity());
+        customToastDialog = new CustomToastDialog(getActivity());
         mainActivity = (AccountActivity) getActivity();
         return rootView;
     }
@@ -152,16 +154,14 @@ public class LoginFragment extends Fragment {
     }
 
     private void validateTnput() {
-        ValidateInput validateInput = new ValidateInput();
-
         String pass = edtPassword.getText().toString();
         String phoneNumber = edtPhoneNumber.getText().toString();
 
-        if (!validateInput.validatePhone(phoneNumber)) {
-            toastDialog.onShow("Invalid phone number");
+        if (!ValidateInput.validatePhone(phoneNumber)) {
+            customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "Invalid phone number", false);
         } else {
-            if (!validateInput.validatePass(pass)) {
-                toastDialog.onShow("Password is too short");
+            if (!ValidateInput.validatePass(pass)) {
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "Password is too short", false);
             } else {
                 loadApiLogin(edtPhoneNumber.getText().toString(), edtPassword.getText().toString());
 
@@ -209,10 +209,8 @@ public class LoginFragment extends Fragment {
         call.enqueue(new Callback<BaseGetApiData>() {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
-                if (response.body().getCode() != 200) {
-                    progressDialogCustom.onHide();
-                    toastDialog.onShow(response.body().getMessage());
-                } else {
+                progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().getCode(), response.body().getMessage())) {
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("account", true);
@@ -229,8 +227,6 @@ public class LoginFragment extends Fragment {
                     preferences.SaveSharePref(getActivity(), "name", response.body().getResponse().getInfoUser().getName());
                     preferences.SaveSharePref(getActivity(), "birthday", response.body().getResponse().getInfoUser().getBirthday());
 
-                    progressDialogCustom.onHide();
-
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("account", "true");
                     startActivity(intent);
@@ -241,7 +237,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
             }
         });
     }

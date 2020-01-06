@@ -125,9 +125,8 @@ public class ForgotFragment extends Fragment {
     }
 
     private void validateInput(){
-        ValidateInput validateInput = new ValidateInput();
         String srtEditAccount = editText_account.getText().toString();
-        if (!validateInput.validatePhone(srtEditAccount)){
+        if (!ValidateInput.validatePhone(srtEditAccount)){
             Toast.makeText(getActivity(), "Invalid phone number", Toast.LENGTH_SHORT).show();
         }
         else {

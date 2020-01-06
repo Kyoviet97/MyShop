@@ -1,7 +1,6 @@
 package com.gvtechcom.myshop.Fragment;
 
 import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -185,26 +185,19 @@ public class FragmentItemDetail extends Fragment {
         }
     }
 
-    private void setDataRecyclerProductChildren(List<ItemDetailsModel.Product> lsProductChildren){
+    private void setDataRecyclerProductChildren(List<ItemDetailsModel.Product> lsProductChildren) {
         AdapterProductChildren adapterProductChildren = new AdapterProductChildren(getActivity(), lsProductChildren);
         recyclerProductChildrenItemDetail.setAdapter(adapterProductChildren);
         adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
             @Override
             public void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position) {
-//                addingView();
-                Toast.makeText(getActivity(), lsProductChildren.get(position)._id, Toast.LENGTH_SHORT).show();
+                System.out.println("================>" + lsProductChildren.size());
+                for (ItemDetailsModel.Children children : lsProductChildren){
+                    System.out.println("====================>" +children._id);
+                }
             }
         });
     }
-
-
-    public void addingView (){
-        TextView tv = new TextView(getActivity());
-        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        tv.setText("sample text");
-        layoutAddViewRecycler.addView(tv);
-    }
-
 
     private void checkData() {
         Bundle bundle = getArguments();

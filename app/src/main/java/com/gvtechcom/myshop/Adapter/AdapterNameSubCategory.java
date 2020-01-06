@@ -1,6 +1,5 @@
 package com.gvtechcom.myshop.Adapter;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,7 +80,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
                                 AppCompatActivity activity = (AppCompatActivity) context;
                                 Fragment myFragment = new FragmentViewCategory();
                                 myFragment.setArguments(bundle);
-                                activity.getFragmentManager().beginTransaction().add(R.id.content_home_frame_layout, myFragment).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().add(R.id.content_home_frame_layout, myFragment).addToBackStack(null).commit();
                             }
                         }
                     }

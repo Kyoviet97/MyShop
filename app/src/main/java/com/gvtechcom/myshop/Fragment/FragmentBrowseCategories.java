@@ -1,14 +1,14 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -134,7 +134,7 @@ public class FragmentBrowseCategories extends Fragment {
                         bundle.putString("jsonDataViewCategory", jsonData);
                         bundle.putString("idCategoty", idCategoty);
                         FragmentManager fragmentManager = getFragmentManager();
-                        fragmentViewCategory = new FragmentViewCategory();
+                        Fragment fragmentViewCategory = new FragmentViewCategory();
                         fragmentViewCategory.setArguments(bundle);
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.add(R.id.content_home_frame_layout, fragmentViewCategory);

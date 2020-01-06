@@ -1,8 +1,5 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +33,7 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentFlashDetails extends Fragment {
+public class FragmentFlashDetails extends androidx.fragment.app.Fragment {
     private View rootView;
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
@@ -135,6 +136,7 @@ public class FragmentFlashDetails extends Fragment {
     }
 
     private void callApiDataFlashDealsDetails(String idProduct) {
+        progressDialogCustom.onShow(false, "");
         getNestedScrollChange(idProduct);
         Animation animation_slide_up = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_up_progressbar);
         Animation animation_slide_Down = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_progressbar);
@@ -148,10 +150,8 @@ public class FragmentFlashDetails extends Fragment {
         callApiFlashDealsDetails.enqueue(new Callback<FlashDealsDetails.FlashDealsDetailsParser>() {
             @Override
             public void onResponse(Call<FlashDealsDetails.FlashDealsDetailsParser> call, Response<FlashDealsDetails.FlashDealsDetailsParser> response) {
-                if (response.body().code != 200) {
-                    progressDialogCustom.onHide();
-                    Toast.makeText(getActivity(), response.body().message, Toast.LENGTH_SHORT).show();
-                } else {
+                progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     lsFlashDealsProductData = response.body().response.products;
                     lsFlashDealsProductGroups = response.body().response.product_groups;
 
@@ -178,7 +178,6 @@ public class FragmentFlashDetails extends Fragment {
                             }
                         }
                     }
-
                 }
             }
 
@@ -243,12 +242,13 @@ public class FragmentFlashDetails extends Fragment {
     }
 
     private void callApiDataItemDetail(String idProduct) {
+        progressDialogCustom.onShow(false, "");
         Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
         callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
             @Override
             public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
-                if (response.body().code != 200) {
-                } else {
+               progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     if (response.body().response != null) {
                         Gson gson = new Gson();
                         String jsonData = gson.toJson(response.body());
@@ -259,7 +259,7 @@ public class FragmentFlashDetails extends Fragment {
 
             @Override
             public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
-
+                progressDialogCustom.onHide();
             }
         });
     }

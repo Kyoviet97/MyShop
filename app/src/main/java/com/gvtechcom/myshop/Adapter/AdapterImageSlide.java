@@ -47,7 +47,7 @@ public class AdapterImageSlide extends PagerAdapter {
         Glide.with(context)
                 .load(imageModelArrayList.get(position).getImageSlide())
                 .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(imageView);
 
 

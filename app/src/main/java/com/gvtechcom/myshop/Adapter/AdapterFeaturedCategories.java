@@ -38,7 +38,7 @@ public class AdapterFeaturedCategories extends RecyclerView.Adapter<AdapterFeatu
             Glide.with(context)
                     .load(lsFeaturedCategories.get(position).getImage())
                     .placeholder(R.drawable.banner_image_slide)
-                    .error(R.drawable.banner_image_slide)
+                    .error(R.drawable.ic_icon_load_error_cetegory)
                     .into(holder.imageViewFeaturedCategories);
 
             holder.nameFeaturedCategories.setText(lsFeaturedCategories.get(position).getName());

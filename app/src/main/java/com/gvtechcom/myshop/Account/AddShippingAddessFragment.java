@@ -1,7 +1,5 @@
 package com.gvtechcom.myshop.Account;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
@@ -30,6 +30,7 @@ import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
+import com.gvtechcom.myshop.dialog.CustomToastDialog;
 import com.gvtechcom.myshop.dialog.DialogCityAddress;
 import com.gvtechcom.myshop.dialog.DialogCountryAddress;
 import com.gvtechcom.myshop.dialog.DialogCustomMessage;
@@ -37,6 +38,7 @@ import com.gvtechcom.myshop.dialog.DialogDistricAddress;
 import com.gvtechcom.myshop.dialog.DialogPhoneCodeAddress;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
+import com.suke.widget.SwitchButton;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -55,7 +57,7 @@ import retrofit2.Retrofit;
 public class AddShippingAddessFragment extends Fragment {
     private View rootView;
     private ProgressDialogCustom progressDialogCustom;
-    private ToastDialog toastDialog;
+    private CustomToastDialog customToastDialog;
     private int isDefault = 1;
     private APIServer apiServer;
     private HashMap<String, String> hashMapData;
@@ -88,12 +90,12 @@ public class AddShippingAddessFragment extends Fragment {
     TextView txtWardShipping;
     @BindView(R.id.edt_zip_code_shipping_address)
     EditText edtZipCode;
-    @BindView(R.id.swt_set_default_shipping_address)
-    SwitchCompat switchDefault;
     @BindView(R.id.layout_main_add_shipping)
     LinearLayout layoutMainAddShipping;
     @BindView(R.id.txt_delete_shipping_address)
     TextView txtDeleteShippingAddress;
+    @BindView(R.id.switch_button_shipping_address)
+    com.suke.widget.SwitchButton switchButtonShippingAddress;
 
     @Nullable
     @Override
@@ -104,7 +106,7 @@ public class AddShippingAddessFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
         progressDialogCustom = new ProgressDialogCustom(getActivity());
-        toastDialog = new ToastDialog(getActivity());
+        customToastDialog = new CustomToastDialog(getActivity());
         onListenKeyboard();
         return rootView;
     }
@@ -211,7 +213,7 @@ public class AddShippingAddessFragment extends Fragment {
                 hashMapData.get("PhoneCode") == null || TextUtils.isEmpty(hashMapData.get("PhoneCode")) ||
                 TextUtils.isEmpty(fullName) || TextUtils.isEmpty(telephone) ||
                 TextUtils.isEmpty(addressDefault) || TextUtils.isEmpty(zipCode)) {
-                toastDialog.onShow("Please fill out the form");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "Please fill out the form", false);
         } else {
             String country = hashMapData.get("Country");
             String city = hashMapData.get("City");
@@ -244,7 +246,7 @@ public class AddShippingAddessFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
             }
         });
     }
@@ -263,7 +265,7 @@ public class AddShippingAddessFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
             }
         });
     }
@@ -278,7 +280,7 @@ public class AddShippingAddessFragment extends Fragment {
             public void onResponse(Call<CountryInfoModel.CountryInfoModelParser> call, Response<CountryInfoModel.CountryInfoModelParser> response) {
                 if (response.body().code != 200) {
                     progressDialogCustom.onHide();
-                    toastDialog.onShow(response.body().message);
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().message, false);
                 } else {
                     progressDialogCustom.onHide();
                     dataWard = response.body().response.data;
@@ -287,7 +289,7 @@ public class AddShippingAddessFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CountryInfoModel.CountryInfoModelParser> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
 
             }
         });
@@ -451,16 +453,16 @@ public class AddShippingAddessFragment extends Fragment {
                             @Override
                             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                                 if (response.code() == 401) {
-                                    toastDialog.onShow("You have been logged out. Please login again");
+                                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                                     progressDialogCustom.onHide();
                                 } else {
                                     if (response.body().getCode() != 200) {
-                                       toastDialog.onShow(response.body().getMessage());
+                                       customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
                                         progressDialogCustom.onHide();
                                     } else {
                                         progressDialogCustom.onHide();
-                                        toastDialog.onShow(response.body().getMessage());
-                                        toastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        customToastDialog.onShow(R.drawable.ic_tick_green_toast_dialog, response.body().getMessage(), false);
+                                        customToastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                             @Override
                                             public void onDismiss(DialogInterface dialog) {
                                                 fragmentManager.popBackStack();
@@ -472,7 +474,7 @@ public class AddShippingAddessFragment extends Fragment {
 
                             @Override
                             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                                toastDialog.onShow("An error occurred, please try again later");
+                                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
                             }
                         });
                     }
@@ -499,7 +501,7 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
-                    toastDialog.onShow(response.body().getMessage());
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
                     progressDialogCustom.onHide();
                 } else {
                     progressDialogCustom.onHide();
@@ -510,7 +512,7 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
             }
         });
     }
@@ -533,11 +535,11 @@ public class AddShippingAddessFragment extends Fragment {
             @Override
             public void onResponse(Call<GetAddressIdAddress.GetAddressIdParser> call, Response<GetAddressIdAddress.GetAddressIdParser> response) {
                 if (response.code() == 401) {
-                    toastDialog.onShow("You have been logged out. Please login again");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                     progressDialogCustom.onHide();
                 } else {
                     if (response.body().code != 200) {
-                        toastDialog.onShow(response.body().message);
+                        customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().message, false);
                         progressDialogCustom.onHide();
                     } else {
                         GetAddressIdAddress.GetAddressIdParser dataAddressId = response.body();
@@ -573,9 +575,9 @@ public class AddShippingAddessFragment extends Fragment {
                             txtWardShipping.setText(wardInfo.getName().toString());
                             edtZipCode.setText(zipCode);
                             if (isDefault.equals("1")) {
-                                switchDefault.setChecked(true);
+                                switchButtonShippingAddress.setChecked(true);
                             } else {
-                                switchDefault.setChecked(false);
+                                switchButtonShippingAddress.setChecked(false);
                             }
                             progressDialogCustom.onHide();
                         }
@@ -584,7 +586,7 @@ public class AddShippingAddessFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<GetAddressIdAddress.GetAddressIdParser> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later",false);
             }
         });
 
@@ -613,15 +615,15 @@ public class AddShippingAddessFragment extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    toastDialog.onShow("You have been logged out. Please login again");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
+                        customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
                     } else {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
-                        toastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        customToastDialog.onShow(R.drawable.ic_tick_green_toast_dialog, response.body().getMessage(), false);
+                        customToastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 fragmentManager.popBackStack();
@@ -633,7 +635,7 @@ public class AddShippingAddessFragment extends Fragment {
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
             }
         });
     }

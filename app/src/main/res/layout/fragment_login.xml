@@ -13,7 +13,7 @@
             android:gravity="center|top"
             android:paddingLeft="@dimen/_50dp"
             android:paddingRight="@dimen/_50dp"
-            android:background="@drawable/bg">
+            android:background="@drawable/bg_login">
 
             <ImageView
                 android:id="@+id/imageView2"

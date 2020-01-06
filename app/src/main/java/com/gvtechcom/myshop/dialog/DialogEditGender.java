@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 public class DialogEditGender extends AppCompatDialog {
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
-    private ToastDialog toastDialog;
+    private CustomToastDialog customToastDialog;
     private String strGender = "";
 
     @BindView(R.id.checkBox_male)
@@ -61,7 +61,7 @@ public class DialogEditGender extends AppCompatDialog {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getContext());
-        toastDialog = new ToastDialog(getContext());
+        customToastDialog = new CustomToastDialog(getContext());
 
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -88,18 +88,18 @@ public class DialogEditGender extends AppCompatDialog {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    toastDialog.onShow("You have been logged out. Please login again");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
+                        customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
 
                     } else {
                         MySharePreferences preferences = new MySharePreferences();
                         preferences.SaveSharePref(getContext(), "gender", response.body().getResponse().getDataUser().getGender());
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
-                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                        customToastDialog.onShow(R.drawable.ic_tick_green_toast_dialog, response.body().getMessage(), false);
+                        customToastDialog.setOnDismissListener(new OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 dismiss();
@@ -112,7 +112,7 @@ public class DialogEditGender extends AppCompatDialog {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
 
             }
         });

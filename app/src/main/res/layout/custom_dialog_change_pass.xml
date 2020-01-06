@@ -30,13 +30,16 @@
         android:text="Password has at least 6 characters"
         android:fontFamily="@font/sf_pro_text_regular"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/_14sp">
+        android:textSize="@dimen/_16sp">
     </TextView>
 
     <com.mylibrary.ui.input.CustomInputText
         android:id="@+id/edt_old_pass"
         android:ellipsize="end"
         android:imeOptions="actionNext"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingLeft="@dimen/_16dp"
+        android:textSize="@dimen/_16sp"
         android:hint="Current password"
         android:drawableRight="@drawable/ic_eye_password_gren"
         android:fontFamily="@font/sf_pro_text_regular"
@@ -45,6 +48,9 @@
     <com.mylibrary.ui.input.CustomInputText
         android:id="@+id/edt_new_pass"
         android:ellipsize="end"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingLeft="@dimen/_16dp"
+        android:textSize="@dimen/_16sp"
         android:hint="New password"
         android:drawableRight="@drawable/ic_eye_password_gren"
         android:fontFamily="@font/sf_pro_text_regular"
@@ -54,6 +60,9 @@
     <com.mylibrary.ui.input.CustomInputText
         android:id="@+id/edt_new_pass_confirm"
         android:hint="Repeat new password"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingLeft="@dimen/_16dp"
+        android:textSize="@dimen/_16sp"
         android:drawableRight="@drawable/ic_eye_password_gren"
         android:fontFamily="@font/sf_pro_text_regular"
         android:imeOptions="actionDone"

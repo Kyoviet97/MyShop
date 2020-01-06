@@ -1,8 +1,6 @@
 package com.gvtechcom.myshop.Account;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,13 +42,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ShippingAddressFragment extends Fragment {
+public class ShippingAddressFragment extends androidx.fragment.app.Fragment {
     private View rootView;
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
     private RecyclerView recyclerView;
     private AdapterRecyclerViewShipping adapterRecyclerViewShipping;
-    private FragmentManager fragmentManager;
+    private androidx.fragment.app.FragmentManager fragmentManager;
     private Fragment fragment;
     private MainActivity mainActivity;
     private List<BaseGetAPIShippingAddress.Data> dataAllAddressList;
@@ -100,12 +100,12 @@ public class ShippingAddressFragment extends Fragment {
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_shipping_address);
         setViewRecycler();
-        fragment = new ShippingAddressFragment();
+        androidx.fragment.app.Fragment fragment = new ShippingAddressFragment();
     }
 
     private void addShippingAddess() {
         fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_home_frame_layout, new AddShippingAddessFragment());
         fragmentTransaction.addToBackStack("ShippingAddress");
         fragmentTransaction.commit();
@@ -160,7 +160,7 @@ public class ShippingAddressFragment extends Fragment {
         adapterRecyclerViewShipping.setOnItemClickedListener(new AdapterRecyclerViewShipping.OnItemClickedListener() {
             @Override
             public void onItemClick(int position) {
-                Fragment fragmentAddShipping = new AddShippingAddessFragment();
+                androidx.fragment.app.Fragment fragmentAddShipping = new AddShippingAddessFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 Bundle bundle = new Bundle();
                 bundle.putString("idAddress", dataAllAddressList.get(position).id);

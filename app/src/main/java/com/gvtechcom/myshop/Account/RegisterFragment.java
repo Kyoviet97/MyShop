@@ -121,8 +121,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void buttonRegister() {
-        ValidateInput validateInput = new ValidateInput();
-        if (validateInput.validatePhone(editTextAccount.getText().toString())) {
+        if (ValidateInput.validatePhone(editTextAccount.getText().toString())) {
             GetMD5 getMD5 = new GetMD5();
             GetTime getTime = new GetTime();
             String timeSign = String.valueOf((getTime.getCalendar() + 30000));

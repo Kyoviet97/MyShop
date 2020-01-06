@@ -2,7 +2,7 @@ package com.gvtechcom.myshop.Utils;
 
 public class ValidateInput {
 
-    public Boolean validatePhone(String s){
+    public static Boolean validatePhone(String s){
         Boolean val;
         if (s.length() < 1){
             s = "1";
@@ -18,7 +18,7 @@ public class ValidateInput {
         return val;
     }
 
-    public Boolean validatePass(String s){
+    public static Boolean validatePass(String s){
         Boolean val;
 
         if (s.length() < 6){
@@ -30,7 +30,7 @@ public class ValidateInput {
         return val;
     }
 
-    public Boolean validateTheSamePass(String pass1, String pass2){
+    public static Boolean validateTheSamePass(String pass1, String pass2){
         Boolean val;
         if (pass1.equals(pass2)){
             val = true;

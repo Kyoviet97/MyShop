@@ -2,8 +2,6 @@ package com.gvtechcom.myshop;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,14 +24,20 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.gvtechcom.myshop.Account.AccountActivity;
+import com.gvtechcom.myshop.Adapter.ViewPagerAdapterTabMessages;
 import com.gvtechcom.myshop.Fragment.FragmentAccount;
 import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
 import com.gvtechcom.myshop.Fragment.FragmentMessages;
@@ -55,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
     private KeywordSearch keywordSearchl;
     private ClickActionSearch clickActionSearch;
 
+    @BindView(R.id.tablayout_home)
+    TabLayout tableLayoutHome;
+    @BindView(R.id.view_pager_home)
+    ViewPager viewPagerHome;
     @BindView(R.id.btn_home)
     Button btn_home;
     @BindView(R.id.btn_message)
@@ -65,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
     Button btn_update;
     @BindView(R.id.btn_account)
     Button btn_account;
-    @BindView(R.id.button_navigation)
-    LinearLayout buttonNavigation;
     @BindView(R.id.navication_top)
     RelativeLayout navigationTop;
     @BindView(R.id.img_btn_back_navigation)
@@ -84,12 +90,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         init();
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         Fragment_Home();
         Get_Extra();
         setEditSearchNavigation(false);
         setActionSearchClick();
         this.check_fragment = 0;
+
+        addControl();
     }
 
 
@@ -187,6 +195,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void addControl() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ViewPagerAdapterTabMessages adapter = new ViewPagerAdapterTabMessages(fragmentManager);
+        viewPagerHome.setAdapter(adapter);
+        tableLayoutHome.setupWithViewPager(viewPagerHome);
+        viewPagerHome.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tableLayoutHome));
+        tableLayoutHome.setTabsFromPagerAdapter(adapter);//deprecated
+        tableLayoutHome.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPagerHome));
+        
+
+        tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_box_orders_messages);
+        tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_store_messages);
+        tableLayoutHome.getTabAt(2).setIcon(R.drawable.bkg_user_headset_messages);
+        tableLayoutHome.getTabAt(3).setIcon(R.drawable.bkg_store_messages);
+        tableLayoutHome.getTabAt(4).setIcon(R.drawable.bkg_user_headset_messages);
+
+    }
+
     public void setupStatusBarView(View view) {
         SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
         SystemBarTintManager.SystemBarConfig mConfig = systemBarTintManager.getConfig();
@@ -212,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
         check_fragment = 1;
         navigationSelected("home");
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentHomeContent(), "frag_home");
         fragmentTransaction.commit();
     }
@@ -220,15 +247,16 @@ public class MainActivity extends AppCompatActivity {
     private void Fragment_Messages() {
         check_fragment = 2;
         navigationSelected("messager");
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentMessages(), "frag_messages");
-        fragmentTransaction.commit();
+        androidx.fragment.app.FragmentManager fragmentManagerx = getSupportFragmentManager();
+        androidx.fragment.app.FragmentTransaction fragmentTransactionx = fragmentManagerx.beginTransaction();
+        fragmentTransactionx.replace(R.id.content_home_frame_layout, new FragmentMessages(), "frag_messages");
+        fragmentTransactionx.commit();
     }
 
     private void Fragment_Orders() {
         check_fragment = 3;
         navigationSelected("orders");
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentOrders(), "frag_orders");
         fragmentTransaction.commit();
     }
@@ -236,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
     private void Fragment_Update() {
         check_fragment = 4;
         navigationSelected("update");
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentUpdate(), "frag_update");
         fragmentTransaction.commit();
     }
@@ -247,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         boolean account_key = sharedPreferences.getBoolean("account", false);
         if (account_key) {
             navigationSelected("account");
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
             fragmentTransaction.commit();
         } else {
@@ -264,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
             if (s.equals("true")) {
                 check_fragment = 5;
                 navigationSelected("account");
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
                 fragmentTransaction.commit();
             }
@@ -283,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             searchViewNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fragmentManager = getFragmentManager();
+                    fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentSearch());
                     fragmentTransaction.addToBackStack(null);
@@ -346,9 +374,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setHideButtonNavigation(Boolean bl) {
         if (bl) {
-            buttonNavigation.setVisibility(View.GONE);
+            tableLayoutHome.setVisibility(View.GONE);
         } else {
-            buttonNavigation.setVisibility(View.VISIBLE);
+            tableLayoutHome.setVisibility(View.VISIBLE);
         }
     }
 

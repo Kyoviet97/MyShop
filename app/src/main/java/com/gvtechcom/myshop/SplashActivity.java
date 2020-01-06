@@ -1,6 +1,7 @@
 package com.gvtechcom.myshop;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -22,6 +23,8 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.Utils.ValidateCallApi;
+import com.gvtechcom.myshop.dialog.CustomToastDialog;
 import com.mylibrary.base.BaseActivity;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
@@ -43,6 +46,7 @@ public class SplashActivity extends BaseActivity {
     private ItemYouLoveModel.ItemYouLoveModelParser objectItemYouLove;
     private BaseGetApiData objDataHomeContent;
     private UpdateNotifyModel.UpdateNotifyModelParser dataNotify;
+    private CustomToastDialog customToastDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class SplashActivity extends BaseActivity {
     private void init() {
         setColorStatusTran(true);
         mySharePreferences = new MySharePreferences();
+        customToastDialog = new CustomToastDialog(getApplicationContext());
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
@@ -70,7 +75,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
-                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
                 } else {
                     objDataHomeContent = response.body();
                     if (objDataHomeContent != null) {
@@ -81,6 +86,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
+                customToastDialog.onShow(R.drawable.ic_icon_oops_connection_lost, t.toString(), false);
             }
         });
     }
@@ -91,7 +97,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {
                 if (response.body().code != 200) {
-                    Toast.makeText(SplashActivity.this, response.body().message, Toast.LENGTH_SHORT).show();
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog,  response.body().message, false);
                 } else {
                     objectItemYouLove = response.body();
                     if (objectItemYouLove != null) {
@@ -112,8 +118,7 @@ public class SplashActivity extends BaseActivity {
         updateNotifyModelCall.enqueue(new Callback<UpdateNotifyModel.UpdateNotifyModelParser>() {
             @Override
             public void onResponse(Call<UpdateNotifyModel.UpdateNotifyModelParser> call, Response<UpdateNotifyModel.UpdateNotifyModelParser> response) {
-                if (response.body().code != 200) {
-                } else {
+                if (ValidateCallApi.ValidateAip(getApplicationContext(), response.body().code, response.body().message)) {
                     dataNotify = response.body();
                     mySharePreferences.SaveSharePrefObject(getApplicationContext(), dataNotify, "MyOjectNotify");
                 }
@@ -141,7 +146,17 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onFinish() {
-                Toast.makeText(SplashActivity.this, "Thời gian chờ quá lâu! Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "Thời gian chờ quá lâu! Vui lòng thử lại", true);
+                customToastDialog.setCancelable(true);
+                customToastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        LoadApiHome();
+                        LoadApiItemYouLove();
+                        getDataUpdateNotify();
+                        loading();
+                    }
+                });
             }
         }.start();
 

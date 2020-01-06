@@ -38,7 +38,7 @@ public class AdapterRelatesProduct extends RecyclerView.Adapter<AdapterRelatesPr
         Glide.with(context)
                 .load(lsItemRelatesProduct.get(position).image_thumbnail)
                 .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imageViewJustForYou);
         holder.infoJustForYou.setText(lsItemRelatesProduct.get(position).name);
         holder.priceJustForYou.setText("$" + lsItemRelatesProduct.get(position).min_price);

@@ -40,7 +40,7 @@ public class DialogEditEmail extends AppCompatDialog {
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
 
-    private ToastDialog toastDialog;
+    private CustomToastDialog customToastDialog;
 
     @BindView(R.id.edt_fullName_dialog)
     EditText editEmailAcoount;
@@ -69,7 +69,7 @@ public class DialogEditEmail extends AppCompatDialog {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getContext());
-        toastDialog = new ToastDialog(getContext());
+        customToastDialog = new CustomToastDialog(getContext());
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
@@ -117,17 +117,17 @@ public class DialogEditEmail extends AppCompatDialog {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    toastDialog.onShow("You have been logged out. Please login again");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
+                        customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
                     } else {
                         MySharePreferences preferences = new MySharePreferences();
                         preferences.SaveSharePref(getContext(), "email", response.body().getResponse().getDataUser().getEmail());
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
-                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                        customToastDialog.onShow(R.drawable.ic_tick_green_toast_dialog, response.body().getMessage(), false);
+                        customToastDialog.setOnDismissListener(new OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 dismiss();
@@ -140,7 +140,7 @@ public class DialogEditEmail extends AppCompatDialog {
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
                 progressDialogCustom.onHide();
             }
         });

@@ -146,11 +146,10 @@ public class FragmentChangePass extends Fragment {
     }
 
     private void validatePass(String srtPass1, String srtPass2) {
-        ValidateInput validateInput = new ValidateInput();
-        if (validateInput.validatePass(srtPass1) == false) {
+        if (ValidateInput.validatePass(srtPass1) == false) {
             toastDialog.onShow("Password is too short");
         } else {
-            if (validateInput.validateTheSamePass(srtPass1, srtPass2) == false) {
+            if (ValidateInput.validateTheSamePass(srtPass1, srtPass2) == false) {
                 toastDialog.onShow("Password incorrect");
             } else {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);

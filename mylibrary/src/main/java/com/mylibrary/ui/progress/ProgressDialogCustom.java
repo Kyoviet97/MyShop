@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatDialog;
 import com.mylibrary.R;
 
 public class ProgressDialogCustom extends AppCompatDialog implements IDelegateProgress {
-
     TextView mProgressMessage;
     private DelayHandler mDelayHandler;
     final int REQUEST_SHOW = 1;

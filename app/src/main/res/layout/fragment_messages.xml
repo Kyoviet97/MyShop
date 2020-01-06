@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/white"
+    android:gravity="center|top"
+    android:orientation="vertical">
+
 
     <TextView
+        android:id="@+id/txt_shipping_address"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/_20sp"
-        android:text="Fragment Messages">
-    </TextView>
+        android:layout_height="?actionBarSize"
+        android:fontFamily="@font/sf_pro_text_medium"
+        android:gravity="center"
+        android:text="Messages"
+        android:textColor="#4A4A4A"
+        android:textSize="@dimen/_16sp" />
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_3dp"
+        android:background="@drawable/shadow_layout"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout_messages"
+        android:layout_width="match_parent"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabSelectedTextColor="#4A4A4A"
+        app:tabTextColor="#9B9B9B"
+        android:layout_height="?actionBarSize"
+        app:tabIndicatorHeight="0dp"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager_messages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

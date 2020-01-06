@@ -38,7 +38,7 @@ public class AdapterJustForYou extends RecyclerView.Adapter<AdapterJustForYou.Vi
         Glide.with(context)
                 .load(lsJustForYou.get(position).getProduct_image())
                 .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imageViewJustForYou);
         holder.infoJustForYou.setText(lsJustForYou.get(position).getName());
         holder.priceJustForYou.setText("$" + lsJustForYou.get(position).getPrice());

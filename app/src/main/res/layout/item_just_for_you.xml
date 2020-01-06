@@ -42,17 +42,12 @@
                     <TextView
                         android:id="@+id/txt_info_just_for_you"
                         android:fontFamily="@font/sf_pro_text_regular"
-                        android:layout_weight="1"
                         style="@style/Style_textView_info_item_just_for_you"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Vention Thunderbolt 3 Dock USB Hub Type C..." />
+                        android:text="Vention Thunderbolt 3 Dock USB Hub Type C" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/sf_pro_text_regular"
-                        style="@style/Style_textView_info_item_just_for_you"
-                        android:text="..."/>
                 </LinearLayout>
 
                 <TextView

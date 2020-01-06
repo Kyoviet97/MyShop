@@ -1,8 +1,5 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,7 +75,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentHomeContent extends Fragment {
+public class FragmentHomeContent extends androidx.fragment.app.Fragment {
     private View rootView;
     private MySharePreferences mySharePreferences = new MySharePreferences();
     private Boolean isLoadMore = true;
@@ -127,6 +127,8 @@ public class FragmentHomeContent extends Fragment {
     CardView cardViewFlashDeals;
     @BindView(R.id.view_pager_slide)
     ViewPager viewPagerSlide;
+    @BindView(R.id.img_error_load_slide)
+    ImageView imgErrorLoadSlide;
     @BindView(R.id.recycler_view_flash_deals)
     RecyclerView recyclerViewFlashDeals;
     @BindView(R.id.recycler_view_just_for_you)
@@ -266,14 +268,20 @@ public class FragmentHomeContent extends Fragment {
 
     private void setItemSlideBanner() {
         imageModelArrayList = new ArrayList<>();
-        for (int i = 0; i <= obj.getResponse().getBanners().size(); i++) {
-            if (i != obj.getResponse().getBanners().size()) {
-                imageModelArrayList.add(new ImageModel(obj.getResponse().getBanners().get(i).getImage()));
-            } else {
-                isStopHandel = false;
-                slideImageBanner();
+        if (obj.getResponse().getBanners().size() > 0){
+            imgErrorLoadSlide.setVisibility(View.GONE);
+            for (int i = 0; i <= obj.getResponse().getBanners().size(); i++) {
+                if (i != obj.getResponse().getBanners().size()) {
+                    imageModelArrayList.add(new ImageModel(obj.getResponse().getBanners().get(i).getImage()));
+                } else {
+                    isStopHandel = false;
+                    slideImageBanner();
+                }
             }
+        }else {
+            imgErrorLoadSlide.setVisibility(View.VISIBLE);
         }
+
     }
 
     private void slideImageBanner() {
@@ -559,14 +567,14 @@ public class FragmentHomeContent extends Fragment {
 
     private void setDataItemDetails(String jsonData) {
         fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
         bundle.putString("dataJson", jsonData);
         bundle.putString("fromToFragment", "homeContent");
         progressDialogCustom.onHide();
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.add(R.id.frame_content_home_manager, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }
@@ -597,8 +605,8 @@ public class FragmentHomeContent extends Fragment {
     private void setGlideImage(String url, View view) {
         Glide.with(getActivity())
                 .load(url)
-                .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .placeholder(R.drawable.ic_icon_load_error_cetegory)
+                .error(R.drawable.ic_icon_load_error_cetegory)
                 .into((ImageView) view);
     }
 
@@ -607,8 +615,8 @@ public class FragmentHomeContent extends Fragment {
         switch (view.getId()) {
             case R.id.btn_browse_categories:
                 fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentBrowseCategories());
+                androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_content_home_manager, new FragmentBrowseCategories());
                 fragmentTransaction.addToBackStack("home");
                 fragmentTransaction.commit();
                 break;
@@ -617,8 +625,8 @@ public class FragmentHomeContent extends Fragment {
 
             case R.id.btn_flash_deals:
                 fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransactionFlashDeal = fragmentManager.beginTransaction();
-                fragmentTransactionFlashDeal.replace(R.id.content_home_frame_layout, new FragmentFlashDetails());
+                androidx.fragment.app.FragmentTransaction fragmentTransactionFlashDeal = fragmentManager.beginTransaction();
+                fragmentTransactionFlashDeal.replace(R.id.frame_content_home_manager, new FragmentFlashDetails());
                 fragmentTransactionFlashDeal.addToBackStack("home");
                 fragmentTransactionFlashDeal.commit();
                 break;
@@ -626,7 +634,7 @@ public class FragmentHomeContent extends Fragment {
             case R.id.btn_coins_coupons:
                 fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
-                fragmentTransaction1.replace(R.id.content_home_frame_layout, new FragmentViewBrand());
+                fragmentTransaction1.replace(R.id.frame_content_home_manager, new FragmentViewBrand());
                 fragmentTransaction1.addToBackStack("home");
                 fragmentTransaction1.commit();
                 break;

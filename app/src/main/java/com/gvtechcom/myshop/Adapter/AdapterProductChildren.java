@@ -42,8 +42,8 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
 
         Glide.with(context)
                 .load(lsProductChildren.get(position).image)
-                .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .placeholder(R.drawable.ic_icon_load_error_cetegory)
+                .error(R.drawable.ic_icon_load_error_cetegory)
                 .into(holder.imgProductChildren);
     }
 

@@ -36,7 +36,7 @@ public class DialogChangePass extends AppCompatDialog {
 
     private ProgressDialogCustom progressDialogCustom;
 
-    private ToastDialog toastDialog;
+    private CustomToastDialog customToastDialog;
 
     @BindView(R.id.edt_old_pass)
     CustomInputText edtOldPassWord;
@@ -57,7 +57,7 @@ public class DialogChangePass extends AppCompatDialog {
 
     private void init() {
         progressDialogCustom = new ProgressDialogCustom(getContext());
-        toastDialog = new ToastDialog(getContext());
+        customToastDialog = new CustomToastDialog(getContext());
         setShowEdtPassWord();
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -84,10 +84,10 @@ public class DialogChangePass extends AppCompatDialog {
         String srtNewPass = edtNewPass.getText().toString();
         String srtNewPassConfirm = edtNewPassConfirm.getText().toString();
         if (!validateInput.validatePass(srtNewPass)) {
-            toastDialog.onShow("Password is too short");
+            customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "Password is too short", false);
         } else {
             if (!validateInput.validateTheSamePass(srtNewPass, srtNewPassConfirm)) {
-                toastDialog.onShow("Password incorrect");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "Password incorrect", false);
             } else {
                 LoadApiChangePassWord(srtOldPass, srtNewPass, srtNewPassConfirm);
                 dismiss();
@@ -173,16 +173,16 @@ public class DialogChangePass extends AppCompatDialog {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    toastDialog.onShow("You have been logged out. Please login again");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
+                        customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
 
                     } else {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
-                        toastDialog.setOnDismissListener(new OnDismissListener() {
+                        customToastDialog.onShow(R.drawable.ic_tick_green_toast_dialog, response.body().getMessage(), false);
+                        customToastDialog.setOnDismissListener(new OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 dismiss();
@@ -194,7 +194,7 @@ public class DialogChangePass extends AppCompatDialog {
 
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
                 progressDialogCustom.onHide();
             }
         });

@@ -67,7 +67,7 @@
                                 android:layout_alignParentTop="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentBottom="true"
-                                android:background="@color/color_tran" />
+                                android:background="#EBEBEB"/>
 
                             <com.viewpagerindicator.CirclePageIndicator
                                 android:id="@+id/indicator_slide"
@@ -81,6 +81,16 @@
                                 app:fillColor="@color/color_circle_Page_Indicator_fill_Color"
                                 app:pageColor="@color/color_circle_Page_Indicator_page_color"
                                 app:snap="true" />
+
+                            <ImageView
+                                android:id="@+id/img_error_load_slide"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:src="@drawable/ic_icon_load_error"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"/>
+
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>

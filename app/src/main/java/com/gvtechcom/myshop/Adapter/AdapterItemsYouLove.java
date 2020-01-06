@@ -43,9 +43,12 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
         Glide.with(context)
                 .load(lsItemYouLove.get(position).image)
                 .override(200, 200)
+                .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imageViewItemsYouLove);
         holder.infoItemsYouLove.setText(lsItemYouLove.get(position).product_name);
+
         holder.priceItemsYouLove.setText("$" + lsItemYouLove.get(position).price);
+
         holder.soldItemsYouLove.setText(lsItemYouLove.get(position).sold + "sold");
     }
 

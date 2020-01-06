@@ -45,7 +45,7 @@ public class AdapterFlashDeals extends RecyclerView.Adapter<AdapterFlashDeals.Vi
         Glide.with(context)
                 .load(lsProduct.get(position).getImage())
                 .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .error(R.drawable.ic_icon_load_error_cetegory)
                 .into(holder.img_flash_deals);
 
         holder.txt_flash_deals_price.setText("$" + Integer.parseInt(Price));

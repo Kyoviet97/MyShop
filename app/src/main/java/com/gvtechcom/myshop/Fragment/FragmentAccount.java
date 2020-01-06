@@ -2,9 +2,6 @@ package com.gvtechcom.myshop.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.gvtechcom.myshop.Account.AccountActivity;
 import com.gvtechcom.myshop.Account.FragmentUpdateNotify;
@@ -34,6 +34,7 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.GetMD5;
 import com.gvtechcom.myshop.Utils.GetTime;
 import com.gvtechcom.myshop.Utils.MySharePreferences;
+import com.gvtechcom.myshop.dialog.CustomToastDialog;
 import com.gvtechcom.myshop.dialog.DialogChangePass;
 import com.gvtechcom.myshop.dialog.DialogCustomMessage;
 import com.gvtechcom.myshop.dialog.DialogEditEmail;
@@ -62,7 +63,7 @@ public class FragmentAccount extends Fragment {
     private FragmentManager fragmentManager;
     private APIServer apiServer;
     private ProgressDialogCustom progressDialogCustom;
-    private ToastDialog toastDialog;
+    private CustomToastDialog customToastDialog;
     private MySharePreferences sharePreferences;
     private MainActivity mainActivity;
 
@@ -110,7 +111,7 @@ public class FragmentAccount extends Fragment {
         getDataLocal();
 
         progressDialogCustom = new ProgressDialogCustom(getActivity());
-        toastDialog = new ToastDialog(getActivity());
+        customToastDialog = new CustomToastDialog(getActivity());
 
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -226,7 +227,7 @@ public class FragmentAccount extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((year - numberYear.getValue()) < 15) {
-                    toastDialog.onShow("You are under 15 years old");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You are under 15 years old", false);
                 } else {
                     calendar.set(numberYear.getValue(), numberMonth.getValue() - 1, numberDay.getValue());
                     @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YYYY");
@@ -344,18 +345,18 @@ public class FragmentAccount extends Fragment {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.code() == 401) {
                     progressDialogCustom.onHide();
-                    toastDialog.onShow("You have been logged out. Please login again");
+                    customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "You have been logged out. Please login again", false);
                 } else {
                     if (response.body().getCode() != 200) {
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
+                        customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
 
                     } else {
                         sharePreferences.SaveSharePref(getActivity(), "birthday", response.body().getResponse().getDataUser().getBirthday().toString());
                         getDataLocal();
                         progressDialogCustom.onHide();
-                        toastDialog.onShow(response.body().getMessage());
-                        toastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        customToastDialog.onShow(R.drawable.ic_tick_green_toast_dialog, response.body().getMessage(), false);
+                        customToastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 dialogChangeBirthDay.dismiss();
@@ -369,7 +370,7 @@ public class FragmentAccount extends Fragment {
             @Override
             public void onFailure(Call<BaseGetApiData> call, Throwable t) {
                 progressDialogCustom.onHide();
-                toastDialog.onShow("An error occurred, please try again later");
+                customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, "An error occurred, please try again later", false);
             }
         });
     }

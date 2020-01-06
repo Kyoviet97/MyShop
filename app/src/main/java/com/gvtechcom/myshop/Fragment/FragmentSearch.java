@@ -1,8 +1,5 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,7 +54,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentSearch extends Fragment implements KeywordSearch, ClickActionSearch {
+public class FragmentSearch extends androidx.fragment.app.Fragment implements KeywordSearch, ClickActionSearch {
     private View rootView;
     private MainActivity mainActivity;
     private AdapterKeyWordsSearch adapterKeyWordsSearch;
