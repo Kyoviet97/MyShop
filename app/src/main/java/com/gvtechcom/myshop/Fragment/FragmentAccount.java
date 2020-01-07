@@ -22,8 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.gvtechcom.myshop.Account.AccountActivity;
-import com.gvtechcom.myshop.Account.FragmentUpdateNotify;
 import com.gvtechcom.myshop.Account.ShippingAddressFragment;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
@@ -91,8 +89,6 @@ public class FragmentAccount extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, rootView);
         mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(false, false, false);
-        mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
         mainActivity.setupUI(mainLayoutFragmentAccount);
         return rootView;
     }
@@ -103,6 +99,12 @@ public class FragmentAccount extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init();
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        System.out.println("==================1111111111111111");
     }
 
     private void init() {
@@ -403,10 +405,7 @@ public class FragmentAccount extends Fragment {
                             editor.apply();
 
                             progressDialogCustom.onHide();
-
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+                            mainActivity.backTabHome();
                         }
 
                         @Override

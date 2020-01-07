@@ -14,8 +14,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,9 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,14 +33,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.gvtechcom.myshop.Account.AccountActivity;
-import com.gvtechcom.myshop.Adapter.ViewPagerAdapterTabMessages;
+import com.gvtechcom.myshop.Adapter.AdapterViewPagerHome;
 import com.gvtechcom.myshop.Fragment.FragmentAccount;
 import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
 import com.gvtechcom.myshop.Fragment.FragmentMessages;
 import com.gvtechcom.myshop.Fragment.FragmentOrders;
 import com.gvtechcom.myshop.Fragment.FragmentSearch;
 import com.gvtechcom.myshop.Fragment.FragmentUpdate;
-import com.gvtechcom.myshop.Fragment.FragmentViewBrand;
 import com.gvtechcom.myshop.Interface.ClickActionSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
@@ -92,12 +87,13 @@ public class MainActivity extends AppCompatActivity {
         init();
         fragmentManager = getSupportFragmentManager();
         Fragment_Home();
-        Get_Extra();
         setEditSearchNavigation(false);
         setActionSearchClick();
         this.check_fragment = 0;
 
         addControl();
+
+        backTabHome();
     }
 
 
@@ -198,20 +194,23 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void addControl() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ViewPagerAdapterTabMessages adapter = new ViewPagerAdapterTabMessages(fragmentManager);
+        AdapterViewPagerHome adapter = new AdapterViewPagerHome(fragmentManager);
         viewPagerHome.setAdapter(adapter);
+        viewPagerHome.setOffscreenPageLimit(5);
         tableLayoutHome.setupWithViewPager(viewPagerHome);
         viewPagerHome.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tableLayoutHome));
         tableLayoutHome.setTabsFromPagerAdapter(adapter);//deprecated
         tableLayoutHome.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPagerHome));
-        
 
-        tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_box_orders_messages);
-        tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_store_messages);
-        tableLayoutHome.getTabAt(2).setIcon(R.drawable.bkg_user_headset_messages);
-        tableLayoutHome.getTabAt(3).setIcon(R.drawable.bkg_store_messages);
-        tableLayoutHome.getTabAt(4).setIcon(R.drawable.bkg_user_headset_messages);
+        tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_btn_home);
+        tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_btn_messages);
+        tableLayoutHome.getTabAt(2).setIcon(R.drawable.bkg_btn_orders);
+        tableLayoutHome.getTabAt(3).setIcon(R.drawable.bkg_btn_update);
+        tableLayoutHome.getTabAt(4).setIcon(R.drawable.bkg_btn_account);
+    }
 
+    public void backTabHome(){
+        viewPagerHome.setCurrentItem(0);
     }
 
     public void setupStatusBarView(View view) {
@@ -284,20 +283,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void Get_Extra() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            String s = (String) bundle.get("account");
-            if (s.equals("true")) {
-                check_fragment = 5;
-                navigationSelected("account");
-                androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
-                fragmentTransaction.commit();
-            }
-        }
-    }
+//    private void Get_Extra() {
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+//        if (bundle != null) {
+//            String s = (String) bundle.get("account");
+//            if (s.equals("true")) {
+//                check_fragment = 5;
+//                navigationSelected("account");
+//                androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.frame_account_manager, new FragmentAccount(), "frag_account");
+//                fragmentTransaction.commit();
+//            }
+//        }
+//    }
 
     public void setEditSearchNavigation(Boolean isSearch) {
         if (isSearch) {
@@ -313,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentSearch());
+                    fragmentTransaction.replace(R.id.frame_home_content_manager, new FragmentSearch());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
@@ -410,7 +409,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupUI(View view) {
-
         if (!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View v, MotionEvent event) {

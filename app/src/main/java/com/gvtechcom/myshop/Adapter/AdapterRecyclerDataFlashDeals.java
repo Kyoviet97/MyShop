@@ -39,7 +39,8 @@ public class AdapterRecyclerDataFlashDeals extends RecyclerView.Adapter<AdapterR
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
                 .load(lsProductsData.get(position).image)
-                .error(R.drawable.banner_image_slide)
+                .placeholder(R.drawable.ic_icon_load_error_just_for_you)
+                .error(R.drawable.ic_icon_load_error_just_for_you)
                 .override(170,170)
                 .into(holder.imgFlashDeals);
         holder.productName.setText(lsProductsData.get(position).product_name);

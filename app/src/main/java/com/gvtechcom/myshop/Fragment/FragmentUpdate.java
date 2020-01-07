@@ -65,10 +65,6 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_update_notification, container, false);
-        MainActivity mainActivity;
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(false, false, false);
-        mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
         return rootView;
     }
 
@@ -109,7 +105,7 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("idNotify", idNotify);
                 fragmentNotifyDetail.setArguments(bundle);
-                fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentNotifyDetail);
+                fragmentTransaction.replace(R.id.frame_update_manager, fragmentNotifyDetail);
                 fragmentTransaction.addToBackStack("NotifyAndUpdate");
                 fragmentTransaction.commit();
             }

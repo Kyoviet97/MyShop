@@ -31,17 +31,11 @@ public class FragmentMessages extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_messages, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainActivity mainActivity;
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(false, false, false);
-        mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
-        addControl();
     }
 
     private void addControl() {

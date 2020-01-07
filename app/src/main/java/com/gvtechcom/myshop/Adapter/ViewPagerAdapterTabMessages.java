@@ -10,6 +10,7 @@ import com.gvtechcom.myshop.Fragment.FragmentContentMessages;
 import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
 import com.gvtechcom.myshop.Fragment.FragmentHomeManager;
 import com.gvtechcom.myshop.Fragment.FragmentMessages;
+import com.gvtechcom.myshop.Fragment.FragmentMessagesManager;
 import com.gvtechcom.myshop.Fragment.FragmentOrders;
 import com.gvtechcom.myshop.Fragment.FragmentUpdate;
 
@@ -28,10 +29,10 @@ public class ViewPagerAdapterTabMessages extends FragmentStatePagerAdapter {
                 frag = new FragmentHomeManager();
                 break;
             case 1:
-                frag = new FragmentUpdate();
+                frag = new FragmentMessagesManager();
                 break;
             case 2:
-                frag = new FragmentUpdate();
+                frag = new FragmentOrders();
                 break;
             case 3:
                 frag = new FragmentUpdate();
