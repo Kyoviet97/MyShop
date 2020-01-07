@@ -34,8 +34,14 @@
         android:layout_height="?actionBarSize"
         app:tabIndicatorHeight="0dp"/>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.gvtechcom.myshop.Utils.NonSwipeableViewPager
         android:id="@+id/view_pager_messages"
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.gvtechcom.myshop.Utils.NonSwipeableViewPager>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 </LinearLayout>

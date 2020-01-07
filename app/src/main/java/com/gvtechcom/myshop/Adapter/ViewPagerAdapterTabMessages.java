@@ -5,19 +5,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.gvtechcom.myshop.Fragment.FragmentAccount;
 import com.gvtechcom.myshop.Fragment.FragmentContentMessages;
-import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
-import com.gvtechcom.myshop.Fragment.FragmentHomeManager;
-import com.gvtechcom.myshop.Fragment.FragmentMessages;
-import com.gvtechcom.myshop.Fragment.FragmentOrders;
-import com.gvtechcom.myshop.Fragment.FragmentUpdate;
 
 public class ViewPagerAdapterTabMessages extends FragmentStatePagerAdapter {
      public ViewPagerAdapterTabMessages(FragmentManager fm) {
         super(fm);
     }
-
 
     @NonNull
     @Override
@@ -25,19 +18,13 @@ public class ViewPagerAdapterTabMessages extends FragmentStatePagerAdapter {
         Fragment frag = null;
         switch (position){
             case 0:
-                frag = new FragmentHomeManager();
+                frag = new FragmentContentMessages();
                 break;
             case 1:
-                frag = new FragmentUpdate();
+                frag = new FragmentContentMessages();
                 break;
             case 2:
-                frag = new FragmentUpdate();
-                break;
-            case 3:
-                frag = new FragmentUpdate();
-                break;
-            case 4:
-                frag = new FragmentAccount();
+                frag = new FragmentContentMessages();
                 break;
         }
         return frag;
@@ -45,7 +32,7 @@ public class ViewPagerAdapterTabMessages extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 3;
     }
 
 }

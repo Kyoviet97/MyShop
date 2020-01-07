@@ -218,7 +218,7 @@ public class FragmentViewCategory extends Fragment {
                         bundle.putString("fromToFragment", "homeViewCategory");
                         bundle.putString("dataJson", jsonData);
                         fragmentItemDetail.setArguments(bundle);
-                        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetail);
+                        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentItemDetail);
                         fragmentTransaction.addToBackStack("home");
                         fragmentTransaction.commit();
                     }
@@ -230,5 +230,15 @@ public class FragmentViewCategory extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setHideButtonNavigation(false);
+        mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
+
     }
 }

@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_main_add_shipping"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayoutShippingAddress"
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:paddingTop="@dimen/_8dp"
         android:layout_height="?actionBarSize"
         android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/img_back_add_shipping_address"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/_16dp"
-            android:paddingRight="@dimen/_16dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_back_rule_account"
-            app:layout_constraintBottom_toBottomOf="@+id/txtShippingAddress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txtShippingAddress" />
+            style="@style/st_image_back_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_back_navigation" />
 
         <TextView
             android:id="@+id/txtShippingAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sf_pro_text_medium"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="?actionBarSize"
             android:gravity="center"
+            android:fontFamily="@font/sf_pro_text_medium"
             android:text="Shipping Address"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/_16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textColor="#4A4A4A"
+            android:textSize="@dimen/_16sp" />
+
+    </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_3dp"
-        android:background="@drawable/shadow_layout"/>
+        android:background="@drawable/shadow_layout">
+    </View>
 
     <ScrollView
         android:layout_width="match_parent"

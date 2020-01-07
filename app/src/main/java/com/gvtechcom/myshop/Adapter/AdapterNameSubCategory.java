@@ -60,7 +60,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.txtNameSubCategory.setText(lsNameChildren.get(position).category_name);
+        holder.txtNameSubCategory.setText(lsNameChildren.get(position).name);
         this.adapterItemSubCategory = new AdapterItemSubCategory(context, lsNameChildren.get(position).children);
         adapterItemSubCategory.setOnClickListener(new AdapterItemSubCategory.setOnItemClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
                                 AppCompatActivity activity = (AppCompatActivity) context;
                                 Fragment myFragment = new FragmentViewCategory();
                                 myFragment.setArguments(bundle);
-                                activity.getSupportFragmentManager().beginTransaction().add(R.id.content_home_frame_layout, myFragment).addToBackStack(null).commit();
+                                activity.getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_home_manager, myFragment).addToBackStack(null).commit();
                             }
                         }
                     }

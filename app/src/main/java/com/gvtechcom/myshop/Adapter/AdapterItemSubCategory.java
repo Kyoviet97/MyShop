@@ -37,13 +37,13 @@ public class AdapterItemSubCategory extends RecyclerView.Adapter<AdapterItemSubC
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
-                .load(lsSubCategoryChildren.get(position).category_image)
+                .load(lsSubCategoryChildren.get(position).image)
                 .placeholder(R.drawable.banner_image_slide)
                 .error(R.drawable.banner_image_slide)
                 .override(250, 250)
                 .into(holder.imgSubCategoryChidren);
 
-        holder.txtSubCategoryChidren.setText(lsSubCategoryChildren.get(position).category_name);
+        holder.txtSubCategoryChidren.setText(lsSubCategoryChildren.get(position).name);
 
     }
 
@@ -64,7 +64,7 @@ public class AdapterItemSubCategory extends RecyclerView.Adapter<AdapterItemSubC
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
-                        onItemClickListener.setItemClick(lsSubCategoryChildren.get(getAdapterPosition()).category_id);
+                        onItemClickListener.setItemClick(lsSubCategoryChildren.get(getAdapterPosition()).id);
                     }
                 }
             });

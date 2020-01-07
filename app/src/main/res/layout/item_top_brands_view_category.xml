@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/img_top_brands"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_store_messages_selected"/>
+
+    <TextView
+        android:id="@+id/txt_name_top_brands"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_10dp"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:textSize="@dimen/_9sp"
+        android:textColor="#4A4A4A"
+        android:text="lennovo"/>
+
+</LinearLayout>

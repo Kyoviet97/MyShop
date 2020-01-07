@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerUpdateNotify;
+import com.gvtechcom.myshop.Interface.HideBackIcon;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.UpdateNotifyModel;
 import com.gvtechcom.myshop.Network.APIServer;
@@ -36,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentUpdate extends androidx.fragment.app.Fragment {
+public class FragmentUpdate extends Fragment implements HideBackIcon{
     private View rootView;
     private APIServer apiServer;
     private UpdateNotifyModel.UpdateNotifyModelParser dataUpdateNotify;
@@ -45,6 +47,7 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
     private MySharePreferences mySharePreferences;
     private FragmentManager fragmentManager;
     private ToastDialog toastDialog;
+    private HideBackIcon hideBackIcon;
 
     @BindView(R.id.recycler_update_notify)
     RecyclerView recyclerUpdateNotify;
@@ -65,17 +68,13 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_update_notification, container, false);
-        MainActivity mainActivity;
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(false, false, false);
-        mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, rootView);
         setRetrofit();
         init();
         if (dataUpdateNotify != null){
@@ -87,6 +86,10 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
                 getDataUpdateNotify();
             }
         });
+    }
+
+    public void setHideBackIcon(HideBackIcon hideBackIcon){
+        this.hideBackIcon = hideBackIcon;
     }
 
     private void init() {
@@ -105,11 +108,17 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
             @Override
             public void onClick(String idNotify) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment fragmentNotifyDetail = new FragmentNotifyDetail();
+                FragmentNotifyDetail fragmentNotifyDetail = new FragmentNotifyDetail();
+                fragmentNotifyDetail.setHideBackIcon(new HideBackIcon() {
+                    @Override
+                    public void setHideButtonIcon(Boolean hideButtonIcon) {
+                        hideBackIcon.setHideButtonIcon(hideButtonIcon);
+                    }
+                });
                 Bundle bundle = new Bundle();
                 bundle.putString("idNotify", idNotify);
                 fragmentNotifyDetail.setArguments(bundle);
-                fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentNotifyDetail);
+                fragmentTransaction.replace(R.id.frame_update_manager, fragmentNotifyDetail);
                 fragmentTransaction.addToBackStack("NotifyAndUpdate");
                 fragmentTransaction.commit();
             }
@@ -137,11 +146,14 @@ public class FragmentUpdate extends androidx.fragment.app.Fragment {
         });
     }
 
-
     private void setRetrofit() {
         Retrofit retrofit;
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
     }
 
+    @Override
+    public void setHideButtonIcon(Boolean hideButtonIcon) {
+        hideBackIcon.setHideButtonIcon(hideButtonIcon);
+    }
 }

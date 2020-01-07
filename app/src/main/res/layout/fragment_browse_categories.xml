@@ -43,11 +43,6 @@
             android:background="@color/white"/>
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/color_StatusBar"/>
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_name_sub_category"

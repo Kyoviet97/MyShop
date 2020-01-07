@@ -6,23 +6,29 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class BrowseCategoriesModel {
-        public String category_id;
-        public String category_name;
+        public String id;
+        public String name;
         public String parent_id;
-        public String category_image;
-        public List<String> top_brands;
+        public String image;
+        public List<TopBrands> top_brands;
         public List<Children> children;
         public Boolean isSelect;
 
 
 
    public class Children{
-       public String category_id;
-       public String category_name;
+       public String id;
+       public String name;
        public String parent_id;
-       public String category_image;
+       public String image;
        public List<String> top_brands;
        public List<Children> children;
+   }
+
+   public class TopBrands{
+       public String id;
+       public String image;
+       public String name;
    }
 
     public class BrowseCategoriesModelParser{

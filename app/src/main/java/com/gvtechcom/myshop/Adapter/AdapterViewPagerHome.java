@@ -1,14 +1,20 @@
 package com.gvtechcom.myshop.Adapter;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.gvtechcom.myshop.Fragment.FragmentContentMessages;
+import com.gvtechcom.myshop.Fragment.FragmentAccountManager;
 import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
+import com.gvtechcom.myshop.Fragment.FragmentHomeManager;
 import com.gvtechcom.myshop.Fragment.FragmentMessages;
-import com.gvtechcom.myshop.Fragment.FragmentOrders;
+import com.gvtechcom.myshop.Fragment.FragmentMessagesManager;
+import com.gvtechcom.myshop.Fragment.FragmentOrdersManager;
+import com.gvtechcom.myshop.Fragment.FragmentUpdateManager;
 
 public class AdapterViewPagerHome extends FragmentStatePagerAdapter {
 
@@ -22,19 +28,19 @@ public class AdapterViewPagerHome extends FragmentStatePagerAdapter {
         Fragment frag = null;
         switch (position){
             case 0:
-                frag = new FragmentHomeContent();
+                frag = new FragmentHomeManager();
                 break;
             case 1:
-                frag = new FragmentMessages();
+                frag = new FragmentMessagesManager();
                 break;
             case 2:
-                frag = new FragmentOrders();
+                frag = new FragmentOrdersManager();
                 break;
             case 3:
-                frag = new FragmentOrders();
+                frag = new FragmentUpdateManager();
                 break;
             case 4:
-                frag = new FragmentOrders();
+                frag = new FragmentAccountManager();
                 break;
         }
         return frag;

@@ -12,7 +12,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
@@ -365,7 +364,7 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
         bundle.putString("fromToFragment", "homeContent");
         ShowProgressBar.hideProgress();
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }

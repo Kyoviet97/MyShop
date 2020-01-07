@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,19 @@ public class FragmentBrowseCategories extends Fragment {
     @BindView(R.id.recycler_name_sub_category)
     RecyclerView recyclerNameSubCategory;
 
+    @BindView(R.id.recycler_top_brands_browse)
+    RecyclerView recyclerTopBrands;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.setDisplayNavigationBar(true, true, false);
+        mainActivity.setColorIconDarkMode(true, R.color.white);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "apple watch", R.color.white, "#9D9690");
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -69,16 +83,11 @@ public class FragmentBrowseCategories extends Fragment {
     }
 
     private void init() {
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(true, true, false);
-        mainActivity.setColorIconDarkMode(true, R.color.white);
-        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_gray, "apple watch", R.color.white, "#9D9690");
         toastDialog = new ToastDialog(getActivity());
-        progressDialogCustom  = new ProgressDialogCustom(getActivity());
+        progressDialogCustom = new ProgressDialogCustom(getActivity());
         setRetrofit();
         setRecyclerView();
         callApiBrowse();
-        fragmentItemDetail = new FragmentItemDetail();
     }
 
 
@@ -88,6 +97,11 @@ public class FragmentBrowseCategories extends Fragment {
 
         LinearLayoutManager layoutManagerRecyclerNameSubCategory = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerNameSubCategory.setLayoutManager(layoutManagerRecyclerNameSubCategory);
+
+        LinearLayoutManager layoutManagerRecyclerTopBrands = new GridLayoutManager(getActivity(), 3);
+        recyclerTopBrands.setLayoutManager(layoutManagerRecyclerTopBrands);
+
+
     }
 
     private void setRetrofit() {
@@ -118,37 +132,7 @@ public class FragmentBrowseCategories extends Fragment {
         });
     }
 
-    private void callApiViewCategory(String idCategoty) {
-        progressDialogCustom.onShow(false, "");
-        Gson gson = new Gson();
-        Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoty, 1, 8);
-        call.enqueue(new Callback<ProductByCategoryModel.ProductByCategoryModelParser>() {
-            @Override
-            public void onResponse(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Response<ProductByCategoryModel.ProductByCategoryModelParser> response) {
-                progressDialogCustom.onHide();
-                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)) {
-                    ProductByCategoryModel dataViewCategor = response.body().data;
-                    if (dataViewCategor != null) {
-                        String jsonData = gson.toJson(dataViewCategor);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("jsonDataViewCategory", jsonData);
-                        bundle.putString("idCategoty", idCategoty);
-                        FragmentManager fragmentManager = getFragmentManager();
-                        Fragment fragmentViewCategory = new FragmentViewCategory();
-                        fragmentViewCategory.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentViewCategory);
-                        fragmentTransaction.addToBackStack("home");
-                        fragmentTransaction.commit();
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Throwable t) {
-                progressDialogCustom.onHide();
-            }
-        });
-    }
+
 
     private void setOnClickItemAdapter() {
         adapterRecyclerBrowseCategoriesLeft.setOnClickItem(new AdapterRecyclerBrowseCategoriesLeft.setOnClickItem() {
@@ -159,10 +143,20 @@ public class FragmentBrowseCategories extends Fragment {
                 adapterNameSubCategory.setOnItemClickListener(new AdapterNameSubCategory.setOnClickListenr() {
                     @Override
                     public void setOnClick(List<BrowseCategoriesModel.Children> lsNameChildren, int position) {
-                          callApiViewCategory(lsNameChildren.get(position).category_id);
+
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setHideButtonNavigation(false);
+        mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
+
     }
 }

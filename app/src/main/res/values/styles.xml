@@ -202,4 +202,15 @@
     <attr name="sb_shadow_radius" format="reference|dimension"/>
 
 
+    <style name="st_image_back_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/_16dp</item>
+        <item name="android:paddingRight">@dimen/_16dp</item>
+        <item name="android:paddingBottom">@dimen/_14dp</item>
+        <item name="android:paddingTop">@dimen/_16dp</item>
+
+    </style>
+
+
 </resources>

@@ -1,76 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/MainLayoutShippingAddress"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/MainLayoutShippingAddress"
+    android:background="@color/color_main_bkg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayoutShippingAddress"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:paddingTop="8dp"
         android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/img_back_shipping_address"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/_16dp"
-            android:paddingRight="@dimen/_16dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_back_rule_account"
-            app:layout_constraintBottom_toBottomOf="@+id/txtShippingAddress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txtShippingAddress" />
+            style="@style/st_image_back_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_back_navigation" />
 
         <TextView
             android:id="@+id/txt_shipping_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:fontFamily="@font/sf_pro_text_medium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="center"
             android:text="Shipping Address"
-            android:textColor="@android:color/black"
+            android:textColor="#4A4A4A"
             android:textSize="@dimen/_16sp" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_3dp"
-        android:background="@drawable/shadow_layout">
-    </View>
+        android:background="@drawable/shadow_layout"/>
 
 
     <Button
         android:id="@+id/btn_add_an_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginBottom="@dimen/_8dp"
         android:background="@drawable/bkg_btn_click_log_out"
         android:fontFamily="@font/sf_pro_text_regular"
         android:gravity="left|center"
         android:padding="@dimen/_10dp"
-        android:layout_marginTop="@dimen/_18dp"
         android:text="Add an address"
         android:textAllCaps="false"
         android:textColor="#4A90E2"
-        android:layout_marginBottom="@dimen/_14dp"
         android:textSize="@dimen/_16sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_3dp"
-        android:background="@drawable/shadow_layout">
-    </View>
+        android:background="@drawable/shadow_layout"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout_shipping_address"

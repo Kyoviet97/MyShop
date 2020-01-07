@@ -2,9 +2,6 @@ package com.gvtechcom.myshop;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,65 +11,40 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.gvtechcom.myshop.Account.AccountActivity;
-import com.gvtechcom.myshop.Adapter.ViewPagerAdapterTabMessages;
-import com.gvtechcom.myshop.Fragment.FragmentAccount;
-import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
-import com.gvtechcom.myshop.Fragment.FragmentMessages;
-import com.gvtechcom.myshop.Fragment.FragmentOrders;
+import com.gvtechcom.myshop.Adapter.AdapterViewPagerHome;
 import com.gvtechcom.myshop.Fragment.FragmentSearch;
-import com.gvtechcom.myshop.Fragment.FragmentUpdate;
-import com.gvtechcom.myshop.Fragment.FragmentViewBrand;
 import com.gvtechcom.myshop.Interface.ClickActionSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
+import com.gvtechcom.myshop.Utils.NonSwipeableViewPager;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
-import com.mylibrary.ui.statusbar.SystemBarTintManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
-    private int check_fragment;
     private KeywordSearch keywordSearchl;
     private ClickActionSearch clickActionSearch;
 
     @BindView(R.id.tablayout_home)
     TabLayout tableLayoutHome;
     @BindView(R.id.view_pager_home)
-    ViewPager viewPagerHome;
-    @BindView(R.id.btn_home)
-    Button btn_home;
-    @BindView(R.id.btn_message)
-    Button btn_message;
-    @BindView(R.id.btn_oders)
-    Button btn_orders;
-    @BindView(R.id.btn_update)
-    Button btn_update;
-    @BindView(R.id.btn_account)
-    Button btn_account;
+    NonSwipeableViewPager viewPagerHome;
     @BindView(R.id.navication_top)
     RelativeLayout navigationTop;
     @BindView(R.id.img_btn_back_navigation)
@@ -89,136 +61,80 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        init();
         fragmentManager = getSupportFragmentManager();
-        Fragment_Home();
-        Get_Extra();
         setEditSearchNavigation(false);
         setActionSearchClick();
-        this.check_fragment = 0;
 
         addControl();
+        backTabHome();
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void ClickButton(View view) {
-        switch (view.getId()) {
-            case R.id.btn_home:
-                if (check_fragment == 1) {
-                } else {
-                    Fragment_Home();
-                }
-                break;
-            case R.id.btn_message:
-                if (check_fragment == 2) {
-                } else {
-                    Fragment_Messages();
-                }
-                break;
-            case R.id.btn_oders:
-                if (check_fragment == 3) {
-                } else {
-                    Fragment_Orders();
-                }
-                break;
-            case R.id.btn_update:
-                if (check_fragment == 4) {
-                } else {
-                    Fragment_Update();
-                }
-                break;
-            case R.id.btn_account:
-                if (check_fragment == 5) {
-                } else {
-                    Fragment_Account();
-                }
-                break;
-
+    @OnClick({R.id.img_btn_back_navigation})
+    void onClick(View view){
+        switch (view.getId()){
             case R.id.img_btn_back_navigation:
                 fragmentManager.popBackStack();
                 break;
         }
     }
 
-    public void navigationSelected(String button) {
-        switch (button) {
-            case "home":
-                btn_home.setBackgroundResource(R.drawable.ic_btn_home_selected);
-                btn_message.setBackgroundResource(R.drawable.ic_btn_mess);
-                btn_orders.setBackgroundResource(R.drawable.ic_btn_orders);
-                btn_update.setBackgroundResource(R.drawable.ic_btn_update);
-                btn_account.setBackgroundResource(R.drawable.ic_btn_accound);
-                break;
-
-            case "messager":
-                btn_home.setBackgroundResource(R.drawable.ic_btn_home);
-                btn_message.setBackgroundResource(R.drawable.ic_btn_mess_selected);
-                btn_orders.setBackgroundResource(R.drawable.ic_btn_orders);
-                btn_update.setBackgroundResource(R.drawable.ic_btn_update);
-                btn_account.setBackgroundResource(R.drawable.ic_btn_accound);
-                break;
-
-            case "orders":
-                btn_home.setBackgroundResource(R.drawable.ic_btn_home);
-                btn_message.setBackgroundResource(R.drawable.ic_btn_mess);
-                btn_orders.setBackgroundResource(R.drawable.ic_btn_orders_selected);
-                btn_update.setBackgroundResource(R.drawable.ic_btn_update);
-                btn_account.setBackgroundResource(R.drawable.ic_btn_accound);
-                break;
-
-            case "update":
-                btn_home.setBackgroundResource(R.drawable.ic_btn_home);
-                btn_message.setBackgroundResource(R.drawable.ic_btn_mess);
-                btn_orders.setBackgroundResource(R.drawable.ic_btn_orders);
-                btn_update.setBackgroundResource(R.drawable.ic_btn_update_selected);
-                btn_account.setBackgroundResource(R.drawable.ic_btn_accound);
-                break;
-
-            case "account":
-                btn_home.setBackgroundResource(R.drawable.ic_btn_home);
-                btn_message.setBackgroundResource(R.drawable.ic_btn_mess);
-                btn_orders.setBackgroundResource(R.drawable.ic_btn_orders);
-                btn_update.setBackgroundResource(R.drawable.ic_btn_update);
-                btn_account.setBackgroundResource(R.drawable.ic_btn_account_selected);
-                break;
-        }
-    }
-
-    private void init() {
-        imgBtnBackNavigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentManager.popBackStack();
-            }
-        });
-
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private void addControl() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ViewPagerAdapterTabMessages adapter = new ViewPagerAdapterTabMessages(fragmentManager);
+        AdapterViewPagerHome adapter = new AdapterViewPagerHome(fragmentManager);
         viewPagerHome.setAdapter(adapter);
+        viewPagerHome.setOffscreenPageLimit(5);
         tableLayoutHome.setupWithViewPager(viewPagerHome);
         viewPagerHome.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tableLayoutHome));
         tableLayoutHome.setTabsFromPagerAdapter(adapter);//deprecated
         tableLayoutHome.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPagerHome));
 
 
-        tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_box_orders_messages);
-        tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_store_messages);
-        tableLayoutHome.getTabAt(2).setIcon(R.drawable.bkg_user_headset_messages);
-        tableLayoutHome.getTabAt(3).setIcon(R.drawable.bkg_store_messages);
-        tableLayoutHome.getTabAt(4).setIcon(R.drawable.bkg_user_headset_messages);
+        tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_btn_home);
+        tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_btn_messages);
+        tableLayoutHome.getTabAt(2).setIcon(R.drawable.bkg_btn_orders);
+        tableLayoutHome.getTabAt(3).setIcon(R.drawable.bkg_btn_update);
+        tableLayoutHome.getTabAt(4).setIcon(R.drawable.bkg_btn_account);
+
+        onTabSelect();
 
     }
 
-    public void setupStatusBarView(View view) {
-        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
-        SystemBarTintManager.SystemBarConfig mConfig = systemBarTintManager.getConfig();
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, mConfig.getStatusBarHeight());
-        view.setLayoutParams(params);
+    private void onTabSelect() {
+        tableLayoutHome.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        setDisplayNavigationBar(true, false, true);
+                        setColorIconDarkMode(false, R.color.color_StatusBar);
+                        break;
+
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        setDisplayNavigationBar(false, false, false);
+                        setColorIconDarkMode(true, R.color.white);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    public void backTabHome() {
+        viewPagerHome.setCurrentItem(0);
     }
 
     public void setColorIconDarkMode(Boolean shouldChangeStatusBarTintToDark, int color) {
@@ -234,70 +150,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void Fragment_Home() {
-
-        check_fragment = 1;
-        navigationSelected("home");
-        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentHomeContent(), "frag_home");
-        fragmentTransaction.commit();
-    }
-
-    private void Fragment_Messages() {
-        check_fragment = 2;
-        navigationSelected("messager");
-        androidx.fragment.app.FragmentManager fragmentManagerx = getSupportFragmentManager();
-        androidx.fragment.app.FragmentTransaction fragmentTransactionx = fragmentManagerx.beginTransaction();
-        fragmentTransactionx.replace(R.id.content_home_frame_layout, new FragmentMessages(), "frag_messages");
-        fragmentTransactionx.commit();
-    }
-
-    private void Fragment_Orders() {
-        check_fragment = 3;
-        navigationSelected("orders");
-        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentOrders(), "frag_orders");
-        fragmentTransaction.commit();
-    }
-
-    private void Fragment_Update() {
-        check_fragment = 4;
-        navigationSelected("update");
-        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentUpdate(), "frag_update");
-        fragmentTransaction.commit();
-    }
-
-    private void Fragment_Account() {
-        check_fragment = 5;
-        SharedPreferences sharedPreferences = getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
-        boolean account_key = sharedPreferences.getBoolean("account", false);
-        if (account_key) {
-            navigationSelected("account");
-            androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
-            fragmentTransaction.commit();
-        } else {
-            Intent intent = new Intent(MainActivity.this, AccountActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    private void Get_Extra() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            String s = (String) bundle.get("account");
-            if (s.equals("true")) {
-                check_fragment = 5;
-                navigationSelected("account");
-                androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentAccount(), "frag_account");
-                fragmentTransaction.commit();
-            }
-        }
-    }
 
     public void setEditSearchNavigation(Boolean isSearch) {
         if (isSearch) {
@@ -313,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_home_frame_layout, new FragmentSearch());
+                    fragmentTransaction.replace(R.id.frame_layout_home_manager, new FragmentSearch());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
@@ -410,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupUI(View view) {
-
         if (!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View v, MotionEvent event) {

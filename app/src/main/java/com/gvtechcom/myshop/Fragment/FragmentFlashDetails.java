@@ -57,6 +57,7 @@ public class FragmentFlashDetails extends androidx.fragment.app.Fragment {
     private List<FlashDealsDetails.ProductsData> lsFlashDealsProductDataTotal;
     private int page = 1;
     private FragmentManager fragmentManager;
+    private MainActivity mainActivity;
 
     Boolean isLoadMore = true;
     Boolean dataNull = false;
@@ -80,7 +81,7 @@ public class FragmentFlashDetails extends androidx.fragment.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_flash_deal, container, false);
         ButterKnife.bind(this, rootView);
-        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, true, false);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation_white, R.drawable.bkg_search_color_orange, "apple watch", R.color.color_startus_home, "#FCC39D");
         imgTopImage.setBackgroundResource(R.drawable.ic_rectangle_orang);
@@ -272,10 +273,18 @@ public class FragmentFlashDetails extends androidx.fragment.app.Fragment {
         bundle.putString("dataJson", jsonData);
         bundle.putString("fromToFragment", "flashDeals");
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setHideButtonNavigation(false);
+        mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
 
+    }
 }

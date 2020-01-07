@@ -22,8 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.gvtechcom.myshop.Account.AccountActivity;
-import com.gvtechcom.myshop.Account.FragmentUpdateNotify;
 import com.gvtechcom.myshop.Account.ShippingAddressFragment;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
@@ -91,8 +89,6 @@ public class FragmentAccount extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, rootView);
         mainActivity = (MainActivity) getActivity();
-        mainActivity.setDisplayNavigationBar(false, false, false);
-        mainActivity.setColorIconDarkMode(true, R.color.color_startusBar_white);
         mainActivity.setupUI(mainLayoutFragmentAccount);
         return rootView;
     }
@@ -104,6 +100,7 @@ public class FragmentAccount extends Fragment {
         init();
 
     }
+
 
     private void init() {
         fragmentManager = getFragmentManager();
@@ -278,7 +275,7 @@ public class FragmentAccount extends Fragment {
     private void setClickShippingAddress() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_home_frame_layout, new ShippingAddressFragment());
+        fragmentTransaction.replace(R.id.frame_account_manager, new ShippingAddressFragment());
         fragmentTransaction.addToBackStack("frag_account");
         fragmentTransaction.commit();
     }
@@ -403,10 +400,7 @@ public class FragmentAccount extends Fragment {
                             editor.apply();
 
                             progressDialogCustom.onHide();
-
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+                            mainActivity.backTabHome();
                         }
 
                         @Override

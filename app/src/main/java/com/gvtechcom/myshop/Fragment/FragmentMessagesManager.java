@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,28 +12,33 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.gvtechcom.myshop.Interface.HideBackIcon;
 import com.gvtechcom.myshop.R;
 
-public class FragmentHomeManager extends Fragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class FragmentMessagesManager extends Fragment{
     private View rootView;
+    private FragmentManager fragmentMessages;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_home_manager, container, false);
+        rootView = inflater.inflate(R.layout.fragment_messages_manager, container, false);
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setFragmentHomeContent();
-
+        loadFragmentMessages();
     }
 
-    private void setFragmentHomeContent(){
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_home_manager, new FragmentHomeContent());
+    private void loadFragmentMessages(){
+        fragmentMessages = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentMessages.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_messages_manager, new FragmentMessages());
         fragmentTransaction.commit();
     }
 }

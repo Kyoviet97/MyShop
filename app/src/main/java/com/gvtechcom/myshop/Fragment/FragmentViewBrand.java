@@ -274,10 +274,18 @@ public class FragmentViewBrand extends androidx.fragment.app.Fragment {
         bundle.putString("dataJson", jsonData);
         bundle.putString("fromToFragment", "viewBrand");
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.content_home_frame_layout, fragmentItemDetails);
+        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivity.setDisplayNavigationBar(true, false, true);
+        mainActivity.setHideButtonNavigation(false);
+        mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
+        mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
 
+    }
 }

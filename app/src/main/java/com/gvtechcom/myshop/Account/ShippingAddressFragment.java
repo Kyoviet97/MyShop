@@ -106,7 +106,7 @@ public class ShippingAddressFragment extends androidx.fragment.app.Fragment {
     private void addShippingAddess() {
         fragmentManager = getFragmentManager();
         androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_home_frame_layout, new AddShippingAddessFragment());
+        fragmentTransaction.replace(R.id.frame_account_manager, new AddShippingAddessFragment());
         fragmentTransaction.addToBackStack("ShippingAddress");
         fragmentTransaction.commit();
     }
@@ -170,7 +170,7 @@ public class ShippingAddressFragment extends androidx.fragment.app.Fragment {
                 bundle.putString("idWard", dataAllAddressList.get(position).ward_id);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentAddShipping.setArguments(bundle);
-                fragmentTransaction.replace(R.id.content_home_frame_layout, fragmentAddShipping);
+                fragmentTransaction.replace(R.id.frame_account_manager, fragmentAddShipping);
                 fragmentTransaction.addToBackStack("ShippingAddress");
                 fragmentTransaction.commit();
             }

@@ -1,6 +1,5 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -65,7 +65,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,7 +74,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentHomeContent extends androidx.fragment.app.Fragment {
+public class FragmentHomeContent extends Fragment {
     private View rootView;
     private MySharePreferences mySharePreferences = new MySharePreferences();
     private Boolean isLoadMore = true;
@@ -89,8 +88,6 @@ public class FragmentHomeContent extends androidx.fragment.app.Fragment {
     private Boolean isStopCountDownTimerFlashDeals = false;
 
     private int page = 1;
-
-    private FragmentManager fragmentManager;
 
     private APIServer apiServer;
 
@@ -120,6 +117,8 @@ public class FragmentHomeContent extends androidx.fragment.app.Fragment {
     private Handler handler;
     private Boolean isStopHandel;
     private Runnable update;
+
+    private FragmentManager fragmentManager;
 
     @BindView(R.id.swipe_refresh_home_content)
     SwipeRefreshLayout swipeRefreshHomeContent;
@@ -567,14 +566,14 @@ public class FragmentHomeContent extends androidx.fragment.app.Fragment {
 
     private void setDataItemDetails(String jsonData) {
         fragmentManager = getFragmentManager();
-        androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
         bundle.putString("dataJson", jsonData);
         bundle.putString("fromToFragment", "homeContent");
-        progressDialogCustom.onHide();
         fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.frame_content_home_manager, fragmentItemDetails);
+        progressDialogCustom.onHide();
+        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentItemDetails);
         fragmentTransaction.addToBackStack("home");
         fragmentTransaction.commit();
     }
@@ -616,7 +615,7 @@ public class FragmentHomeContent extends androidx.fragment.app.Fragment {
             case R.id.btn_browse_categories:
                 fragmentManager = getFragmentManager();
                 androidx.fragment.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_content_home_manager, new FragmentBrowseCategories());
+                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentBrowseCategories());
                 fragmentTransaction.addToBackStack("home");
                 fragmentTransaction.commit();
                 break;
@@ -625,16 +624,16 @@ public class FragmentHomeContent extends androidx.fragment.app.Fragment {
 
             case R.id.btn_flash_deals:
                 fragmentManager = getFragmentManager();
-                androidx.fragment.app.FragmentTransaction fragmentTransactionFlashDeal = fragmentManager.beginTransaction();
-                fragmentTransactionFlashDeal.replace(R.id.frame_content_home_manager, new FragmentFlashDetails());
-                fragmentTransactionFlashDeal.addToBackStack("home");
-                fragmentTransactionFlashDeal.commit();
+                FragmentTransaction fragmentFlashDetails = fragmentManager.beginTransaction();
+                fragmentFlashDetails.add(R.id.frame_layout_home_manager, new FragmentFlashDetails());
+                fragmentFlashDetails.addToBackStack("home");
+                fragmentFlashDetails.commit();
                 break;
 
             case R.id.btn_coins_coupons:
                 fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
-                fragmentTransaction1.replace(R.id.frame_content_home_manager, new FragmentViewBrand());
+                fragmentTransaction1.add(R.id.frame_layout_home_manager, new FragmentViewBrand());
                 fragmentTransaction1.addToBackStack("home");
                 fragmentTransaction1.commit();
                 break;

@@ -38,13 +38,12 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
     @Override
     public void onBindViewHolder(@NonNull ViewHoler holder, int position) {
         Glide.with(context)
-                .load(lsBrowseCategories.get(position).category_image)
-                .placeholder(R.drawable.banner_image_slide)
-                .error(R.drawable.banner_image_slide)
+                .load(lsBrowseCategories.get(position).image)
+                .placeholder(R.drawable.ic_icon_load_error_cetegory)
+                .error(R.drawable.ic_icon_load_error_cetegory)
                 .override(250, 250)
                 .into(holder.imageView_browse_category_left);
-        holder.txt_browse_category_left.setText(lsBrowseCategories.get(position).category_name);
-
+        holder.txt_browse_category_left.setText(lsBrowseCategories.get(position).name);
         holder.linearLayout.setBackgroundColor(Color.WHITE);
     }
 
@@ -67,7 +66,7 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
                 @Override
                 public void onClick(View v) {
                     if (setOnClickItem != null){
-                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).category_id, getAdapterPosition());
+                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).id, getAdapterPosition());
                     }
                 }
             });
