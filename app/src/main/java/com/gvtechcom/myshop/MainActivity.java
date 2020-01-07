@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerHome.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tableLayoutHome));
         tableLayoutHome.setTabsFromPagerAdapter(adapter);//deprecated
         tableLayoutHome.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPagerHome));
-        
+
 
         tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_box_orders_messages);
         tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_store_messages);
