@@ -28,8 +28,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:paddingRight="@dimen/_18dp"
-            android:paddingLeft="@dimen/_10dp"
+            android:paddingRight="@dimen/_14dp"
+            android:paddingLeft="@dimen/_14dp"
             android:src="@drawable/ic_chevron_left"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +80,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#BBBBBB"/>
+
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_home"

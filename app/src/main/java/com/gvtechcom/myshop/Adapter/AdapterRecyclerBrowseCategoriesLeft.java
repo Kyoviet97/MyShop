@@ -43,6 +43,7 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
                 .error(R.drawable.ic_icon_load_error_cetegory)
                 .override(250, 250)
                 .into(holder.imageView_browse_category_left);
+
         holder.txt_browse_category_left.setText(lsBrowseCategories.get(position).name);
         holder.linearLayout.setBackgroundColor(Color.WHITE);
     }
@@ -66,7 +67,7 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
                 @Override
                 public void onClick(View v) {
                     if (setOnClickItem != null){
-                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).id, getAdapterPosition());
+                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).children, lsBrowseCategories.get(getAdapterPosition()).top_brands);
                     }
                 }
             });
@@ -75,7 +76,7 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
     }
 
     public interface setOnClickItem{
-        void onClickItem(String categoryId, int position);
+        void onClickItem(List<BrowseCategoriesModel.Children> lsChildren, List<BrowseCategoriesModel.TopBrands> lsTopBrands);
     }
 
     private setOnClickItem setOnClickItem;

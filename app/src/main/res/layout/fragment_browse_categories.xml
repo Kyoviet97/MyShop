@@ -40,6 +40,7 @@
             android:id="@+id/recycler_top_brands_browse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
             android:background="@color/white"/>
 
 
@@ -48,6 +49,7 @@
             android:id="@+id/recycler_name_sub_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4dp"
             android:background="@color/white"/>
 
 

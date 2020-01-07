@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.gvtechcom.myshop.Interface.SendIdCatergory;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.R;
 
@@ -20,6 +21,7 @@ public class AdapterTopBrandsBrowseCategory extends RecyclerView.Adapter<Adapter
 
     private List<BrowseCategoriesModel.TopBrands> lsTopBrand;
     private Context context;
+    private SendIdCatergory sendIdCatergory;
 
     public AdapterTopBrandsBrowseCategory(List<BrowseCategoriesModel.TopBrands> lsTopBrand, Context context) {
         this.lsTopBrand = lsTopBrand;
@@ -32,6 +34,15 @@ public class AdapterTopBrandsBrowseCategory extends RecyclerView.Adapter<Adapter
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_top_brands_view_category, parent, false);
         return new ViewHolder(view);
+    }
+
+    public void updateData(List<BrowseCategoriesModel.TopBrands> lsTopBrand){
+        this.lsTopBrand = lsTopBrand;
+        notifyDataSetChanged();
+    }
+
+    public void setSenIdCategory(SendIdCatergory senIdCategory){
+        this.sendIdCatergory = senIdCategory;
     }
 
     @Override
@@ -57,7 +68,16 @@ public class AdapterTopBrandsBrowseCategory extends RecyclerView.Adapter<Adapter
        public ViewHolder(@NonNull View itemView) {
            super(itemView);
            imgTopBrands = itemView.findViewById(R.id.img_top_brands);
-           txtNameTopBrands = imgTopBrands.findViewById(R.id.txt_name_top_brands);
+           txtNameTopBrands = itemView.findViewById(R.id.txt_name_top_brands);
+
+           itemView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   if (sendIdCatergory != null){
+                       sendIdCatergory.sendIdCategory(lsTopBrand.get(getAdapterPosition()).id);
+                   }
+               }
+           });
        }
    }
 }

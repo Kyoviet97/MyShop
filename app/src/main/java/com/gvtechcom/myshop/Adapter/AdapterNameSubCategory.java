@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Fragment.FragmentViewCategory;
+import com.gvtechcom.myshop.Interface.SendIdCatergory;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.Network.APIServer;
@@ -39,6 +40,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
     private AdapterItemSubCategory adapterItemSubCategory;
     private APIServer apiServer;
 
+    private SendIdCatergory sendIdCatergory;
 
     private Retrofit retrofit;
 
@@ -48,6 +50,15 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofit.create(APIServer.class);
 
+    }
+
+    public void updateData (List<BrowseCategoriesModel.Children> lsNameChildren){
+        this.lsNameChildren = lsNameChildren;
+        notifyDataSetChanged();
+    }
+
+    public void setSenIdCategory(SendIdCatergory senIdCategory){
+        this.sendIdCatergory = senIdCategory;
     }
 
     @NonNull
@@ -62,34 +73,12 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         holder.txtNameSubCategory.setText(lsNameChildren.get(position).name);
         this.adapterItemSubCategory = new AdapterItemSubCategory(context, lsNameChildren.get(position).children);
-        adapterItemSubCategory.setOnClickListener(new AdapterItemSubCategory.setOnItemClickListener() {
+        adapterItemSubCategory.setSendIdCategory(new SendIdCatergory() {
             @Override
-            public void setItemClick(String idCategoci) {
-                Gson gson = new Gson();
-                Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(idCategoci, 1, 20);
-                call.enqueue(new Callback<ProductByCategoryModel.ProductByCategoryModelParser>() {
-                    @Override
-                    public void onResponse(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Response<ProductByCategoryModel.ProductByCategoryModelParser> response) {
-                        if (response.body().status != 200) {
-                        } else {
-                            ProductByCategoryModel dataViewCategor = response.body().data;
-                            if (dataViewCategor != null) {
-                                String jsonData = gson.toJson(dataViewCategor);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("jsonDataViewCategory", jsonData);
-                                AppCompatActivity activity = (AppCompatActivity) context;
-                                Fragment myFragment = new FragmentViewCategory();
-                                myFragment.setArguments(bundle);
-                                activity.getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_home_manager, myFragment).addToBackStack(null).commit();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Throwable t) {
-
-                    }
-                });
+            public void sendIdCategory(String idCategory) {
+                if (sendIdCatergory != null){
+                    sendIdCatergory.sendIdCategory(idCategory);
+                }
             }
         });
         LinearLayoutManager linearLayoutManagerSubChidren = new GridLayoutManager(context, 3);
@@ -135,21 +124,12 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (onClickListenr != null) {
-                        onClickListenr.setOnClick(lsNameChildren, getAdapterPosition());
+                    if (sendIdCatergory != null) {
+                        sendIdCatergory.sendIdCategory(lsNameChildren.get(getAdapterPosition()).id);
                     }
                 }
             });
         }
     }
 
-    public interface setOnClickListenr {
-        void setOnClick(List<BrowseCategoriesModel.Children> lsNameChildren, int position);
-    }
-
-    private setOnClickListenr onClickListenr;
-
-    public void setOnItemClickListener(setOnClickListenr onItemClickListener) {
-        this.onClickListenr = onItemClickListener;
-    }
 }

@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterNameSubCategory;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerBrowseCategoriesLeft;
+import com.gvtechcom.myshop.Adapter.AdapterTopBrandsBrowseCategory;
+import com.gvtechcom.myshop.Interface.SendIdCatergory;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
@@ -43,6 +45,7 @@ public class FragmentBrowseCategories extends Fragment {
     private List<BrowseCategoriesModel> dataBrowseCategories;
     private AdapterRecyclerBrowseCategoriesLeft adapterRecyclerBrowseCategoriesLeft;
     private AdapterNameSubCategory adapterNameSubCategory;
+    private AdapterTopBrandsBrowseCategory adapterTopBrands;
     private MainActivity mainActivity;
     private ToastDialog toastDialog;
     private FragmentViewCategory fragmentViewCategory;
@@ -110,6 +113,7 @@ public class FragmentBrowseCategories extends Fragment {
     }
 
     private void callApiBrowse() {
+        progressDialogCustom.onShow(false, "");
         Call<BrowseCategoriesModel.BrowseCategoriesModelParser> callApiBrowseCtegoties = apiServer.GetApiBrowseCategoriesModel();
         callApiBrowseCtegoties.enqueue(new Callback<BrowseCategoriesModel.BrowseCategoriesModelParser>() {
             @Override
@@ -119,36 +123,68 @@ public class FragmentBrowseCategories extends Fragment {
                 } else {
                     dataBrowseCategories = response.body().response;
                     if (dataBrowseCategories != null) {
-                        adapterRecyclerBrowseCategoriesLeft = new AdapterRecyclerBrowseCategoriesLeft(getActivity(), dataBrowseCategories);
-                        RecyclerViewBrowseLeft.setAdapter(adapterRecyclerBrowseCategoriesLeft);
-                        setOnClickItemAdapter();
+                        setAdapterBrowseCategoriesLeft(dataBrowseCategories);
+                        setAdapterTopBrands(dataBrowseCategories.get(0).top_brands);
+                        setAdapterNameSubCategory(dataBrowseCategories.get(0).children);
                     }
                 }
+
+                progressDialogCustom.onHide();
             }
 
             @Override
             public void onFailure(Call<BrowseCategoriesModel.BrowseCategoriesModelParser> call, Throwable t) {
+                progressDialogCustom.onHide();
             }
         });
     }
 
-
-
-    private void setOnClickItemAdapter() {
+    private void setAdapterBrowseCategoriesLeft(List<BrowseCategoriesModel> dataBrowseCategories) {
+        adapterRecyclerBrowseCategoriesLeft = new AdapterRecyclerBrowseCategoriesLeft(getActivity(), dataBrowseCategories);
+        RecyclerViewBrowseLeft.setAdapter(adapterRecyclerBrowseCategoriesLeft);
         adapterRecyclerBrowseCategoriesLeft.setOnClickItem(new AdapterRecyclerBrowseCategoriesLeft.setOnClickItem() {
             @Override
-            public void onClickItem(String categoryId, int position) {
-                adapterNameSubCategory = new AdapterNameSubCategory(getActivity(), dataBrowseCategories.get(position).children);
-                recyclerNameSubCategory.setAdapter(adapterNameSubCategory);
-                adapterNameSubCategory.setOnItemClickListener(new AdapterNameSubCategory.setOnClickListenr() {
-                    @Override
-                    public void setOnClick(List<BrowseCategoriesModel.Children> lsNameChildren, int position) {
-
-                    }
-                });
+            public void onClickItem(List<BrowseCategoriesModel.Children> lsChildren, List<BrowseCategoriesModel.TopBrands> lsTopBrands) {
+                setAdapterNameSubCategory(lsChildren);
+                setAdapterTopBrands(lsTopBrands);
             }
         });
     }
+
+    private void setAdapterNameSubCategory(List<BrowseCategoriesModel.Children> dataChildren) {
+        if (adapterNameSubCategory == null) {
+            adapterNameSubCategory = new AdapterNameSubCategory(getActivity(), dataChildren);
+            recyclerNameSubCategory.setAdapter(adapterNameSubCategory);
+            adapterNameSubCategory.setSenIdCategory(new SendIdCatergory() {
+                @Override
+                public void sendIdCategory(String idCategory) {
+                    System.out.println("=================ID Category: " + idCategory);
+                }
+            });
+        } else {
+            adapterNameSubCategory.updateData(dataChildren);
+        }
+    }
+
+    private void setAdapterTopBrands(List<BrowseCategoriesModel.TopBrands> dataTopBrands) {
+        if (adapterTopBrands == null) {
+            adapterTopBrands = new AdapterTopBrandsBrowseCategory(dataTopBrands, getActivity());
+            recyclerTopBrands.setAdapter(adapterTopBrands);
+            adapterTopBrands.setSenIdCategory(new SendIdCatergory() {
+                @Override
+                public void sendIdCategory(String idCategory) {
+                    System.out.println("=================ID Category: " + idCategory);
+                }
+            });
+        } else {
+            adapterTopBrands.updateData(dataTopBrands);
+
+        }
+    }
+
+    private void callApiViewCategory(String idCategory, int page){
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -157,6 +193,5 @@ public class FragmentBrowseCategories extends Fragment {
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
-
     }
 }
