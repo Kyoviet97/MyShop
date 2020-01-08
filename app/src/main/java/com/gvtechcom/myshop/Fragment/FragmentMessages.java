@@ -49,6 +49,7 @@ public class FragmentMessages extends Fragment {
         tabLayoutMessages.setTabsFromPagerAdapter(adapter);//deprecated
         tabLayoutMessages.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPagerMessages));
 
+
         tabLayoutMessages.getTabAt(0).setIcon(R.drawable.bkg_box_orders_messages);
         tabLayoutMessages.getTabAt(1).setIcon(R.drawable.bkg_store_messages);
         tabLayoutMessages.getTabAt(2).setIcon(R.drawable.bkg_user_headset_messages);

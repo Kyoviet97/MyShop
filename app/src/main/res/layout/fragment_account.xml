@@ -8,16 +8,6 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:gravity="center"
-        android:text="My Account"
-        android:textSize="@dimen/_16sp"
-        android:fontFamily="@font/sf_pro_text_medium"
-        android:textColor="@color/color_text_account"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,14 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_5dp"
-                android:background="@drawable/shadow_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <ImageView

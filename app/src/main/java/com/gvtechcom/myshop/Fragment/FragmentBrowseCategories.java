@@ -17,9 +17,11 @@ import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterNameSubCategory;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerBrowseCategoriesLeft;
 import com.gvtechcom.myshop.Adapter.AdapterTopBrandsBrowseCategory;
+import com.gvtechcom.myshop.Adapter.DataIdCategory;
 import com.gvtechcom.myshop.Interface.SendIdCatergory;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
+import com.gvtechcom.myshop.Model.DataViewCategoryModel;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -49,6 +51,7 @@ public class FragmentBrowseCategories extends Fragment {
     private MainActivity mainActivity;
     private ToastDialog toastDialog;
     private FragmentViewCategory fragmentViewCategory;
+    private FragmentManager fragmentManager;
     private FragmentItemDetail fragmentItemDetail;
     private ProgressDialogCustom progressDialogCustom;
 
@@ -91,6 +94,7 @@ public class FragmentBrowseCategories extends Fragment {
         setRetrofit();
         setRecyclerView();
         callApiBrowse();
+        fragmentManager = getFragmentManager();
     }
 
 
@@ -158,7 +162,7 @@ public class FragmentBrowseCategories extends Fragment {
             adapterNameSubCategory.setSenIdCategory(new SendIdCatergory() {
                 @Override
                 public void sendIdCategory(String idCategory) {
-                    System.out.println("=================ID Category: " + idCategory);
+                    callApiViewCategory(idCategory, 1);
                 }
             });
         } else {
@@ -173,7 +177,7 @@ public class FragmentBrowseCategories extends Fragment {
             adapterTopBrands.setSenIdCategory(new SendIdCatergory() {
                 @Override
                 public void sendIdCategory(String idCategory) {
-                    System.out.println("=================ID Category: " + idCategory);
+                    callApiViewCategory(idCategory, 1);
                 }
             });
         } else {
@@ -183,8 +187,37 @@ public class FragmentBrowseCategories extends Fragment {
     }
 
     private void callApiViewCategory(String idCategory, int page){
+        progressDialogCustom.onShow(false, "");
+        Call<DataViewCategoryModel.DataViewCategoryModelParser> callApiViewCategory = apiServer.GetViewCategory(idCategory, page, Const.TOTAL_PRODUCT);
+        callApiViewCategory.enqueue(new Callback<DataViewCategoryModel.DataViewCategoryModelParser>() {
+            @Override
+            public void onResponse(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Response<DataViewCategoryModel.DataViewCategoryModelParser> response) {
+               if ( ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)){
+                   sendDataToViewCategory(response.body().data, idCategory);
+               }
+               progressDialogCustom.onHide();
+            }
+
+            @Override
+            public void onFailure(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Throwable t) {
+                progressDialogCustom.onHide();
+            }
+        });
     }
 
+    private void sendDataToViewCategory(DataViewCategoryModel lsData, String idCategory){
+        Gson gson = new Gson();
+        String dataStringJson = gson.toJson(lsData);
+        Bundle bundleData = new Bundle();
+        bundleData.putString("jsonDataViewCategory", dataStringJson);
+        bundleData.putString("idCategoty", idCategory);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentViewCategory = new FragmentViewCategory();
+        fragmentViewCategory.setArguments(bundleData);
+        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentViewCategory);
+        fragmentTransaction.addToBackStack("browseCategory");
+        fragmentTransaction.commit();
+    }
 
     @Override
     public void onDestroyView() {

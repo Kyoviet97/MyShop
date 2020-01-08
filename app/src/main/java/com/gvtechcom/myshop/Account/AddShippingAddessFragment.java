@@ -7,14 +7,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -36,9 +33,7 @@ import com.gvtechcom.myshop.dialog.DialogCountryAddress;
 import com.gvtechcom.myshop.dialog.DialogCustomMessage;
 import com.gvtechcom.myshop.dialog.DialogDistricAddress;
 import com.gvtechcom.myshop.dialog.DialogPhoneCodeAddress;
-import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
-import com.suke.widget.SwitchButton;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
@@ -117,6 +112,7 @@ public class AddShippingAddessFragment extends Fragment {
         setRetrofit();
         init();
         getApiCountryAddress();
+
     }
 
     private void setRetrofit() {

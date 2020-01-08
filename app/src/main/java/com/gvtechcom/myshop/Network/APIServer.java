@@ -6,6 +6,7 @@ import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
 import com.gvtechcom.myshop.Model.CountryInfo;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
+import com.gvtechcom.myshop.Model.DataViewCategoryModel;
 import com.gvtechcom.myshop.Model.FlashDealsDetails;
 import com.gvtechcom.myshop.Model.GetAddressIdAddress;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
@@ -128,10 +129,10 @@ public interface APIServer {
 
     @GET("user/shipping-address")
     Call<BaseGetAPIShippingAddress.BaseGetAPIShippingAddressParser> GetFullAddressShipping(@Header("Accept") String Accept,
-                                                           @Header("Authorization") String Authorization,
-                                                           @Query("time") String time,
-                                                           @Query("sign") String sign,
-                                                           @Query("type_app") String type_app);
+                                                                                           @Header("Authorization") String Authorization,
+                                                                                           @Query("time") String time,
+                                                                                           @Query("sign") String sign,
+                                                                                           @Query("type_app") String type_app);
 
     @GET("user/country-address")
     Call<CountryInfo.CountryParser> GetListCountry(@Query("time") String time,
@@ -140,15 +141,15 @@ public interface APIServer {
 
     @GET("user/city-address")
     Call<CountryInfoModel.CountryInfoModelParser> GetListDistrict(@Query("time") String time,
-                                            @Query("sign") String sign,
-                                            @Query("type_app") String type_app,
-                                            @Query("id") String id);
+                                                                  @Query("sign") String sign,
+                                                                  @Query("type_app") String type_app,
+                                                                  @Query("id") String id);
 
     @GET("user/district-address")
     Call<CountryInfoModel.CountryInfoModelParser> GetListWard(@Query("time") String time,
-                                        @Query("sign") String sign,
-                                        @Query("type_app") String type_app,
-                                        @Query("id") String id);
+                                                              @Query("sign") String sign,
+                                                              @Query("type_app") String type_app,
+                                                              @Query("id") String id);
 
     @POST("user/create-shipping-address")
     Call<BaseGetApiData> CreateAdrress(@Header("Accept") String Accept,
@@ -210,13 +211,13 @@ public interface APIServer {
 
     @GET("items-you-love")
     Call<ItemYouLoveModel.ItemYouLoveModelParser> GetItemYouLove(@Query("page") Integer page,
-                                                                    @Query("address_id") Integer per_page);
+                                                                 @Query("address_id") Integer per_page);
 
 
     @GET("searches")
     Call<ItemYouLoveModel.ItemYouLoveModelParser> GetDataSearch(@Query("page") Integer page,
-                                                                 @Query("per_page") Integer per_page,
-                                                                    @Query("keyword") String keyWord);
+                                                                @Query("per_page") Integer per_page,
+                                                                @Query("keyword") String keyWord);
 
     @GET("notifications")
     Call<UpdateNotifyModel.UpdateNotifyModelParser> GetDataUpdateNotify();
@@ -226,20 +227,21 @@ public interface APIServer {
 
     @GET("flash-deals")
     Call<FlashDealsDetails.FlashDealsDetailsParser> GetFlashDealsDetails(@Query("page") Integer page,
-                                                                        @Query("per_page") Integer per_page,
-                                                                        @Query("product_group_id") String product_group_id);
+                                                                         @Query("per_page") Integer per_page,
+                                                                         @Query("product_group_id") String product_group_id);
 
     @GET("user/country-address")
     Call<CountryInfoModel.CountryInfoModelParser> GetApiShippingCountryAddress(@Query("time") String time,
                                                                                @Query("sign") String sign,
                                                                                @Query("type_app") String type_app);
+
     @GET("detail-product")
     Call<ItemDetailsModel.ItemDetailsModelParser> GetApiItemDetails(@Query("product_id") String product_id);
 
     @GET("categories/products")
-    Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewCategory(@Query("category_id") String category_id,
-                                                                              @Query("page") Integer page,
-                                                                              @Query("per_page") Integer per_page);
+    Call<DataViewCategoryModel.DataViewCategoryModelParser> GetViewCategory(@Query("category_id") String category_id,
+                                                                            @Query("page") Integer page,
+                                                                            @Query("per_page") Integer per_page);
 
     @GET("product/get-by-store")
     Call<ProductByCategoryModel.ProductByCategoryModelParser> GetViewBrands(@Query("category_id") String category_id);

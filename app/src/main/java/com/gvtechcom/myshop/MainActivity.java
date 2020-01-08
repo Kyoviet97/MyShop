@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.tabs.TabLayout;
 import com.gvtechcom.myshop.Adapter.AdapterViewPagerHome;
+import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
 import com.gvtechcom.myshop.Fragment.FragmentSearch;
 import com.gvtechcom.myshop.Interface.ClickActionSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private KeywordSearch keywordSearchl;
     private ClickActionSearch clickActionSearch;
+    private Boolean HomePage;
+    private FragmentHomeContent fragmentHomeContent;
 
     @BindView(R.id.tablayout_home)
     TabLayout tableLayoutHome;
@@ -54,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.img_shopping_cart)
     ImageView imgShoppingCart;
 
+    @BindView(R.id.sub_action_bar_activity_content)
+    RelativeLayout subActionBar;
+    @BindView(R.id.img_back_sub_action_bar)
+    ImageView backButtonSubActionBar;
+    @BindView(R.id.txt_title_sub_action_bar)
+    TextView titleSubActionBar;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CommitTransaction")
     @Override
@@ -64,15 +74,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         setEditSearchNavigation(false);
         setActionSearchClick();
-
         addControl();
         backTabHome();
     }
 
 
     @OnClick({R.id.img_btn_back_navigation})
-    void onClick(View view){
-        switch (view.getId()){
+    void onClick(View view) {
+        switch (view.getId()) {
             case R.id.img_btn_back_navigation:
                 fragmentManager.popBackStack();
                 break;
@@ -90,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         tableLayoutHome.setTabsFromPagerAdapter(adapter);//deprecated
         tableLayoutHome.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPagerHome));
 
-
         tableLayoutHome.getTabAt(0).setIcon(R.drawable.bkg_btn_home);
         tableLayoutHome.getTabAt(1).setIcon(R.drawable.bkg_btn_messages);
         tableLayoutHome.getTabAt(2).setIcon(R.drawable.bkg_btn_orders);
@@ -107,16 +115,26 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
+                        setSubActionBar(true, true, "");
                         setDisplayNavigationBar(true, false, true);
                         setColorIconDarkMode(false, R.color.color_StatusBar);
                         break;
 
                     case 1:
+                        setSubActionBar(false, true, "Messages");
+                        setClickTabActionBar();
+                        break;
                     case 2:
+                        setSubActionBar(false, true, "Orders");
+                        setClickTabActionBar();
+                        break;
                     case 3:
+                        setSubActionBar(false, true, "Update & Notification");
+                        setClickTabActionBar();
+                        break;
                     case 4:
-                        setDisplayNavigationBar(false, false, false);
-                        setColorIconDarkMode(true, R.color.white);
+                        setSubActionBar(false, true, "My Account");
+                        setClickTabActionBar();
                         break;
                 }
             }
@@ -131,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setClickTabActionBar(){
+        setDisplayNavigationBar(false, false, false);
+        setColorIconDarkMode(true, R.color.white);
     }
 
     public void backTabHome() {
@@ -261,6 +284,30 @@ public class MainActivity extends AppCompatActivity {
         searchViewNavigation.setHintTextColor(Color.parseColor(codeString));
     }
 
+
+    public void setSubActionBar(Boolean hideSubAction, Boolean hideBackButton, String titleSubAction) {
+        if (hideSubAction) {
+            subActionBar.setVisibility(View.GONE);
+            navigationTop.setVisibility(View.VISIBLE);
+        } else {
+            subActionBar.setVisibility(View.VISIBLE);
+            titleSubActionBar.setText(titleSubAction);
+            navigationTop.setVisibility(View.GONE);
+
+            if (hideBackButton) {
+                backButtonSubActionBar.setVisibility(View.GONE);
+            } else {
+                backButtonSubActionBar.setVisibility(View.VISIBLE);
+                backButtonSubActionBar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragmentManager.popBackStack();
+                    }
+                });
+            }
+        }
+    }
+
     public void setupUI(View view) {
         if (!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
@@ -287,6 +334,14 @@ public class MainActivity extends AppCompatActivity {
         if (activity.getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    public Boolean getHomePage() {
+        return HomePage;
+    }
+
+    public void setHomePage(Boolean homePage) {
+        HomePage = homePage;
     }
 
     @Override

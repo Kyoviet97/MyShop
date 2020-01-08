@@ -38,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class FragmentUpdate extends Fragment implements HideBackIcon{
+public class FragmentUpdate extends Fragment implements HideBackIcon {
     private View rootView;
     private APIServer apiServer;
     private UpdateNotifyModel.UpdateNotifyModelParser dataUpdateNotify;
@@ -47,7 +47,6 @@ public class FragmentUpdate extends Fragment implements HideBackIcon{
     private MySharePreferences mySharePreferences;
     private FragmentManager fragmentManager;
     private ToastDialog toastDialog;
-    private HideBackIcon hideBackIcon;
 
     @BindView(R.id.recycler_update_notify)
     RecyclerView recyclerUpdateNotify;
@@ -77,7 +76,7 @@ public class FragmentUpdate extends Fragment implements HideBackIcon{
         super.onViewCreated(view, savedInstanceState);
         setRetrofit();
         init();
-        if (dataUpdateNotify != null){
+        if (dataUpdateNotify != null) {
             setAdapterUpdateNotifi(dataUpdateNotify.response.data);
         }
         swipeRefreshLayoutNotifyUpdate.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -88,9 +87,6 @@ public class FragmentUpdate extends Fragment implements HideBackIcon{
         });
     }
 
-    public void setHideBackIcon(HideBackIcon hideBackIcon){
-        this.hideBackIcon = hideBackIcon;
-    }
 
     private void init() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -109,12 +105,6 @@ public class FragmentUpdate extends Fragment implements HideBackIcon{
             public void onClick(String idNotify) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 FragmentNotifyDetail fragmentNotifyDetail = new FragmentNotifyDetail();
-                fragmentNotifyDetail.setHideBackIcon(new HideBackIcon() {
-                    @Override
-                    public void setHideButtonIcon(Boolean hideButtonIcon) {
-                        hideBackIcon.setHideButtonIcon(hideButtonIcon);
-                    }
-                });
                 Bundle bundle = new Bundle();
                 bundle.putString("idNotify", idNotify);
                 fragmentNotifyDetail.setArguments(bundle);
@@ -134,7 +124,7 @@ public class FragmentUpdate extends Fragment implements HideBackIcon{
                     toastDialog.onShow(response.body().message);
                 } else {
                     dataUpdateNotify = response.body();
-                    if (dataUpdateNotify != null){
+                    if (dataUpdateNotify != null) {
                         setAdapterUpdateNotifi(dataUpdateNotify.response.data);
                     }
                 }
@@ -154,6 +144,5 @@ public class FragmentUpdate extends Fragment implements HideBackIcon{
 
     @Override
     public void setHideButtonIcon(Boolean hideButtonIcon) {
-        hideBackIcon.setHideButtonIcon(hideButtonIcon);
     }
 }

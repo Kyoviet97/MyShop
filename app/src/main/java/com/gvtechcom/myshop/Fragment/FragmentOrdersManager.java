@@ -23,9 +23,16 @@ public class FragmentOrdersManager extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setFragmentOrders();
+    }
+
     private void setFragmentOrders(){
         fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_orders_manager, new FragmentOrders());
+        fragmentTransaction.commit();
     }
 }

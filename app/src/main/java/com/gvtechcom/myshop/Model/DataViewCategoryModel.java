@@ -6,7 +6,7 @@ public class DataViewCategoryModel {
 
     public List<Products> products;
 
-    class Products{
+    public class Products{
         public String id;
         public String name;
         public String image;
@@ -14,8 +14,16 @@ public class DataViewCategoryModel {
         public String sold;
     }
 
+    public class meta{
+        public Pagination pagination;
+    }
 
-    class DataViewCategoryModelParser{
+    public class Pagination{
+        public int total;
+        public int current_page;
+    }
+
+    public class DataViewCategoryModelParser{
         public int status;
         public String content;
         public DataViewCategoryModel data;

@@ -78,15 +78,11 @@ public class ShippingAddressFragment extends androidx.fragment.app.Fragment {
         });
     }
 
-    @OnClick({R.id.btn_add_an_address, R.id.img_back_shipping_address})
+    @OnClick({R.id.btn_add_an_address})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_add_an_address:
                 addShippingAddess();
-                break;
-            case R.id.img_back_shipping_address:
-                fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
                 break;
         }
     }

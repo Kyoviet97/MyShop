@@ -8,23 +8,6 @@
     android:gravity="center|top"
     android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/txt_shipping_address"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:fontFamily="@font/sf_pro_text_medium"
-        android:gravity="center"
-        android:text="Messages"
-        android:textColor="#4A4A4A"
-        android:textSize="@dimen/_16sp" />
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_3dp"
-        android:background="@drawable/shadow_layout"/>
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_messages"
         android:layout_width="match_parent"

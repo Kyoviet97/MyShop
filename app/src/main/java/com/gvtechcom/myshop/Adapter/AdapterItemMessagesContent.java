@@ -66,4 +66,5 @@ public class AdapterItemMessagesContent extends RecyclerView.Adapter<AdapterItem
             txtContent = itemView.findViewById(R.id.txt_recycler_messages);
         }
     }
+
 }

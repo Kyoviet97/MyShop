@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
+import com.gvtechcom.myshop.Model.DataViewCategoryModel;
 import com.gvtechcom.myshop.Model.JustForYou;
 import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.R;
@@ -22,14 +23,14 @@ import butterknife.BindView;
 
 public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategory.ViewHolder> {
     private Context context;
-    private List<ProductByCategoryModel.Products> lsProductByCategory;
+    private List<DataViewCategoryModel.Products> lsProductByCategory;
 
-    public AdapterViewCategory(Context context, List<ProductByCategoryModel.Products> ls){
+    public AdapterViewCategory(Context context, List<DataViewCategoryModel.Products> ls){
         this.context = context;
         this.lsProductByCategory = ls;
     }
 
-    public void upDateAdapter(List<ProductByCategoryModel.Products> lsProductByCategoryUpdate){
+    public void upDateAdapter(List<DataViewCategoryModel.Products> lsProductByCategoryUpdate){
         this.lsProductByCategory = lsProductByCategoryUpdate;
         notifyDataSetChanged();
     }
@@ -47,12 +48,15 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
                 .load(lsProductByCategory.get(position).image)
-                .placeholder(R.drawable.banner_image_slide)
+                .placeholder(R.drawable.ic_icon_load_error_just_for_you)
                 .override(200, 200)
-                .error(R.drawable.banner_image_slide)
+                .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imageViewJustForYou);
-        holder.infoJustForYou.setText(lsProductByCategory.get(position).product_name);
+
+        holder.infoJustForYou.setText(lsProductByCategory.get(position).name);
+
         holder.priceJustForYou.setText("$" + lsProductByCategory.get(position).price);
+
         holder.soldJustForYou.setText(lsProductByCategory.get(position).sold + " sold");
     }
 
@@ -77,7 +81,7 @@ public class AdapterViewCategory extends RecyclerView.Adapter<AdapterViewCategor
                 @Override
                 public void onClick(View v) {
                     if (setOnClickListener != null) {
-                        setOnClickListener.setOnClickListener(lsProductByCategory.get(getAdapterPosition()).product_id);
+                        setOnClickListener.setOnClickListener(lsProductByCategory.get(getAdapterPosition()).id);
                     }
                 }
             });

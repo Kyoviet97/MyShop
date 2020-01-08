@@ -28,6 +28,7 @@ import com.gvtechcom.myshop.Interface.ListtenOnDestroyView;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
+import com.gvtechcom.myshop.Model.DataViewCategoryModel;
 import com.gvtechcom.myshop.Model.GoToItemDetail;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Model.JustForYou;
@@ -61,12 +62,12 @@ public class FragmentViewCategory extends Fragment {
     private Boolean isLoadMore = true;
     private FragmentManager fragmentManager;
     private FragmentItemDetail fragmentItemDetail;
-    private ProductByCategoryModel dataViewCategory;
-    private List<ProductByCategoryModel.Products> lsdataViewCategorTotal;
+    private DataViewCategoryModel dataViewCategory;
+    private List<DataViewCategoryModel.Products> lsdataViewCategorTotal;
     private ToastDialog toastDialog;
     private int pageLoad;
     private String idCategoryBundle;
-    private Boolean isMaxData;
+    private Boolean isMaxData = false;
 
     @BindView(R.id.recycler_view_category_top)
     RecyclerView recyclerViewViewCategoryTop;
@@ -76,6 +77,18 @@ public class FragmentViewCategory extends Fragment {
     NestedScrollView netScrollViewCategory;
     @BindView(R.id.progressbar_load_api_view_category_footer)
     ProgressBar progressbarLoadApiViewCategoryFooter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Gson gson = new Gson();
+            String stringJsonData = bundle.getString("jsonDataViewCategory");
+            this.dataViewCategory = gson.fromJson(stringJsonData, DataViewCategoryModel.class);
+            this.idCategoryBundle = bundle.getString("idCategoty");
+        }
+    }
 
     @Nullable
     @Override
@@ -89,27 +102,17 @@ public class FragmentViewCategory extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
         setRetrofit();
         setRecyclerView();
-        init();
-        if (dataViewCategory.total > Const.TOTAL_PRODUCT) {
-            getNestedScrollChange();
-        }
+        getNestedScrollChange();
     }
 
     private void init() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            this.pageLoad = 2;
-            this.isMaxData = false;
-            this.lsdataViewCategorTotal = new ArrayList<>();
-
-            Gson gson = new Gson();
-            String stringJsonData = bundle.getString("jsonDataViewCategory");
-            this.dataViewCategory = gson.fromJson(stringJsonData, ProductByCategoryModel.class);
-            idCategoryBundle = bundle.getString("idCategoty");
-            addListViewCategory(dataViewCategory.products);
-        }
+        this.pageLoad = 2;
+        lsdataViewCategorTotal = new ArrayList<>();
+        addListViewCategory(dataViewCategory);
+        mainActivity = (MainActivity) getActivity();
     }
 
     private void setRetrofit() {
@@ -118,22 +121,22 @@ public class FragmentViewCategory extends Fragment {
         apiServer = retrofit.create(APIServer.class);
     }
 
-    private void addListViewCategory(List<ProductByCategoryModel.Products> lsAddData){
-        for (int i = 0; i <= lsAddData.size(); i++){
-            if (i != lsAddData.size()){
+    private void addListViewCategory(DataViewCategoryModel lsAddData) {
+        for (int i = 0; i <= lsAddData.products.size(); i++) {
+            if (i != lsAddData.products.size()) {
                 lsdataViewCategorTotal.add(dataViewCategory.products.get(i));
-            }else {
+            } else {
                 setAdapterViewCategory(lsdataViewCategorTotal);
             }
         }
     }
 
-    private void setAdapterViewCategory(List<ProductByCategoryModel.Products> lsData){
-        if (adapterViewCategory == null){
+    private void setAdapterViewCategory(List<DataViewCategoryModel.Products> lsData) {
+        if (adapterViewCategory == null) {
             adapterViewCategory = new AdapterViewCategory(getActivity(), lsData);
             recyclerViewViewCategoryMain.setAdapter(adapterViewCategory);
             setOnClickAdapter();
-        }else {
+        } else {
             adapterViewCategory.upDateAdapter(lsData);
         }
     }
@@ -157,22 +160,26 @@ public class FragmentViewCategory extends Fragment {
         Animation animation_side_down = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_down_progressbar);
         progressbarLoadApiViewCategoryFooter.setVisibility(View.VISIBLE);
         progressbarLoadApiViewCategoryFooter.setAnimation(animation_side_up);
-        Call<ProductByCategoryModel.ProductByCategoryModelParser> call = apiServer.GetViewCategory(id, pageLoad, 8);
-        call.enqueue(new Callback<ProductByCategoryModel.ProductByCategoryModelParser>() {
+        Call<DataViewCategoryModel.DataViewCategoryModelParser> call = apiServer.GetViewCategory(id, pageLoad, 8);
+        call.enqueue(new Callback<DataViewCategoryModel.DataViewCategoryModelParser>() {
             @Override
-            public void onResponse(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Response<ProductByCategoryModel.ProductByCategoryModelParser> response) {
-                if (response.body().status != 200) {
-                    toastDialog.onShow(response.body().content);
-                } else {
-                    ProductByCategoryModel dataViewCategor = response.body().data;
-                    pageLoad = pageLoad + 1;
-                    progressbarLoadApiViewCategoryFooter.setAnimation(animation_side_down);
-                    progressbarLoadApiViewCategoryFooter.setVisibility(View.GONE);
-                    addListViewCategory(response.body().data.products);
+            public void onResponse(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Response<DataViewCategoryModel.DataViewCategoryModelParser> response) {
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)){
+                    if (response.body().data.products.size() > 0){
+                        pageLoad++;
+                        addListViewCategory(response.body().data);
+                    }else {
+                        isMaxData= true;
+                    }
+
                 }
+                progressbarLoadApiViewCategoryFooter.setAnimation(animation_side_down);
+                progressbarLoadApiViewCategoryFooter.setVisibility(View.GONE);
             }
+
             @Override
-            public void onFailure(Call<ProductByCategoryModel.ProductByCategoryModelParser> call, Throwable t) {
+            public void onFailure(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Throwable t) {
+                progressbarLoadApiViewCategoryFooter.setAnimation(animation_side_down);
                 progressbarLoadApiViewCategoryFooter.setVisibility(View.GONE);
             }
         });
@@ -186,8 +193,7 @@ public class FragmentViewCategory extends Fragment {
                     int nestedScrollHight = (netScrollViewCategory.getChildAt(0).getHeight() - netScrollViewCategory.getHeight());
                     if (isLoadMore && scrollY == nestedScrollHight && !isMaxData) {
                         isLoadMore = false;
-                        System.out.println("====================>" + idCategoryBundle);
-                        callApiViewCategory(idCategoryBundle);
+                       callApiViewCategory(idCategoryBundle);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {

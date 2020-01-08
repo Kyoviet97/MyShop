@@ -37,6 +37,7 @@ import com.gvtechcom.myshop.Adapter.AdapterImageSlide;
 import com.gvtechcom.myshop.Adapter.AdapterItemsYouLove;
 import com.gvtechcom.myshop.Adapter.AdapterJustForYou;
 import com.gvtechcom.myshop.Adapter.AdapterTopNewFeaturedStore;
+import com.gvtechcom.myshop.Interface.SendTagFragment;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.FeaturedCategories;
@@ -81,6 +82,8 @@ public class FragmentHomeContent extends Fragment {
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
 
+    private SendTagFragment sendTagFragment;
+
     private ProgressDialogCustom progressDialogCustom;
     private ToastDialog toastDialog;
 
@@ -117,6 +120,7 @@ public class FragmentHomeContent extends Fragment {
     private Handler handler;
     private Boolean isStopHandel;
     private Runnable update;
+    private MainActivity mainActivity;
 
     private FragmentManager fragmentManager;
 
@@ -175,12 +179,14 @@ public class FragmentHomeContent extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_content_home, container, false);
         ButterKnife.bind(this, rootView);
-        MainActivity mainActivity;
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, false, true);
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
+        if (sendTagFragment != null) {
+            sendTagFragment.senTag("homeContent");
+        }
         return rootView;
     }
 
@@ -251,6 +257,10 @@ public class FragmentHomeContent extends Fragment {
 
     }
 
+    public void setSendTagFragment(SendTagFragment sendTagFragment) {
+        this.sendTagFragment = sendTagFragment;
+    }
+
     private void setRecyclerView() {
         LinearLayoutManager linearLayoutManagerViewFlashDeals = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewFlashDeals.setLayoutManager(linearLayoutManagerViewFlashDeals);
@@ -267,7 +277,7 @@ public class FragmentHomeContent extends Fragment {
 
     private void setItemSlideBanner() {
         imageModelArrayList = new ArrayList<>();
-        if (obj.getResponse().getBanners().size() > 0){
+        if (obj.getResponse().getBanners().size() > 0) {
             imgErrorLoadSlide.setVisibility(View.GONE);
             for (int i = 0; i <= obj.getResponse().getBanners().size(); i++) {
                 if (i != obj.getResponse().getBanners().size()) {
@@ -277,7 +287,7 @@ public class FragmentHomeContent extends Fragment {
                     slideImageBanner();
                 }
             }
-        }else {
+        } else {
             imgErrorLoadSlide.setVisibility(View.VISIBLE);
         }
 
@@ -360,7 +370,7 @@ public class FragmentHomeContent extends Fragment {
         countDownTimerFlashDeals = new CountDownTimer(timeDown, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                if (isStopCountDownTimerFlashDeals == true) {
+                if (isStopCountDownTimerFlashDeals) {
                     countDownTimerFlashDeals.cancel();
                 } else {
                     Calendar calendarCurent1 = Calendar.getInstance();
@@ -494,7 +504,7 @@ public class FragmentHomeContent extends Fragment {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                     int nestedScrollHight = (nestedScrollView.getChildAt(0).getHeight() - nestedScrollView.getHeight());
-                    if (isLoadMore == true && scrollY == nestedScrollHight) {
+                    if (isLoadMore && scrollY == nestedScrollHight) {
                         isLoadMore = false;
                         loadmore();
                         new Handler().postDelayed(new Runnable() {
@@ -565,7 +575,7 @@ public class FragmentHomeContent extends Fragment {
     }
 
     private void setDataItemDetails(String jsonData) {
-        fragmentManager = getFragmentManager();
+        fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();
@@ -646,6 +656,7 @@ public class FragmentHomeContent extends Fragment {
         isStopHandel = true;
         isStopCountDownTimerFlashDeals = true;
     }
+
 
     @Override
     public void onResume() {

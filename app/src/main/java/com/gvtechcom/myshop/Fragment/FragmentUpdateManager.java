@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.gvtechcom.myshop.Interface.HideBackIcon;
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.R;
 
 import butterknife.BindView;
@@ -22,8 +23,7 @@ import butterknife.ButterKnife;
 public class FragmentUpdateManager extends Fragment{
     private View rootView;
     private FragmentManager fragmentManager;
-    @BindView(R.id.img_back_update_fragment)
-    public ImageView imgBackUpdate;
+    private MainActivity mainActivity;
 
     @Nullable
     @Override
@@ -36,30 +36,14 @@ public class FragmentUpdateManager extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        imgBackUpdate.setVisibility(View.GONE);
+        mainActivity = (MainActivity) getActivity();
         fragmentManager = getFragmentManager();
         setFragmentUpdate();
-        imgBackUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentManager.popBackStack();
-            }
-        });
     }
 
     private void setFragmentUpdate(){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         FragmentUpdate fragmentUpdate = new FragmentUpdate();
-        fragmentUpdate.setHideBackIcon(new HideBackIcon() {
-            @Override
-            public void setHideButtonIcon(Boolean hideButtonIcon) {
-                if (hideButtonIcon) {
-                    imgBackUpdate.setVisibility(View.GONE);
-                } else {
-                    imgBackUpdate.setVisibility(View.VISIBLE);
-                }
-            }
-        });
         fragmentTransaction.replace(R.id.frame_update_manager, fragmentUpdate);
         fragmentTransaction.commit();
     }

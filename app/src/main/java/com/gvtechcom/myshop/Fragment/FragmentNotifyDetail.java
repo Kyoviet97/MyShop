@@ -1,5 +1,6 @@
 package com.gvtechcom.myshop.Fragment;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gvtechcom.myshop.Interface.HideBackIcon;
+import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.UpdateNotifyModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -40,7 +42,7 @@ public class FragmentNotifyDetail extends Fragment {
     private String idNotify;
     private ProgressDialogCustom progressDialogCustom;
     private ToastDialog toastDialog;
-    private HideBackIcon hideBackIcon;
+    private MainActivity mainActivity;
 
     @BindView(R.id.title_update_notify_details)
     TextView titleUpdateNotifyDetails;
@@ -61,21 +63,18 @@ public class FragmentNotifyDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.item_notify_details, container, false);
         ButterKnife.bind(this, rootView);
+        mainActivity = (MainActivity) getActivity();
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        hideBackIcon.setHideButtonIcon(false);
+        mainActivity.setSubActionBar(false, false, "Update & Notification");
         progressDialogCustom = new ProgressDialogCustom(getActivity());
         setRetrofit();
         toastDialog = new ToastDialog(getActivity());
         callApiNotifyDetail(idNotify);
-    }
-
-    public void setHideBackIcon(HideBackIcon hideBackIcon) {
-        this.hideBackIcon = hideBackIcon;
     }
 
     private void setRetrofit() {
@@ -84,6 +83,7 @@ public class FragmentNotifyDetail extends Fragment {
         apiServer = retrofit.create(APIServer.class);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setWebView(String text) {
         WebSettings webSettings = webViewUpdateNotitify.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -130,6 +130,6 @@ public class FragmentNotifyDetail extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        hideBackIcon.setHideButtonIcon(true);
+        mainActivity.setSubActionBar(false, true, "Update & Notification");
     }
 }
