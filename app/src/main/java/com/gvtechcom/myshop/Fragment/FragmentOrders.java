@@ -7,13 +7,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.gvtechcom.myshop.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FragmentOrders extends Fragment {
-    View rootView;
+    private View rootView;
+    @BindView(R.id.recycler_orders)
+    RecyclerView recyclerOrders;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -25,5 +31,11 @@ public class FragmentOrders extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setRecycler();
+    }
+
+    private void setRecycler() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerOrders.setLayoutManager(layoutManager);
     }
 }

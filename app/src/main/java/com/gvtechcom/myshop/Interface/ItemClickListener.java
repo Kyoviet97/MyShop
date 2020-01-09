@@ -1,4 +1,4 @@
-package com.gvtechcom.myshop.Adapter;
+package com.gvtechcom.myshop.Interface;
 
 import android.view.View;
 

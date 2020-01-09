@@ -3,6 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center|top"
-    android:background="@android:color/white">
+    android:background="@color/color_main_bkg">
+
+   <EditText
+       android:layout_width="match_parent"
+       android:layout_height="@dimen/_40dp"
+       android:layout_margin="@dimen/_10dp"
+       android:paddingLeft="@dimen/_10dp"
+       android:drawableLeft="@drawable/ic_search"
+       android:background="@drawable/bkg_search_color_white" />
+
+    <include layout="@layout/include_tab_order"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_orders"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginBottom="@dimen/_30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

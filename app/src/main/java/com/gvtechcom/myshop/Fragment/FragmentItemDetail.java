@@ -359,7 +359,7 @@ public class FragmentItemDetail extends Fragment {
         switch (view.getId()){
             case R.id.btn_buy_now_item_details:
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentShippingMethod());
+                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentProductOptions());
                 fragmentTransaction.addToBackStack("item_detail");
                 fragmentTransaction.commit();
                 break;

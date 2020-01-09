@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/_16dp"
+        android:paddingTop="@dimen/_10dp"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingBottom="@dimen/_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:text="Order date: "
+                android:textColor="#9B9B9B"
+                android:textSize="@dimen/_12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:text="2019-12-18 10:24"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:text="Order ID: "
+                android:textColor="#9B9B9B"
+                android:textSize="@dimen/_12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:text="123123123123"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_main_bkg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/_16dp"
+        android:paddingTop="@dimen/_10dp"
+        android:paddingRight="@dimen/_16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_4dp"
+            android:src="@drawable/ic_icon_load_error_cetegory" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:maxLines="2"
+                android:text="FLOVEME 1M Magnetic Charge Cable Micro USB Cable For iPhone 11 Pro M…"
+                android:textColor="#4A4A4A "
+                android:textSize="@dimen/_14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:maxLines="1"
+                android:text="Black, For Apple iPhone, China, Qty: 2"
+                android:textColor="#9B9B9B "
+                android:textSize="@dimen/_12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/sf_pro_text_bold"
+                android:maxLines="1"
+                android:text="$5.90"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order completed!"
+                android:layout_marginBottom="@dimen/_16dp"
+                android:textSize="@dimen/_14sp"
+                android:fontFamily="@font/sf_pro_text_bold"
+                android:textColor="#7ED321"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_16dp"
+        android:background="@android:color/white">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tracking"
+            android:textColor="#4A4A4A"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_16sp"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:background="@drawable/bkg_button_tracking"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Order Received"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_16sp"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:textColor="#FD9644"
+            android:background="@drawable/bkg_confirm_order_received"
+            android:layout_marginTop="@dimen/_10dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
