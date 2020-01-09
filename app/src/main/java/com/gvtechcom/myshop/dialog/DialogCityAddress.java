@@ -106,7 +106,7 @@ public class DialogCityAddress extends AppCompatDialog {
 
                 for (int i = 0; i < listCity.size(); i ++){
                     CountryInfoModel.City dataCity = listCity.get(i);
-                    if (i == Position) {
+                    if(i == Position) {
                         dataCity.isCheck = true;
                     } else dataCity.isCheck = false;
                 }

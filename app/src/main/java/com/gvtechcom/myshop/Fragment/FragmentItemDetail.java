@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +36,7 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.QuantityView;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
@@ -44,6 +47,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +63,7 @@ public class FragmentItemDetail extends Fragment {
     private static Integer soldQuantity = 1;
     private String fromToFragment = "";
     private ToastDialog toastDialog;
+    private QuantityView quantityView;
 
 
     @BindView(R.id.layout_add_view_recycler)
@@ -90,14 +95,6 @@ public class FragmentItemDetail extends Fragment {
 
     @BindView(R.id.scroll_item_detail)
     NestedScrollView nestedScrollViewItemDetail;
-
-    // Quantily
-    @BindView(R.id.img_lost_sold_product_to_buy)
-    ImageView imgLostSoldProductToBuy;
-    @BindView(R.id.txt_sold_product_to_buy)
-    TextView txtSoilProductToBuy;
-    @BindView(R.id.img_add_sold_product_to_buy)
-    ImageView imgAddSolfProductToBuy;
 
     //Time Flash
     @BindView(R.id.txt_count_hours_item_detail)
@@ -155,7 +152,8 @@ public class FragmentItemDetail extends Fragment {
         setRetroFit();
         setViewRecyclerView();
         checkData();
-        setSoldQuantity();
+        quantityView = rootView.findViewById(R.id.quantity_view_home_content);
+        quantityView.setValue(99999);
     }
 
     private void setRetroFit() {
@@ -356,31 +354,16 @@ public class FragmentItemDetail extends Fragment {
         }
     }
 
-    private void setSoldQuantity() {
-        imgLostSoldProductToBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (soldQuantity > 1) {
-                    soldQuantity--;
-                    txtSoilProductToBuy.setText(soldQuantity.toString());
-                    imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail_select);
-                    if (soldQuantity == 1) {
-                        imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail);
-                        imgLostSoldProductToBuy.setClickable(false);
-                    }
-                }
-            }
-        });
-
-        imgAddSolfProductToBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                soldQuantity++;
-                txtSoilProductToBuy.setText(soldQuantity.toString());
-                imgLostSoldProductToBuy.setImageResource(R.drawable.ic_difference_item_detail_select);
-                imgLostSoldProductToBuy.setClickable(true);
-            }
-        });
+    @OnClick({R.id.btn_buy_now_item_details})
+    void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_buy_now_item_details:
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentShippingMethod());
+                fragmentTransaction.addToBackStack("item_detail");
+                fragmentTransaction.commit();
+                break;
+        }
     }
 
     private void setUserRating(String name, String date, String content, Double star) {

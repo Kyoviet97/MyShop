@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private KeywordSearch keywordSearchl;
     private ClickActionSearch clickActionSearch;
-    private Boolean HomePage;
-    private FragmentHomeContent fragmentHomeContent;
 
     @BindView(R.id.tablayout_home)
     TabLayout tableLayoutHome;
@@ -336,18 +334,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public Boolean getHomePage() {
-        return HomePage;
-    }
-
-    public void setHomePage(Boolean homePage) {
-        HomePage = homePage;
-    }
-
     @Override
     public void onBackPressed() {
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
+            System.out.println("=====================>" + viewPagerHome.getCurrentItem());
         } else {
             finish();
         }

@@ -37,7 +37,7 @@ public class AdapterRelatesProduct extends RecyclerView.Adapter<AdapterRelatesPr
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
                 .load(lsItemRelatesProduct.get(position).image_thumbnail)
-                .placeholder(R.drawable.banner_image_slide)
+                .placeholder(R.drawable.ic_icon_load_error_just_for_you)
                 .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imageViewJustForYou);
         holder.infoJustForYou.setText(lsItemRelatesProduct.get(position).name);

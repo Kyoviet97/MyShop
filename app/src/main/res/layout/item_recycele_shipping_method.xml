@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingLeft="@dimen/_16dp"
+        android:paddingTop="@dimen/_12dp"
+        android:paddingBottom="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/price_shipping_method"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Free Shipping"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/sf_pro_text_semibold"
+                android:textColor="#4A4A4A"/>
+
+            <TextView
+                android:id="@+id/txt_line_one"
+                style="@style/style_txt_line_shipping_method"
+                android:text="China Post Ordinary Small Packet Plus" />
+
+            <TextView
+                android:id="@+id/txt_line_two"
+                style="@style/style_txt_line_shipping_method"
+                android:text="Estimated Delivery: 34-60 days"/>
+
+            <TextView
+                android:id="@+id/txt_line_three"
+                android:text="Tracking Unavailable"
+                style="@style/style_txt_line_shipping_method"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_tick_shipping_method"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check_left"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_main_bkg"/>
+
+</LinearLayout>

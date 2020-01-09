@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_main_bkg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_22dp"
+        android:paddingLeft="@dimen/_16dp"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingBottom="@dimen/_12dp"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_icon_load_error_cetegory"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COXANG iwo 8 Plus/ecg ppg…"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="#4A4A4A"
+            android:fontFamily="@font/sf_pro_text_regular"
+            android:textSize="@dimen/_16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_16dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_8dp">
+
+            <TextView
+                android:id="@+id/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Color: "
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/sf_pro_text_semibold"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Silver Aluminum"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50dp"
+            android:layout_marginTop="@dimen/_12dp"
+            android:paddingBottom="@dimen/_16dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_main_bkg"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_8dp">
+
+            <TextView
+                android:id="@+id/text_colorX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Band: "
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/sf_pro_text_semibold"/>
+
+            <TextView
+                android:id="@+id/textViewX"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leather Gray"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50dp"
+            android:layout_marginTop="@dimen/_12dp"
+            android:paddingBottom="@dimen/_16dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_main_bkg"/>
+
+        <com.gvtechcom.myshop.Utils.QuantityView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_marginBottom="@dimen/_16dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_main_bkg"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingTop="@dimen/_12dp"
+            android:paddingBottom="@dimen/_12dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Free Shipping"
+                    android:textSize="@dimen/_15sp"
+                    android:fontFamily="@font/sf_pro_text_semibold"
+                    android:textColor="#4A4A4A"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To Vietnam via Singapore Post"
+                    android:textSize="@dimen/_13sp"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:textColor="#4A4A4A"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estimated Delivery: 34-60 days"
+                    android:textSize="@dimen/_13sp"
+                    android:fontFamily="@font/sf_pro_text_regular"
+                    android:textColor="#4A4A4A"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_chevron_right"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50dp"
+            android:layout_weight="1"
+            android:background="#33FD9644"
+            android:textAllCaps="false"
+            android:text="Add To Cart"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:textSize="@dimen/_14sp"
+            android:textColor="#FF7100"/>
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50dp"
+            android:layout_weight="1"
+            android:background="@color/color_StatusBar"
+            android:textAllCaps="false"
+            android:text="Buy Now"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:textSize="@dimen/_14sp"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/_16dp"
+        android:paddingLeft="@dimen/_16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/_16dp"
+            android:src="@drawable/ic_pack_shiping"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Weight"
+                android:textColor="#9B9B9B"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+            <TextView
+                android:id="@+id/txt_weight_pack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10dp"
+                android:text="0.04 kg"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_14sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Size"
+                android:textColor="#9B9B9B"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+            <TextView
+                android:id="@+id/txt_size_pack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10dp"
+                android:text="10cm * 5cm * 6cm"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_14sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Processing Time"
+                android:textColor="#9B9B9B"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+            <TextView
+                android:id="@+id/txt_processing_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ships out within 5 days"
+                android:textColor="#4A4A4A"
+                android:textSize="@dimen/_14sp"
+                android:fontFamily="@font/sf_pro_text_regular"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

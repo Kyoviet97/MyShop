@@ -136,7 +136,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_10dp"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingRight="@dimen/_16dp"
+                android:paddingTop="@dimen/_10dp"
+                android:paddingBottom="@dimen/_10dp"
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
@@ -341,8 +344,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16dp"
-                android:layout_marginBottom="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginBottom="@dimen/_10dp"
                 android:padding="@dimen/_16dp"
                 android:orientation="vertical"
                 android:background="@android:color/white">
@@ -351,21 +354,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <TextView
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Color, Band, Ships From"
+                            android:textSize="@dimen/_15sp"
+                            android:fontFamily="@font/sf_pro_text_semibold"
+                            android:textColor="#4A4A4A"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Silver Aluminum with Sport Band"
+                            android:textSize="@dimen/_13sp"
+                            android:fontFamily="@font/sf_pro_text_regular"
+                            android:textColor="#4A4A4A"/>
+
+                    </LinearLayout>
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Select Color: "
-                        android:textSize="@dimen/_15sp"
-                        android:fontFamily="@font/sf_pro_text_semibold"
-                        android:textColor="#4A4A4A"/>
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_chevron_right"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Silver Aluminum with Sport Band"
-                        android:textSize="@dimen/_13sp"
-                        android:fontFamily="@font/sf_pro_text_regular"
-                        android:textColor="#4A4A4A"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -386,57 +406,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_16dp"
-                    android:layout_marginBottom="@dimen/_10dp"
                     android:background="#EBEBEB"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Quantity"
-                    android:textColor="#4A4A4A"
-                    android:fontFamily="@font/sf_pro_text_semibold"
-                    android:textSize="@dimen/_15sp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center|left"
-                    android:paddingTop="@dimen/_12dp"
-                    android:paddingBottom="@dimen/_8dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="@dimen/_16dp">
 
-                    <ImageView
-                        android:id="@+id/img_lost_sold_product_to_buy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_difference_item_detail"/>
-
-                    <TextView
-                        android:id="@+id/txt_sold_product_to_buy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sf_pro_text_regular"
-                        android:textSize="@dimen/_14sp"
-                        android:paddingLeft="@dimen/_15dp"
-                        android:paddingRight="@dimen/_15dp"
-                        android:text="1"
-                        android:textColor="#4A4A4A"/>
-
-                    <ImageView
-                        android:id="@+id/img_add_sold_product_to_buy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_plus_item_detail"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sf_pro_text_regular"
-                        android:textSize="@dimen/_14sp"
-                        android:paddingLeft="@dimen/_15dp"
-                        android:hint="Loading..."
-                        android:textColor="#4A4A4A"/>
-
+                    <com.gvtechcom.myshop.Utils.QuantityView
+                        android:id="@+id/quantity_view_home_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 

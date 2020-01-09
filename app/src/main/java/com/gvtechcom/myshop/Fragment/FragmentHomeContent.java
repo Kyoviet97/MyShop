@@ -77,12 +77,10 @@ import retrofit2.Retrofit;
 
 public class FragmentHomeContent extends Fragment {
     private View rootView;
-    private MySharePreferences mySharePreferences = new MySharePreferences();
+    private MySharePreferences mySharePreferences;
     private Boolean isLoadMore = true;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-
-    private SendTagFragment sendTagFragment;
 
     private ProgressDialogCustom progressDialogCustom;
     private ToastDialog toastDialog;
@@ -179,18 +177,14 @@ public class FragmentHomeContent extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_content_home, container, false);
         ButterKnife.bind(this, rootView);
+        mySharePreferences = new MySharePreferences();
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(true, false, true);
         mainActivity.setHideButtonNavigation(false);
         mainActivity.setColorIconDarkMode(false, R.color.color_StatusBar);
         mainActivity.setColorNavigationBar(R.drawable.ic_back_navigation, R.drawable.bkg_search_color_white, "apple watch", R.color.color_StatusBar, "#D1D8E0");
-        if (sendTagFragment != null) {
-            sendTagFragment.senTag("homeContent");
-        }
         return rootView;
     }
-
-    private Boolean checkstart = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -240,7 +234,6 @@ public class FragmentHomeContent extends Fragment {
         swipeRefreshHomeContent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 page = 1;
                 setItemSlideBanner();
 
@@ -255,10 +248,6 @@ public class FragmentHomeContent extends Fragment {
             }
         });
 
-    }
-
-    public void setSendTagFragment(SendTagFragment sendTagFragment) {
-        this.sendTagFragment = sendTagFragment;
     }
 
     private void setRecyclerView() {
@@ -575,7 +564,7 @@ public class FragmentHomeContent extends Fragment {
     }
 
     private void setDataItemDetails(String jsonData) {
-        fragmentManager = getChildFragmentManager();
+        fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragmentItemDetails = new FragmentItemDetail();
         Bundle bundle = new Bundle();

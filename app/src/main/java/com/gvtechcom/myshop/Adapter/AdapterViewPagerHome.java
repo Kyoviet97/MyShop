@@ -30,8 +30,7 @@ public class AdapterViewPagerHome extends FragmentStatePagerAdapter {
         Fragment frag = null;
         switch (position) {
             case 0:
-                FragmentHomeManager fragmentHomeManager = new FragmentHomeManager();
-                frag = fragmentHomeManager;
+                frag = new FragmentHomeManager();
                 break;
             case 1:
                 frag = new FragmentMessagesManager();
