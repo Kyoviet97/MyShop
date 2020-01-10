@@ -25,13 +25,6 @@
                 android:paddingRight="@dimen/_16dp"
                 android:paddingBottom="@dimen/_16dp">
 
-                <ImageView
-                    android:id="@+id/img_bitmap_demo"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="@dimen/_10dp">
-                </ImageView>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

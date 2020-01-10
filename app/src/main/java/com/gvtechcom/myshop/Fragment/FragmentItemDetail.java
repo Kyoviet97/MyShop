@@ -39,6 +39,7 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.QuantityView;
 import com.gvtechcom.myshop.Utils.SetStarVote;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
+import com.gvtechcom.myshop.Utils.StarViewVote;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
 import com.mylibrary.ui.progress.ProgressDialogCustom;
@@ -117,8 +118,8 @@ public class FragmentItemDetail extends Fragment {
     @BindView(R.id.img_start_use_rating)
     ImageView imgStartUseRating;
 
-    @BindView(R.id.img_vote_start_item_detail)
-    ImageView imgVoteStar;
+    @BindView(R.id.set_star_view)
+    StarViewVote setStarView;
 
     //RecyclerView
     @BindView(R.id.recycler_related_product)
@@ -225,7 +226,9 @@ public class FragmentItemDetail extends Fragment {
             storeSold.setText(dataApiItemDetail.response.store.sold);
             timeFlashDeals(dataApiItemDetail.response.end_datetime);
             Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
-//            setStartNumber(voteStar);
+            String stVote = String.valueOf(voteStar);
+            setStarView.setStartNumber(stVote);
+            txtvoteStar.setText(stVote);
             setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
             setDataRecyclerProductChildren(dataApiItemDetail.response.product);
             setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);

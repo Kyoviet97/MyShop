@@ -261,15 +261,12 @@
                         android:textSize="@dimen/_15sp"
                         android:fontFamily="@font/sf_pro_text_regular"/>
 
-                        <TextView
-                            android:id="@+id/img_vote_start_item_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:fontFamily="@font/awesome_5pro_solid"
-                            android:textColor="#EB3B5A"
-                            android:text="@string/oneStar"
-                            android:layout_marginLeft="@dimen/_8dp"/>
+                    <com.gvtechcom.myshop.Utils.StarViewVote
+                        android:id="@+id/set_star_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingTop="@dimen/_2dp"
+                        android:layout_marginLeft="@dimen/_6dp"/>
 
 
 
