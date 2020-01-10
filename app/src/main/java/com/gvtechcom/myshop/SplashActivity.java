@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity {
     private void init() {
         setColorStatusTran(true);
         mySharePreferences = new MySharePreferences();
-        customToastDialog = new CustomToastDialog(getApplicationContext());
+        customToastDialog = new CustomToastDialog(SplashActivity.this);
         Retrofit retrofitClient;
         retrofitClient = RetrofitBuilder.getRetrofit(Const.BASE_URL);
         apiServer = retrofitClient.create(APIServer.class);
@@ -76,6 +76,7 @@ public class SplashActivity extends BaseActivity {
             public void onResponse(Call<BaseGetApiData> call, Response<BaseGetApiData> response) {
                 if (response.body().getCode() != 200) {
                     customToastDialog.onShow(R.drawable.ic_icon_load_error_dialog, response.body().getMessage(), false);
+//                    Toast.makeText(SplashActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
                     objDataHomeContent = response.body();
                     if (objDataHomeContent != null) {
@@ -92,7 +93,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void LoadApiItemYouLove() {
-        Call<ItemYouLoveModel.ItemYouLoveModelParser> itemYouLoveModelCall = apiServer.GetItemYouLove(1, 10);
+        Call<ItemYouLoveModel.ItemYouLoveModelParser> itemYouLoveModelCall = apiServer.GetItemYouLove(2, 10);
         itemYouLoveModelCall.enqueue(new Callback<ItemYouLoveModel.ItemYouLoveModelParser>() {
             @Override
             public void onResponse(Call<ItemYouLoveModel.ItemYouLoveModelParser> call, Response<ItemYouLoveModel.ItemYouLoveModelParser> response) {

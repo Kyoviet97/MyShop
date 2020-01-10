@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_main_bkg"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingTop="@dimen/_24dp"
+                android:paddingRight="@dimen/_16dp"
+                android:paddingBottom="@dimen/_16dp">
+
+                <ImageView
+                    android:id="@+id/img_bitmap_demo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/_10dp">
+                </ImageView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:text="Status: "
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:text="The seller has shipped your order"
+                        android:textColor="#4A4A4A"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/_14sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:text="Order date: "
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_12sp" />
+
+                    <TextView
+                        android:id="@+id/orders_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:text="2019-12-18 10:24"
+                        android:textColor="#4A4A4A"
+                        android:textSize="@dimen/_12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:text="Order ID: "
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_12sp" />
+
+                    <TextView
+                        android:id="@+id/orders_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:text="123123123123"
+                        android:textColor="#4A4A4A"
+                        android:textSize="@dimen/_12sp" />
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp">
+
+                    <TextView
+                        android:id="@+id/text_note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:text="Note: "
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:textColor="#4A4A4A"
+                        android:text="          You will receive the order within 59 days 2 hours. If there’s any problem with the item(s), after clicking the Confirm Order Received button, you have 15 days to file a dispute. "
+                        android:textSize="@dimen/_12sp" />
+
+                </RelativeLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14dp"
+                    android:background="@drawable/bkg_button_confirm_goods_received"
+                    android:drawableLeft="@drawable/ic_hand_holding_box"
+                    android:fontFamily="@font/sf_pro_text_medium"
+                    android:paddingLeft="@dimen/_20dp"
+                    android:text="Confirm Goods Received    "
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_16sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingTop="@dimen/_12dp"
+                android:paddingRight="@dimen/_16dp"
+                android:paddingBottom="@dimen/_12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:text="Delivery Tracking"
+                        android:textColor="#4A4A4A"
+                        android:textSize="@dimen/_15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:text="[VI] Waiting for pickup"
+                        android:textColor="#9B9B9B"
+                        android:textSize="@dimen/_15sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/transparent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingTop="@dimen/_12dp"
+                android:paddingRight="@dimen/_16dp"
+                android:paddingBottom="@dimen/_12dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sf_pro_text_semibold"
+                    android:text="Contact Seller"
+                    android:textColor="#4A4A4A"
+                    android:textSize="@dimen/_15sp" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/_10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_16dp"
+                    android:paddingTop="@dimen/_12dp"
+                    android:paddingRight="@dimen/_16dp"
+                    android:paddingBottom="@dimen/_12dp">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:text="Seller: FLOVEME Official Store"
+                        android:textColor="#4A4A4A"
+                        android:textSize="@dimen/_15sp" />
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@color/color_main_bkg" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_main_bkg"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_16dp"
+                    android:paddingTop="@dimen/_10dp"
+                    android:paddingRight="@dimen/_16dp"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:id="@+id/img_orders_product"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_4dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_icon_load_error_cetegory" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_title_product_orders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sf_pro_display_regular"
+                            android:maxLines="2"
+                            android:text="FLOVEME 1M Magnetic Charge Cable Micro USB Cable For iPhone 11 Pro M…"
+                            android:textColor="#4A4A4A "
+                            android:textSize="@dimen/_14sp" />
+
+                        <TextView
+                            android:id="@+id/txt_detail_product"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sf_pro_display_regular"
+                            android:maxLines="3"
+                            android:text="Quantity: 2 \nOption: Black, For Apple iPhone \nShip from: China"
+                            android:textColor="#9B9B9B "
+                            android:textSize="@dimen/_12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_price_product"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sf_pro_text_bold"
+                            android:maxLines="1"
+                            android:text="$5.90"
+                            android:textColor="#4A4A4A"
+                            android:textSize="@dimen/_14sp" />
+
+                        <Button
+                            android:id="@+id/btn_trackiing"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginTop="@dimen/_12dp"
+                            android:layout_marginBottom="@dimen/_16sp"
+                            android:background="@drawable/bkg_button_tracking"
+                            android:fontFamily="@font/sf_pro_display_semibold"
+                            android:text="Open Dispute"
+                            android:textAllCaps="false"
+                            android:textColor="#9B9B9B"
+                            android:textSize="@dimen/_16sp" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/_16dp"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingTop="@dimen/_12dp"
+                android:paddingBottom="@dimen/_6dp"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/_10dp">
+
+                <TextView
+                    android:id="@+id/order_summary"
+                    android:layout_width="match_parent"
+                    style="@style/style_txt_orders_detail"
+                    android:text="Order Summary (1 item)"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+
+                <TextView
+                    android:id="@+id/subtotal"
+                    style="@style/style_txt_orders_detail"
+                    android:text="Subtotal"
+                    app:layout_constraintTop_toBottomOf="@+id/order_summary"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textColor="#9B9B9B"/>
+
+                <TextView
+                    android:id="@+id/price_subtotal_order"
+                    style="@style/style_txt_orders_detail"
+                    android:text="$3.90"
+                    app:layout_constraintTop_toBottomOf="@+id/order_summary"
+                    app:layout_constraintLeft_toRightOf="@+id/subtotal"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:gravity="right"/>
+
+                <TextView
+                    android:id="@+id/shipping_fee"
+                    style="@style/style_txt_orders_detail"
+                    android:text="Shipping Fee"
+                    app:layout_constraintTop_toBottomOf="@+id/subtotal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textColor="#9B9B9B"/>
+
+                <TextView
+                    style="@style/style_txt_orders_detail"
+                    android:text="$2.00"
+                    app:layout_constraintTop_toBottomOf="@+id/price_subtotal_order"
+                    app:layout_constraintLeft_toRightOf="@+id/subtotal"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:gravity="right"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintTop_toBottomOf="@+id/shipping_fee"
+                android:background="@android:color/transparent"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingRight="@dimen/_16dp"
+                android:paddingBottom="@dimen/_10dp"
+                android:paddingTop="@dimen/_10dp"
+                android:background="@android:color/white">
+
+                <TextView
+                    style="@style/style_txt_orders_detail"
+                    android:layout_weight="1"
+                    android:text="Total"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$5.09"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:textSize="@dimen/_15sp"
+                    android:textColor="#D0021B"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="More to love"
+                android:layout_marginTop="@dimen/_24dp"
+                android:layout_marginBottom="@dimen/_16dp"
+                android:textColor="#4A4A4A"
+                android:fontFamily="@font/sf_pro_display_bold"
+                android:textSize="@dimen/_22sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_more_to_love"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

@@ -261,12 +261,15 @@
                         android:textSize="@dimen/_15sp"
                         android:fontFamily="@font/sf_pro_text_regular"/>
 
-                        <ImageView
+                        <TextView
                             android:id="@+id/img_vote_start_item_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="@dimen/_8dp"
-                            android:src="@drawable/vote_fine_star" />
+                            android:gravity="center"
+                            android:fontFamily="@font/awesome_5pro_solid"
+                            android:textColor="#EB3B5A"
+                            android:text="@string/oneStar"
+                            android:layout_marginLeft="@dimen/_8dp"/>
 
 
 

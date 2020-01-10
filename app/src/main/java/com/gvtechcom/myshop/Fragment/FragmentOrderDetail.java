@@ -1,40 +1,44 @@
 package com.gvtechcom.myshop.Fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.gvtechcom.myshop.R;
 
-public class FragmentHomeManager extends Fragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class FragmentOrderDetail extends Fragment {
     private View rootView;
+
+    @BindView(R.id.img_bitmap_demo)
+    ImageView imgDemo;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_home_manager, container, false);
+        rootView = inflater.inflate(R.layout.fragment_order_detail, container, false);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setFragmentHomeContent();
+        String v = String.valueOf(1.54);
+        Toast.makeText(getActivity(), "" + v, Toast.LENGTH_SHORT).show();
     }
 
-    private void setFragmentHomeContent() {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FragmentHomeContent fragmentHomeContent = new FragmentHomeContent();
-        fragmentTransaction.replace(R.id.frame_layout_home_manager, fragmentHomeContent);
-        fragmentTransaction.commit();
-    }
 
 }

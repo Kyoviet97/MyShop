@@ -220,4 +220,8 @@
         <item>+260</item>
         <item>+263</item>
     </string-array>
+
+    <string name="noStart"></string>
+    <string name="oneStar"></string>
+    <string name="haftStar"></string>
 </resources>

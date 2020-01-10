@@ -10,15 +10,23 @@
        android:layout_height="@dimen/_40dp"
        android:layout_margin="@dimen/_10dp"
        android:paddingLeft="@dimen/_10dp"
+       android:drawablePadding="@dimen/_6dp"
+       android:hint="Item name or Order number"
+       android:fontFamily="@font/sf_pro_text_regular"
+       android:textSize="@dimen/_16sp"
+       android:textColorHint="#D1D8E0"
+       android:textColor="#4A4A4A"
        android:drawableLeft="@drawable/ic_search"
        android:background="@drawable/bkg_search_color_white" />
 
     <include layout="@layout/include_tab_order"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_main_bkg"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_orders"
-        android:layout_marginTop="@dimen/_10dp"
-        android:layout_marginBottom="@dimen/_30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

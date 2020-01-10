@@ -37,6 +37,7 @@ import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.QuantityView;
+import com.gvtechcom.myshop.Utils.SetStarVote;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
@@ -64,6 +65,7 @@ public class FragmentItemDetail extends Fragment {
     private String fromToFragment = "";
     private ToastDialog toastDialog;
     private QuantityView quantityView;
+    private SetStarVote setStarVote;
 
 
     @BindView(R.id.layout_add_view_recycler)
@@ -137,6 +139,7 @@ public class FragmentItemDetail extends Fragment {
         }
         progressLoading = new ProgressDialogCustom(getActivity());
         toastDialog = new ToastDialog(getActivity());
+        setStarVote = new SetStarVote();
         return rootView;
     }
 
@@ -222,7 +225,7 @@ public class FragmentItemDetail extends Fragment {
             storeSold.setText(dataApiItemDetail.response.store.sold);
             timeFlashDeals(dataApiItemDetail.response.end_datetime);
             Double voteStar = Double.parseDouble(dataApiItemDetail.response.review.rating);
-            setStartNumber(voteStar);
+//            setStartNumber(voteStar);
             setUserRating(dataApiItemDetail.response.review.user_review, dataApiItemDetail.response.review.date_rating, dataApiItemDetail.response.review.content_review, 1.2);
             setDataRecyclerProductChildren(dataApiItemDetail.response.product);
             setAdapterRelatesProduct(dataApiItemDetail.response.relatesproduct);
@@ -306,51 +309,6 @@ public class FragmentItemDetail extends Fragment {
 
         } else {
             mainFlashTimeInItemDetail.setVisibility(View.GONE);
-        }
-    }
-
-    private void setStartNumber(Double vote) {
-        if (vote > 4.5) {
-            txtvoteStar.setText("5");
-            imgVoteStar.setImageResource(R.drawable.vote_fine_star);
-        } else {
-            if (vote > 4) {
-                txtvoteStar.setText("4.5");
-                imgVoteStar.setImageResource(R.drawable.vote_four_half_star);
-            } else {
-                if (vote >= 3.5) {
-                    txtvoteStar.setText("4");
-                    imgVoteStar.setImageResource(R.drawable.vote_four_star);
-                } else {
-                    if (vote > 3) {
-                        txtvoteStar.setText("3.5");
-                        imgVoteStar.setImageResource(R.drawable.vote_three_half_star);
-                    } else {
-                        if (vote > 2.5) {
-                            txtvoteStar.setText("3");
-                            imgVoteStar.setImageResource(R.drawable.vote_three_star);
-                        } else {
-                            if (vote > 2) {
-                                txtvoteStar.setText("2.5");
-                                imgVoteStar.setImageResource(R.drawable.vote_two_half_star);
-                            } else {
-                                if (vote > 1.5) {
-                                    txtvoteStar.setText("2");
-                                    imgVoteStar.setImageResource(R.drawable.vote_two_star);
-                                } else {
-                                    if (vote > 1) {
-                                        txtvoteStar.setText("1.5");
-                                        imgVoteStar.setImageResource(R.drawable.vote_one_half_star);
-                                    } else {
-                                        txtvoteStar.setText("1");
-                                        imgVoteStar.setImageResource(R.drawable.vote_one_star);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
