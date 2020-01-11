@@ -1,6 +1,5 @@
 package com.gvtechcom.myshop.Fragment;
 
-import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,11 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.gvtechcom.myshop.Adapter.AdapterChildrenOfProduct;
 import com.gvtechcom.myshop.Adapter.AdapterProductChildren;
 import com.gvtechcom.myshop.Adapter.AdapterRelatesProduct;
-import com.gvtechcom.myshop.Adapter.AdapterViewCategory;
-import com.gvtechcom.myshop.Interface.ListtenOnDestroyView;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.Network.APIServer;
@@ -37,7 +32,6 @@ import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.QuantityView;
-import com.gvtechcom.myshop.Utils.SetStarVote;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.StarViewVote;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
@@ -65,12 +59,6 @@ public class FragmentItemDetail extends Fragment {
     private static Integer soldQuantity = 1;
     private String fromToFragment = "";
     private ToastDialog toastDialog;
-    private QuantityView quantityView;
-    private SetStarVote setStarVote;
-
-
-    @BindView(R.id.layout_add_view_recycler)
-    LinearLayout layoutAddViewRecycler;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -107,6 +95,10 @@ public class FragmentItemDetail extends Fragment {
     @BindView(R.id.txt_count_seconds_item_detail)
     TextView txtCountSecondsItemDetail;
 
+    //Quantity
+    @BindView(R.id.quantity_view_home_content)
+    QuantityView quantityViewHome;
+
 
     //Use Review
     @BindView(R.id.txt_user_review)
@@ -140,7 +132,6 @@ public class FragmentItemDetail extends Fragment {
         }
         progressLoading = new ProgressDialogCustom(getActivity());
         toastDialog = new ToastDialog(getActivity());
-        setStarVote = new SetStarVote();
         return rootView;
     }
 
@@ -156,8 +147,6 @@ public class FragmentItemDetail extends Fragment {
         setRetroFit();
         setViewRecyclerView();
         checkData();
-        quantityView = rootView.findViewById(R.id.quantity_view_home_content);
-        quantityView.setValue(99999);
     }
 
     private void setRetroFit() {
@@ -195,7 +184,7 @@ public class FragmentItemDetail extends Fragment {
             public void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position) {
                 System.out.println("================>" + lsProductChildren.size());
                 for (ItemDetailsModel.Children children : lsProductChildren){
-                    System.out.println("====================>" +children._id);
+                    System.out.println("====================>" + children._id);
                 }
             }
         });
@@ -218,6 +207,12 @@ public class FragmentItemDetail extends Fragment {
             txtItemDetailDescription.setText(dataApiItemDetail.response.description);
             nameProductIetmDetail.setText(dataApiItemDetail.response.name);
             txtItemDetailSold.setText(dataApiItemDetail.response.sold + " orders");
+            quantityViewHome.setValue(dataApiItemDetail.response.sold);
+            if (quantityViewHome != null){
+                quantityViewHome.setClickLostAddItem(dataApiItemDetail.response.is_specie);
+            }
+            callFragmentProductOption(dataApiItemDetail.response);
+
             txtItemDetailLike.setText(dataApiItemDetail.response.like + "");
             txtItemDetailPercentSale.setText("$" + dataApiItemDetail.response.percent_sale);
             storeName.setText(dataApiItemDetail.response.store.store_name);
@@ -320,11 +315,29 @@ public class FragmentItemDetail extends Fragment {
         switch (view.getId()){
             case R.id.btn_buy_now_item_details:
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentProductOptions());
+                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentShippingMethod());
                 fragmentTransaction.addToBackStack("item_detail");
                 fragmentTransaction.commit();
                 break;
         }
+    }
+
+    private void callFragmentProductOption(ItemDetailsModel lsDataProduct){
+        quantityViewHome.setQuantityOnClick(new QuantityView.OnClickQuantity() {
+            @Override
+            public void onClick() {
+                Gson gson = new Gson();
+                String dataStringProduct = gson.toJson(lsDataProduct);
+                Bundle bundle = new Bundle();
+                bundle.putString("lsDataProduct", dataStringProduct);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentProductOptions productOptions = new FragmentProductOptions();
+                productOptions.setArguments(bundle);
+                fragmentTransaction.add(R.id.frame_layout_home_manager, productOptions);
+                fragmentTransaction.addToBackStack("item_detail");
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     private void setUserRating(String name, String date, String content, Double star) {

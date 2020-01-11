@@ -32,7 +32,9 @@ public class ItemDetailsModel implements Serializable {
         public String content_review;
         public String user_rating;
         public String date_rating;
+        public List<String> images;
     }
+
 
     public class Product{
         public String _id;

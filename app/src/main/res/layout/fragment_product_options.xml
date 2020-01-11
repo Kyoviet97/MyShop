@@ -11,10 +11,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/_22dp"
+        android:paddingTop="@dimen/_16dp"
         android:paddingLeft="@dimen/_16dp"
         android:paddingRight="@dimen/_16dp"
-        android:paddingBottom="@dimen/_12dp"
+        android:paddingBottom="@dimen/_10dp"
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
@@ -83,9 +83,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_color_product"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12dp"
             android:paddingBottom="@dimen/_16dp"/>
+
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -123,7 +125,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_band_product"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12dp"
             android:paddingBottom="@dimen/_16dp"/>
 
@@ -204,6 +206,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_main_bkg"
         android:orientation="horizontal"
         android:gravity="bottom"
         android:weightSum="2">

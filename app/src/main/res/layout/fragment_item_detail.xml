@@ -392,21 +392,14 @@
                     android:id="@+id/recycler_product_children_item_detail"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_12dp"
-                    android:layout_height="@dimen/_50dp"/>
+                    android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                    android:id="@+id/layout_add_view_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12dp"
-                    android:orientation="vertical">
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_16dp"
-                    android:background="#EBEBEB"/>
+                    android:layout_marginTop="@dimen/_18dp"
+                    android:background="@color/color_main_bkg"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
