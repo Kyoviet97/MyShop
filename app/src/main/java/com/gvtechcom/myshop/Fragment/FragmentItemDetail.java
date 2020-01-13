@@ -59,6 +59,7 @@ public class FragmentItemDetail extends Fragment {
     private static Integer soldQuantity = 1;
     private String fromToFragment = "";
     private ToastDialog toastDialog;
+    private ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail;
 
     //TextView
     @BindView(R.id.txt_item_detail_description)
@@ -196,7 +197,7 @@ public class FragmentItemDetail extends Fragment {
             this.fromToFragment = bundle.getString("fromToFragment", "");
             Gson gson = new Gson();
             this.jsonData = bundle.getString("dataJson");
-            ItemDetailsModel.ItemDetailsModelParser dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
+            this.dataApiItemDetail = gson.fromJson(jsonData, ItemDetailsModel.ItemDetailsModelParser.class);
             setDataItemDataDetails(dataApiItemDetail);
             setDataRecyclerProductChildren(dataApiItemDetail.response.product);
         }
@@ -317,7 +318,10 @@ public class FragmentItemDetail extends Fragment {
         switch (view.getId()){
             case R.id.btn_buy_now_item_details:
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentShippingMethod());
+                Bundle bundle = new Bundle();
+                bundle.putInt("TotalProduct", dataApiItemDetail.response.sold);
+                Fragment fragmentShippingMethod = new FragmentShippingMethod();
+                fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentShippingMethod);
                 fragmentTransaction.addToBackStack("item_detail");
                 fragmentTransaction.commit();
                 break;

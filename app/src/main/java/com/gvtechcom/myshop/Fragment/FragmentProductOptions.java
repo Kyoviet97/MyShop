@@ -95,7 +95,7 @@ public class FragmentProductOptions extends Fragment {
     private void init() {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setColorIconDarkMode(false, R.color.white);
-        mainActivity.setSubActionBar(false, false, "Options");
+        mainActivity.setSubActionBar(false, false, "Product Options");
     }
 
     private void setContentProductOption(){
@@ -103,6 +103,8 @@ public class FragmentProductOptions extends Fragment {
             setGlideImage(lsDataProduct.review.images.get(0), imgProductOption);
             txtNameProduct.setText(lsDataProduct.name);
             setAdapterProductChildrenColor(lsDataProduct.product);
+            quantityViewProductOption.setValue(lsDataProduct.sold);
+            quantityViewProductOption.setClickLostAddItem(0);
         }
     }
 
@@ -119,8 +121,6 @@ public class FragmentProductOptions extends Fragment {
         listColorProduct.setAdapter(adapterProductChildrenColor);
     }
 
-    private void setAdapterProductChildrenBand(List<ItemDetailsModel.Product> lsDataBand){
-    }
 
     private void setGlideImage(String url, View view) {
         Glide.with(getActivity())

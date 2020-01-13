@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
@@ -58,16 +59,13 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
     private MainActivity mainActivity;
     private AdapterKeyWordsSearch adapterKeyWordsSearch;
     private AdapterSearchTopHot adapterSearchTopHot;
-    private AdapterItemsYouLove adapterItemsYouLove;
     private APIServer apiServer;
-    private List<ItemYouLoveModel.Product> lsDataProductTotal;
-    private FragmentManager fragmentManager;
     private int page;
     private String nameProduct;
     private Boolean isLoadMore = true;
     private Boolean maxData = false;
     private KeywordsModel dataKeyword;
-    private String fromToFragment;
+
 
     private void setNameProduct(String nameProduct) {
         this.nameProduct = nameProduct;
@@ -75,10 +73,6 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
 
     private void setPage(int page) {
         this.page = page;
-    }
-
-    private void setMaxData(Boolean bl) {
-        this.maxData = bl;
     }
 
     @BindView(R.id.main_layout_search)
@@ -200,7 +194,6 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
                 @Override
                 public void onClick(String idProduct) {
                     setPage(1);
-                    lsDataProductTotal = new ArrayList<>();
                     setNameProduct(idProduct);
                     callApiSearch(idProduct, false);
                 }
@@ -221,7 +214,6 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
                 @Override
                 public void onClick(String idProduct) {
                     setPage(1);
-                    lsDataProductTotal = new ArrayList<>();
                     setNameProduct(idProduct);
                     callApiSearch(idProduct, false);
                 }
@@ -237,52 +229,12 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
             @Override
             public void onClick(String idProduct) {
                 setPage(1);
-                lsDataProductTotal = new ArrayList<>();
                 setNameProduct(idProduct);
                 callApiSearch(idProduct, false);
             }
         });
     }
 
-    private void setDataAdapterSearchProduct(List<ItemYouLoveModel.Product> dataAdapter) {
-        recyclerViewSearch.setLayoutManager(setLayoutManager(false));
-        if (adapterItemsYouLove == null) {
-            adapterItemsYouLove = new AdapterItemsYouLove(getActivity(), dataAdapter);
-            recyclerViewSearch.setVisibility(View.VISIBLE);
-            recyclerViewSearch.setAdapter(adapterItemsYouLove);
-        } else {
-            recyclerViewSearch.setAdapter(adapterItemsYouLove);
-            adapterItemsYouLove.UpdateAdapter(dataAdapter);
-        }
-        adapterItemsYouLove.setOnItemClickListener(new AdapterItemsYouLove.ItemClickListener() {
-            @Override
-            public void onClickListener(String productId) {
-                callApiDataItemDetail(productId);
-            }
-        });
-    }
-
-    private void getNestedScrollChange() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollSearch.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    int nestedScrollHight = (scrollSearch.getChildAt(0).getHeight() - scrollSearch.getHeight());
-                    if (isLoadMore == true && scrollY == nestedScrollHight) {
-                        setPage(page + 1);
-                        callApiSearch(nameProduct, true);
-                        isLoadMore = false;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                isLoadMore = true;
-                            }
-                        }, 1000);
-                    }
-                }
-            });
-        }
-    }
 
     private void callApiSearch(String keyWord, Boolean loadMore) {
         Animation animation_side_up = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_slide_up_progressbar);
@@ -308,16 +260,11 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
                         recyclerViewSearch.setVisibility(View.GONE);
                         txtNoResult.setVisibility(View.VISIBLE);
                     } else {
-                        for (int i = 0; i <= response.body().response.products.size(); i++) {
-                            if (i != response.body().response.products.size()) {
-                                lsDataProductTotal.add(response.body().response.products.get(i));
-                            } else {
-                                setDataAdapterSearchProduct(lsDataProductTotal);
-                            }
-                        }
-                        if (response.body().response.total > Const.TOTAL_PRODUCT) {
-                            getNestedScrollChange();
-                        }
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        Fragment fragmentViewCategory = new FragmentViewCategory();
+                        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentViewCategory);
+                        fragmentTransaction.addToBackStack("SearchView");
+                        fragmentTransaction.commit();
                     }
                     mainActivity.hideSoftKeyboard(getActivity());
                 }
@@ -332,42 +279,7 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
         });
     }
 
-    private void callApiDataItemDetail(String idProduct) {
-        ShowProgressBar.showProgress(getActivity());
-        Call<ItemDetailsModel.ItemDetailsModelParser> callApi = apiServer.GetApiItemDetails(idProduct);
-        callApi.enqueue(new Callback<ItemDetailsModel.ItemDetailsModelParser>() {
-            @Override
-            public void onResponse(Call<ItemDetailsModel.ItemDetailsModelParser> call, Response<ItemDetailsModel.ItemDetailsModelParser> response) {
-                ShowProgressBar.hideProgress();
-                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
-                    if (response.body().response != null) {
-                        Gson gson = new Gson();
-                        String jsonData = gson.toJson(response.body());
-                        setDataItemDetails(jsonData);
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ItemDetailsModel.ItemDetailsModelParser> call, Throwable t) {
-                ShowProgressBar.hideProgress();
-            }
-        });
-    }
-
-    private void setDataItemDetails(String jsonData) {
-        fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragmentItemDetails = new FragmentItemDetail();
-        Bundle bundle = new Bundle();
-        bundle.putString("dataJson", jsonData);
-        bundle.putString("fromToFragment", "homeContent");
-        ShowProgressBar.hideProgress();
-        fragmentItemDetails.setArguments(bundle);
-        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentItemDetails);
-        fragmentTransaction.addToBackStack("home");
-        fragmentTransaction.commit();
-    }
 
     private void onListenKeyboard() {
         KeyboardVisibilityEvent.setEventListener(

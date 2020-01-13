@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,6 +79,8 @@ public class FragmentViewCategory extends Fragment {
     NestedScrollView netScrollViewCategory;
     @BindView(R.id.progressbar_load_api_view_category_footer)
     ProgressBar progressbarLoadApiViewCategoryFooter;
+    @BindView(R.id.btn_filter)
+    LinearLayout btnFilter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +99,6 @@ public class FragmentViewCategory extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootiew = inflater.inflate(R.layout.fragment_view_category, container, false);
         ButterKnife.bind(this, rootiew);
-        toastDialog = new ToastDialog(getActivity());
         return rootiew;
     }
 
@@ -111,8 +114,24 @@ public class FragmentViewCategory extends Fragment {
     private void init() {
         this.pageLoad = 2;
         lsdataViewCategorTotal = new ArrayList<>();
-        addListViewCategory(dataViewCategory);
+        if (dataViewCategory != null) {
+            addListViewCategory(dataViewCategory);
+        }
         mainActivity = (MainActivity) getActivity();
+    }
+
+    @OnClick({R.id.btn_filter})
+    void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_filter:
+                Toast.makeText(mainActivity, "CLICKKKKKKKKKK", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.action_bar_view_category:
+                Toast.makeText(mainActivity, "pppppp", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
     }
 
     private void setRetrofit() {
@@ -164,14 +183,13 @@ public class FragmentViewCategory extends Fragment {
         call.enqueue(new Callback<DataViewCategoryModel.DataViewCategoryModelParser>() {
             @Override
             public void onResponse(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Response<DataViewCategoryModel.DataViewCategoryModelParser> response) {
-                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)){
-                    if (response.body().data.products.size() > 0){
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)) {
+                    if (response.body().data.products.size() > 0) {
                         pageLoad++;
                         addListViewCategory(response.body().data);
-                    }else {
-                        isMaxData= true;
+                    } else {
+                        isMaxData = true;
                     }
-
                 }
                 progressbarLoadApiViewCategoryFooter.setAnimation(animation_side_down);
                 progressbarLoadApiViewCategoryFooter.setVisibility(View.GONE);
@@ -193,7 +211,7 @@ public class FragmentViewCategory extends Fragment {
                     int nestedScrollHight = (netScrollViewCategory.getChildAt(0).getHeight() - netScrollViewCategory.getHeight());
                     if (isLoadMore && scrollY == nestedScrollHight && !isMaxData) {
                         isLoadMore = false;
-                       callApiViewCategory(idCategoryBundle);
+                        callApiViewCategory(idCategoryBundle);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {

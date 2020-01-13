@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.gvtechcom.myshop.Adapter.AdapterShippingMethod;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ShippingMethodModel;
 import com.gvtechcom.myshop.R;
+import com.gvtechcom.myshop.Utils.QuantityView;
 import com.nostra13.universalimageloader.utils.L;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FragmentShippingMethod extends Fragment {
     private View rootView;
@@ -34,6 +37,9 @@ public class FragmentShippingMethod extends Fragment {
 
     private AdapterShippingMethod adapterShippingMethod;
     private List<ShippingMethodModel> lsShippingMethod;
+    private int totalProduct = 0;
+
+    private QuantityView quantity_shipping_method;
 
     @BindView(R.id.txt_weight_pack)
     TextView txtWeightPack;
@@ -43,6 +49,16 @@ public class FragmentShippingMethod extends Fragment {
     TextView txtProcessingTime;
     @BindView(R.id.recycler_shipping_method)
     androidx.recyclerview.widget.RecyclerView recyclerShippingMethod;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            this.totalProduct = bundle.getInt("TotalProduct");
+            Toast.makeText(mainActivity, "Total:" + totalProduct, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Nullable
     @Override
@@ -88,7 +104,13 @@ public class FragmentShippingMethod extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setColorIconDarkMode(false, R.color.white);
         mainActivity.setSubActionBar(false, false, "Shipping Method");
+
+        if (totalProduct != 0) {
+            quantity_shipping_method.setValue(totalProduct);
+            quantity_shipping_method.setClickLostAddItem(0);
+        }
     }
+
 
     @Override
     public void onDestroyView() {
