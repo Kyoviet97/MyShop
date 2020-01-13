@@ -210,7 +210,9 @@ public class FragmentItemDetail extends Fragment {
             quantityViewHome.setValue(dataApiItemDetail.response.sold);
             if (quantityViewHome != null){
                 quantityViewHome.setClickLostAddItem(dataApiItemDetail.response.is_specie);
+                Toast.makeText(mainActivity, "Level: " + dataApiItemDetail.response.is_specie, Toast.LENGTH_SHORT).show();
             }
+
             callFragmentProductOption(dataApiItemDetail.response);
 
             txtItemDetailLike.setText(dataApiItemDetail.response.like + "");

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,18 +21,24 @@ import com.gvtechcom.myshop.Adapter.AdapterProductChildren;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
 import com.gvtechcom.myshop.R;
+import com.gvtechcom.myshop.Utils.QuantityView;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FragmentProductOptions extends Fragment {
     private View rootView;
     private AdapterProductChildren adapterProductChildrenColor;
+    private AdapterProductChildren adapterProductChildrenBand;
     private MainActivity mainActivity;
     private ItemDetailsModel lsDataProduct;
+
+    @BindView(R.id.quantity_view_product_option)
+    QuantityView quantityViewProductOption;
 
 
     @BindView(R.id.list_color_product)
@@ -73,6 +80,18 @@ public class FragmentProductOptions extends Fragment {
 
     }
 
+    @OnClick({R.id.btn_buy_now})
+    void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_buy_now:
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout_home_manager, new FragmentShippingMethod());
+                fragmentTransaction.addToBackStack("product_option");
+                fragmentTransaction.commit();
+                break;
+        }
+    }
+
     private void init() {
         mainActivity = (MainActivity) getActivity();
         mainActivity.setColorIconDarkMode(false, R.color.white);
@@ -98,6 +117,9 @@ public class FragmentProductOptions extends Fragment {
     private void setAdapterProductChildrenColor(List<ItemDetailsModel.Product> lsDataColor){
         adapterProductChildrenColor = new AdapterProductChildren(getActivity(), lsDataColor);
         listColorProduct.setAdapter(adapterProductChildrenColor);
+    }
+
+    private void setAdapterProductChildrenBand(List<ItemDetailsModel.Product> lsDataBand){
     }
 
     private void setGlideImage(String url, View view) {

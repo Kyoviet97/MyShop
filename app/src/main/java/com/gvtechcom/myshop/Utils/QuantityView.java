@@ -54,7 +54,6 @@ public class QuantityView extends LinearLayout {
     public void setClickLostAddItem(int setClick) {
         switch (setClick) {
             case 0:
-
                 imgLostItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

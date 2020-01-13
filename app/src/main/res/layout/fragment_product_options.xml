@@ -224,6 +224,7 @@
 
 
         <Button
+            android:id="@+id/btn_buy_now"
             android:layout_width="0dp"
             android:layout_height="@dimen/_50dp"
             android:layout_weight="1"

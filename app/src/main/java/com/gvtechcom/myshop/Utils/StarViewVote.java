@@ -62,7 +62,7 @@ public class StarViewVote extends LinearLayout {
                statFour.setTypeface(awesome5proRegular);
 
                statFine.setText(R.string.noStart);
-               statFine.setTypeface(awesome5proRegular); 
+               statFine.setTypeface(awesome5proRegular);
                break;
 
            case "0.5":
