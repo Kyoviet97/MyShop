@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.gvtechcom.myshop.Adapter.AdapterNameSubCategory;
 import com.gvtechcom.myshop.Adapter.AdapterRecyclerBrowseCategoriesLeft;
@@ -20,6 +21,7 @@ import com.gvtechcom.myshop.Adapter.AdapterTopBrandsBrowseCategory;
 import com.gvtechcom.myshop.Interface.SendIdCatergory;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
+import com.gvtechcom.myshop.Model.CategoryFilterModel;
 import com.gvtechcom.myshop.Model.DataViewCategoryModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
@@ -43,14 +45,15 @@ public class FragmentBrowseCategories extends Fragment {
     private APIServer apiServer;
     private Retrofit retrofit;
     private List<BrowseCategoriesModel> dataBrowseCategories;
+
     private AdapterRecyclerBrowseCategoriesLeft adapterRecyclerBrowseCategoriesLeft;
     private AdapterNameSubCategory adapterNameSubCategory;
     private AdapterTopBrandsBrowseCategory adapterTopBrands;
+
     private MainActivity mainActivity;
     private ToastDialog toastDialog;
     private FragmentViewCategory fragmentViewCategory;
     private FragmentManager fragmentManager;
-    private FragmentItemDetail fragmentItemDetail;
     private ProgressDialogCustom progressDialogCustom;
 
     @BindView(R.id.recycler_browse_categories_left)
@@ -116,18 +119,17 @@ public class FragmentBrowseCategories extends Fragment {
 
     private void callApiBrowse() {
         progressDialogCustom.onShow(false, "");
-        Call<BrowseCategoriesModel.BrowseCategoriesModelParser> callApiBrowseCtegoties = apiServer.GetApiBrowseCategoriesModel();
+        Call<BrowseCategoriesModel.BrowseCategoriesModelParser> callApiBrowseCtegoties = apiServer.GetApiBrowseCategoriesLeft("0");
         callApiBrowseCtegoties.enqueue(new Callback<BrowseCategoriesModel.BrowseCategoriesModelParser>() {
             @Override
             public void onResponse(Call<BrowseCategoriesModel.BrowseCategoriesModelParser> call, Response<BrowseCategoriesModel.BrowseCategoriesModelParser> response) {
                 if (response.body().code != 200) {
                     toastDialog.onShow(response.body().message);
                 } else {
-                    dataBrowseCategories = response.body().response;
+                    dataBrowseCategories = response.body().data.categories;
                     if (dataBrowseCategories != null) {
                         setAdapterBrowseCategoriesLeft(dataBrowseCategories);
-                        setAdapterTopBrands(dataBrowseCategories.get(0).top_brands);
-                        setAdapterNameSubCategory(dataBrowseCategories.get(0).children);
+                        callApiMainBrowse(dataBrowseCategories.get(0).id);
                     }
                 }
 
@@ -146,16 +148,15 @@ public class FragmentBrowseCategories extends Fragment {
         RecyclerViewBrowseLeft.setAdapter(adapterRecyclerBrowseCategoriesLeft);
         adapterRecyclerBrowseCategoriesLeft.setOnClickItem(new AdapterRecyclerBrowseCategoriesLeft.setOnClickItem() {
             @Override
-            public void onClickItem(List<BrowseCategoriesModel.Children> lsChildren, List<BrowseCategoriesModel.TopBrands> lsTopBrands) {
-                setAdapterNameSubCategory(lsChildren);
-                setAdapterTopBrands(lsTopBrands);
+            public void onClickItem(String idCategory) {
+                callApiMainBrowse(idCategory);
             }
         });
     }
 
-    private void setAdapterNameSubCategory(List<BrowseCategoriesModel.Children> dataChildren) {
+    private void setAdapterNameSubCategory(List<BrowseCategoriesModel> dataBrowseCategories) {
         if (adapterNameSubCategory == null) {
-            adapterNameSubCategory = new AdapterNameSubCategory(getActivity(), dataChildren);
+            adapterNameSubCategory = new AdapterNameSubCategory(getActivity(), dataBrowseCategories);
             recyclerNameSubCategory.setAdapter(adapterNameSubCategory);
             adapterNameSubCategory.setSenIdCategory(new SendIdCatergory() {
                 @Override
@@ -164,7 +165,7 @@ public class FragmentBrowseCategories extends Fragment {
                 }
             });
         } else {
-            adapterNameSubCategory.updateData(dataChildren);
+            adapterNameSubCategory.updateData(dataBrowseCategories);
         }
     }
 
@@ -184,16 +185,36 @@ public class FragmentBrowseCategories extends Fragment {
         }
     }
 
-    private void callApiViewCategory(String idCategory, int page){
+    private void callApiMainBrowse(String idCategory){
+        progressDialogCustom.onShow(false, "");
+        Call<BrowseCategoriesModel.BrowseCategoriesModelParser> apiMainBrowse = apiServer.GetApiBrowseCategoriesMain(idCategory);
+        apiMainBrowse.enqueue(new Callback<BrowseCategoriesModel.BrowseCategoriesModelParser>() {
+            @Override
+            public void onResponse(Call<BrowseCategoriesModel.BrowseCategoriesModelParser> call, Response<BrowseCategoriesModel.BrowseCategoriesModelParser> response) {
+                progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)){
+                    setAdapterTopBrands(response.body().data.top_brands);
+                    setAdapterNameSubCategory(response.body().data.categories);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BrowseCategoriesModel.BrowseCategoriesModelParser> call, Throwable t) {
+                progressDialogCustom.onHide();
+            }
+        });
+    }
+
+    private void callApiViewCategory(String idCategory, int page) {
         progressDialogCustom.onShow(false, "");
         Call<DataViewCategoryModel.DataViewCategoryModelParser> callApiViewCategory = apiServer.GetViewCategory(idCategory, page, Const.TOTAL_PRODUCT);
         callApiViewCategory.enqueue(new Callback<DataViewCategoryModel.DataViewCategoryModelParser>() {
             @Override
             public void onResponse(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Response<DataViewCategoryModel.DataViewCategoryModelParser> response) {
-               if ( ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)){
-                   sendDataToViewCategory(response.body().data, idCategory);
-               }
-               progressDialogCustom.onHide();
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)) {
+                    sendDataToViewCategory(response.body().data, idCategory);
+                }
+                progressDialogCustom.onHide();
             }
 
             @Override
@@ -203,7 +224,8 @@ public class FragmentBrowseCategories extends Fragment {
         });
     }
 
-    private void sendDataToViewCategory(DataViewCategoryModel lsData, String idCategory){
+
+    private void sendDataToViewCategory(DataViewCategoryModel lsData, String idCategory) {
         Gson gson = new Gson();
         String dataStringJson = gson.toJson(lsData);
         Bundle bundleData = new Bundle();

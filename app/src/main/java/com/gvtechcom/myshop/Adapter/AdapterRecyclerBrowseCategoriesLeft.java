@@ -67,7 +67,7 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
                 @Override
                 public void onClick(View v) {
                     if (setOnClickItem != null){
-                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).children, lsBrowseCategories.get(getAdapterPosition()).top_brands);
+                        setOnClickItem.onClickItem(lsBrowseCategories.get(getAdapterPosition()).id);
                     }
                 }
             });
@@ -76,7 +76,7 @@ public class AdapterRecyclerBrowseCategoriesLeft extends RecyclerView.Adapter<Ad
     }
 
     public interface setOnClickItem{
-        void onClickItem(List<BrowseCategoriesModel.Children> lsChildren, List<BrowseCategoriesModel.TopBrands> lsTopBrands);
+        void onClickItem(String idCategory);
     }
 
     private setOnClickItem setOnClickItem;

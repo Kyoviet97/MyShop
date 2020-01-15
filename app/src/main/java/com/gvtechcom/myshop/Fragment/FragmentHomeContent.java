@@ -222,9 +222,9 @@ public class FragmentHomeContent extends Fragment {
         objItemYouLove = gson.fromJson(jsonItemYouLove, ItemYouLoveModel.ItemYouLoveModelParser.class);
         fragmentManager = getFragmentManager();
         lsProductItemYouLove = new ArrayList<>();
-        for (int i = 0; i <= objItemYouLove.response.products.size(); i++) {
-            if (i != objItemYouLove.response.products.size()) {
-                lsProductItemYouLove.add(objItemYouLove.response.products.get(i));
+        for (int i = 0; i <= objItemYouLove.data.products.size(); i++) {
+            if (i != objItemYouLove.data.products.size()) {
+                lsProductItemYouLove.add(objItemYouLove.data.products.get(i));
             } else {
                 setAdapterItemsYouLove(lsProductItemYouLove);
             }
@@ -520,9 +520,9 @@ public class FragmentHomeContent extends Fragment {
                     progessbar_footer.setAnimation(animation_side_down);
                     progessbar_footer.setVisibility(View.GONE);
                 } else {
-                    for (int i = 0; i <= response.body().response.products.size(); i++) {
-                        if (i != response.body().response.products.size()) {
-                            lsProductItemYouLove.add(response.body().response.products.get(i));
+                    for (int i = 0; i <= response.body().data.products.size(); i++) {
+                        if (i != response.body().data.products.size()) {
+                            lsProductItemYouLove.add(response.body().data.products.get(i));
                         } else {
                             setAdapterItemsYouLove(lsProductItemYouLove);
                             page = page + 1;
@@ -547,7 +547,7 @@ public class FragmentHomeContent extends Fragment {
                 new KeyboardVisibilityEventListener() {
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
-                        if (isOpen == true) {
+                        if (isOpen) {
                             mainActivity.setHideButtonNavigation(true);
                         } else {
                             new Handler().postDelayed(new Runnable() {

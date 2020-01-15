@@ -3,10 +3,13 @@ package com.gvtechcom.myshop;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +20,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -55,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.img_shopping_cart)
     ImageView imgShoppingCart;
 
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
     @BindView(R.id.sub_action_bar_activity_content)
     RelativeLayout subActionBar;
     @BindView(R.id.img_back_sub_action_bar)
@@ -63,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     TextView titleSubActionBar;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @SuppressLint("CommitTransaction")
+    @SuppressLint({"CommitTransaction"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +86,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.img_btn_back_navigation})
+    @OnClick({R.id.img_btn_back_navigation, R.id.btn_apply_filter, R.id.btn_reset_filter})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_btn_back_navigation:
                 fragmentManager.popBackStack();
+                break;
+            case R.id.btn_apply_filter:
+                Toast.makeText(this, "OKOKOKOKO", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -282,6 +294,35 @@ public class MainActivity extends AppCompatActivity {
         searchViewNavigation.setHintTextColor(Color.parseColor(codeString));
     }
 
+    @SuppressLint("WrongConstant")
+    public void setOnpenDrawerRight(){
+        drawerLayout.openDrawer(Gravity.END);
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setColorStatusTran(true);
+                }
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setColorStatusTran(false);
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+    }
 
     public void setSubActionBar(Boolean hideSubAction, Boolean hideBackButton, String titleSubAction) {
         if (hideSubAction) {

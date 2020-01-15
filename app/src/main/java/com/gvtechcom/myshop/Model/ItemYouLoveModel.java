@@ -6,16 +6,27 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ItemYouLoveModel {
-    public Integer current_page;
-    public Integer total;
-    public List<Product> products;
 
     public class Product {
-        public String product_id;
-        public String product_name;
+        public String id;
+        public String name;
         public String image;
         public String price;
         public String sold;
+    }
+
+    public class Data{
+        public List<Product> products;
+        public Meta meta;
+    }
+
+    public class Meta{
+        public Pagination pagination;
+    }
+
+    public class Pagination{
+        public Integer total;
+        public Integer current_page;
     }
 
     public static class ItemYouLoveModelParser {
@@ -27,6 +38,6 @@ public class ItemYouLoveModel {
         public String message;
         @SerializedName("data")
         @Expose
-        public ItemYouLoveModel response;
+        public Data data;
     }
 }

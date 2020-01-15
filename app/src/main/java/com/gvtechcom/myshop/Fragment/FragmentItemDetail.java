@@ -110,10 +110,8 @@ public class FragmentItemDetail extends Fragment {
     TextView txtContentReview;
     @BindView(R.id.img_start_use_rating)
     ImageView imgStartUseRating;
-
     @BindView(R.id.set_star_view)
     StarViewVote setStarView;
-
     //RecyclerView
     @BindView(R.id.recycler_related_product)
     RecyclerView recyclerRelatedProduct;
@@ -129,7 +127,7 @@ public class FragmentItemDetail extends Fragment {
         mainActivity.setDisplayNavigationBar(false, false, false);
         mainActivity.setHideButtonNavigation(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mainActivity.setColorStatusTran(true);
+            mainActivity.setColorStatusTran(false);
         }
         progressLoading = new ProgressDialogCustom(getActivity());
         toastDialog = new ToastDialog(getActivity());
@@ -180,15 +178,15 @@ public class FragmentItemDetail extends Fragment {
     private void setDataRecyclerProductChildren(List<ItemDetailsModel.Product> lsProductChildren) {
         AdapterProductChildren adapterProductChildren = new AdapterProductChildren(getActivity(), lsProductChildren);
         recyclerProductChildrenItemDetail.setAdapter(adapterProductChildren);
-        adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
-            @Override
-            public void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position) {
-                System.out.println("================>" + lsProductChildren.size());
-                for (ItemDetailsModel.Children children : lsProductChildren){
-                    System.out.println("====================>" + children._id);
-                }
-            }
-        });
+//        adapterProductChildren.getDataListChildren(new AdapterProductChildren.SendListChildren() {
+//            @Override
+//            public void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position) {
+//                System.out.println("================>" + lsProductChildren.size());
+//                for (ItemDetailsModel.Children children : lsProductChildren){
+//                    System.out.println("====================>" + children._id);
+//                }
+//            }
+//        });
     }
 
     private void checkData() {

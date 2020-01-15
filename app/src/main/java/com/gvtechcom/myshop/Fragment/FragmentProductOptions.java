@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.gvtechcom.myshop.Adapter.AdapterProductChidrenBands;
 import com.gvtechcom.myshop.Adapter.AdapterProductChildren;
 import com.gvtechcom.myshop.MainActivity;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
 public class FragmentProductOptions extends Fragment {
     private View rootView;
     private AdapterProductChildren adapterProductChildrenColor;
-    private AdapterProductChildren adapterProductChildrenBand;
+    private AdapterProductChidrenBands adapterProductChildrenBand;
     private MainActivity mainActivity;
     private ItemDetailsModel lsDataProduct;
 
@@ -53,14 +54,17 @@ public class FragmentProductOptions extends Fragment {
     @BindView(R.id.txt_name_product)
     TextView txtNameProduct;
 
+    @BindView(R.id.text_not_product)
+    TextView textNotProduct;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-       if (bundle != null){
-           Gson gson = new Gson();
-           this.lsDataProduct = gson.fromJson(bundle.getString("lsDataProduct"), ItemDetailsModel.class);
-       }
+        if (bundle != null) {
+            Gson gson = new Gson();
+            this.lsDataProduct = gson.fromJson(bundle.getString("lsDataProduct"), ItemDetailsModel.class);
+        }
     }
 
     @Nullable
@@ -81,11 +85,11 @@ public class FragmentProductOptions extends Fragment {
     }
 
     @OnClick({R.id.btn_buy_now})
-    void onClick(View view){
-        switch (view.getId()){
+    void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btn_buy_now:
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout_home_manager, new FragmentShippingMethod());
+                fragmentTransaction.add(R.id.frame_layout_home_manager, new FragmentShippingMethod());
                 fragmentTransaction.addToBackStack("product_option");
                 fragmentTransaction.commit();
                 break;
@@ -98,9 +102,8 @@ public class FragmentProductOptions extends Fragment {
         mainActivity.setSubActionBar(false, false, "Product Options");
     }
 
-    private void setContentProductOption(){
-        if (lsDataProduct != null){
-            setGlideImage(lsDataProduct.review.images.get(0), imgProductOption);
+    private void setContentProductOption() {
+        if (lsDataProduct != null) {
             txtNameProduct.setText(lsDataProduct.name);
             setAdapterProductChildrenColor(lsDataProduct.product);
             quantityViewProductOption.setValue(lsDataProduct.sold);
@@ -108,7 +111,7 @@ public class FragmentProductOptions extends Fragment {
         }
     }
 
-    private void setRecycler(){
+    private void setRecycler() {
         LinearLayoutManager layoutManagerRecyclerColor = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         listColorProduct.setLayoutManager(layoutManagerRecyclerColor);
 
@@ -116,9 +119,32 @@ public class FragmentProductOptions extends Fragment {
         listBandProduct.setLayoutManager(layoutManagerRecyclerBand);
     }
 
-    private void setAdapterProductChildrenColor(List<ItemDetailsModel.Product> lsDataColor){
+    private void setAdapterProductChildrenColor(List<ItemDetailsModel.Product> lsDataColor) {
         adapterProductChildrenColor = new AdapterProductChildren(getActivity(), lsDataColor);
         listColorProduct.setAdapter(adapterProductChildrenColor);
+        adapterProductChildrenColor.getDataListChildren(new AdapterProductChildren.SendListChildren() {
+            @Override
+            public void dataSend(int position) {
+                if (position > 0) {
+                    textNotProduct.setVisibility(View.GONE);
+                    listBandProduct.setVisibility(View.VISIBLE);
+                    setLsDataProductChildrenBands(lsDataColor.get(position).children);
+                } else {
+                    textNotProduct.setVisibility(View.VISIBLE);
+                    listBandProduct.setVisibility(View.GONE);
+                }
+            }
+        });
+
+    }
+
+    private void setLsDataProductChildrenBands(List<ItemDetailsModel.Children> lsDataBands) {
+        if (adapterProductChildrenBand == null) {
+            adapterProductChildrenBand = new AdapterProductChidrenBands(getActivity(), lsDataBands);
+            listBandProduct.setAdapter(adapterProductChildrenBand);
+        } else {
+            adapterProductChildrenBand.updateAdapter(lsDataBands);
+        }
     }
 
 

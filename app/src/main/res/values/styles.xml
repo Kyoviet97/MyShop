@@ -24,6 +24,25 @@
     </style>
 
 
+    <style name="style_edit_input_max_min_filter">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/_12sp</item>
+        <item name="android:fontFamily">@font/sf_pro_text_regular</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textColorHint">@color/color_main_bkg</item>
+        <item name="android:textColor">#4A4A4A</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:background">@drawable/bkg_edittext_input_filter</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+
+
+    </style>
+
     <style name="style_txt_title_tab_orders">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

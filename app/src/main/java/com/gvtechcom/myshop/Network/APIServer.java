@@ -4,6 +4,7 @@ import com.gvtechcom.myshop.Model.BaseGetAPIShippingAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiAddress;
 import com.gvtechcom.myshop.Model.BaseGetApiData;
 import com.gvtechcom.myshop.Model.BrowseCategoriesModel;
+import com.gvtechcom.myshop.Model.CategoryFilterModel;
 import com.gvtechcom.myshop.Model.CountryInfo;
 import com.gvtechcom.myshop.Model.CountryInfoModel;
 import com.gvtechcom.myshop.Model.DataViewCategoryModel;
@@ -249,8 +250,14 @@ public interface APIServer {
     @GET("keywords")
     Call<KeywordsModel.KeywordParser> GetApiKeywordsSearch();
 
-    @GET("categories")
-    Call<BrowseCategoriesModel.BrowseCategoriesModelParser> GetApiBrowseCategoriesModel();
+    @GET("categories/children")
+    Call<BrowseCategoriesModel.BrowseCategoriesModelParser> GetApiBrowseCategoriesLeft(@Query("category_id") String category_id);
+
+    @GET("categories/descendant")
+    Call<BrowseCategoriesModel.BrowseCategoriesModelParser> GetApiBrowseCategoriesMain(@Query("category_id") String category_id);
+
+    @GET("categories/top-brands-and-filters")
+    Call<CategoryFilterModel.CategoryFilterModelParser> GetApiCategoryFilter(@Query("category_id") String category_id);
 
 
 }

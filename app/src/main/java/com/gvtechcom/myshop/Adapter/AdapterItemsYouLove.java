@@ -45,7 +45,7 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
                 .override(200, 200)
                 .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imageViewItemsYouLove);
-        holder.infoItemsYouLove.setText(lsItemYouLove.get(position).product_name);
+        holder.infoItemsYouLove.setText(lsItemYouLove.get(position).name);
 
         holder.priceItemsYouLove.setText("$" + lsItemYouLove.get(position).price);
 
@@ -70,7 +70,7 @@ public class AdapterItemsYouLove extends RecyclerView.Adapter<AdapterItemsYouLov
                 @Override
                 public void onClick(View v) {
                     if (itemClickListener != null) {
-                        itemClickListener.onClickListener(lsItemYouLove.get(getAdapterPosition()).product_id);
+                        itemClickListener.onClickListener(lsItemYouLove.get(getAdapterPosition()).id);
                     }
                 }
             });

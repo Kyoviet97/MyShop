@@ -36,7 +36,7 @@ import retrofit2.Retrofit;
 
 public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubCategory.Holder> {
     private Context context;
-    private List<BrowseCategoriesModel.Children> lsNameChildren;
+    private List<BrowseCategoriesModel> lsNameChildren;
     private AdapterItemSubCategory adapterItemSubCategory;
     private APIServer apiServer;
 
@@ -44,7 +44,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
 
     private Retrofit retrofit;
 
-    public AdapterNameSubCategory(Context context, List<BrowseCategoriesModel.Children> lsNameChildren) {
+    public AdapterNameSubCategory(Context context, List<BrowseCategoriesModel> lsNameChildren) {
         this.context = context;
         this.lsNameChildren = lsNameChildren;
         retrofit = RetrofitBuilder.getRetrofit(Const.BASE_URL);
@@ -52,7 +52,7 @@ public class AdapterNameSubCategory extends RecyclerView.Adapter<AdapterNameSubC
 
     }
 
-    public void updateData (List<BrowseCategoriesModel.Children> lsNameChildren){
+    public void updateData (List<BrowseCategoriesModel> lsNameChildren){
         this.lsNameChildren = lsNameChildren;
         notifyDataSetChanged();
     }

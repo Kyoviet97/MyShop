@@ -10,10 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -23,18 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.gvtechcom.myshop.Adapter.AdapterItemSubCategory;
+import com.gvtechcom.myshop.Adapter.AdapterTopBrands;
 import com.gvtechcom.myshop.Adapter.AdapterViewCategory;
-import com.gvtechcom.myshop.Interface.ListtenOnDestroyView;
+import com.gvtechcom.myshop.Interface.SendDataString;
 import com.gvtechcom.myshop.MainActivity;
-import com.gvtechcom.myshop.Model.BaseGetApiAddress;
-import com.gvtechcom.myshop.Model.BaseGetApiData;
+import com.gvtechcom.myshop.Model.CategoryFilterModel;
 import com.gvtechcom.myshop.Model.DataViewCategoryModel;
-import com.gvtechcom.myshop.Model.GoToItemDetail;
 import com.gvtechcom.myshop.Model.ItemDetailsModel;
-import com.gvtechcom.myshop.Model.JustForYou;
-import com.gvtechcom.myshop.Model.Product;
-import com.gvtechcom.myshop.Model.ProductByCategoryModel;
 import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
@@ -42,9 +35,7 @@ import com.gvtechcom.myshop.Utils.Const;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
-import com.mylibrary.ui.progress.ProgressDialogCustom;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +50,7 @@ import retrofit2.Retrofit;
 public class FragmentViewCategory extends Fragment {
     private View rootiew;
     private AdapterViewCategory adapterViewCategory;
+    private AdapterTopBrands adapterTopBrands;
     private MainActivity mainActivity;
     private APIServer apiServer;
     private Boolean isLoadMore = true;
@@ -66,13 +58,15 @@ public class FragmentViewCategory extends Fragment {
     private FragmentItemDetail fragmentItemDetail;
     private DataViewCategoryModel dataViewCategory;
     private List<DataViewCategoryModel.Products> lsdataViewCategorTotal;
+    private List<CategoryFilterModel.Filters> lsFilterData;
     private ToastDialog toastDialog;
     private int pageLoad;
     private String idCategoryBundle;
     private Boolean isMaxData = false;
+    private SendDataString sendDataString;
 
-    @BindView(R.id.recycler_view_category_top)
-    RecyclerView recyclerViewViewCategoryTop;
+    @BindView(R.id.recycler_view_top_brands)
+    RecyclerView recyclerViewTopBrands;
     @BindView(R.id.recycler_view_category_main)
     RecyclerView recyclerViewViewCategoryMain;
     @BindView(R.id.netScroll_view_category)
@@ -108,15 +102,11 @@ public class FragmentViewCategory extends Fragment {
         init();
         setRetrofit();
         setRecyclerView();
+        callApiFilterViewCategory(idCategoryBundle);
         getNestedScrollChange();
     }
 
     private void init() {
-        this.pageLoad = 2;
-        lsdataViewCategorTotal = new ArrayList<>();
-        if (dataViewCategory != null) {
-            addListViewCategory(dataViewCategory);
-        }
         mainActivity = (MainActivity) getActivity();
     }
 
@@ -124,13 +114,8 @@ public class FragmentViewCategory extends Fragment {
     void onClick(View view){
         switch (view.getId()){
             case R.id.btn_filter:
-                Toast.makeText(mainActivity, "CLICKKKKKKKKKK", Toast.LENGTH_SHORT).show();
+              mainActivity.setOnpenDrawerRight();
                 break;
-
-            case R.id.action_bar_view_category:
-                Toast.makeText(mainActivity, "pppppp", Toast.LENGTH_SHORT).show();
-                break;
-
         }
     }
 
@@ -150,6 +135,11 @@ public class FragmentViewCategory extends Fragment {
         }
     }
 
+    private void addListViewTopBrands(List<CategoryFilterModel.Topbrands> lsTopBrands){
+        adapterTopBrands = new AdapterTopBrands(getActivity(), lsTopBrands);
+        recyclerViewTopBrands.setAdapter(adapterTopBrands);
+    }
+
     private void setAdapterViewCategory(List<DataViewCategoryModel.Products> lsData) {
         if (adapterViewCategory == null) {
             adapterViewCategory = new AdapterViewCategory(getActivity(), lsData);
@@ -163,6 +153,9 @@ public class FragmentViewCategory extends Fragment {
     private void setRecyclerView() {
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerViewViewCategoryMain.setLayoutManager(linearLayoutManager);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewTopBrands.setLayoutManager(layoutManager);
     }
 
     private void setOnClickAdapter() {
@@ -172,6 +165,14 @@ public class FragmentViewCategory extends Fragment {
                 callApiDataItemDetail(idCategory);
             }
         });
+    }
+
+    private void setListProductCategory(){
+        this.pageLoad = 2;
+        lsdataViewCategorTotal = new ArrayList<>();
+        if (dataViewCategory != null) {
+            addListViewCategory(dataViewCategory);
+        }
     }
 
     private void callApiViewCategory(String id) {
@@ -199,6 +200,25 @@ public class FragmentViewCategory extends Fragment {
             public void onFailure(Call<DataViewCategoryModel.DataViewCategoryModelParser> call, Throwable t) {
                 progressbarLoadApiViewCategoryFooter.setAnimation(animation_side_down);
                 progressbarLoadApiViewCategoryFooter.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void callApiFilterViewCategory(String idCategory){
+        Call<CategoryFilterModel.CategoryFilterModelParser> categoryFilterModelParserCall = apiServer.GetApiCategoryFilter(idCategory);
+        categoryFilterModelParserCall.enqueue(new Callback<CategoryFilterModel.CategoryFilterModelParser>() {
+            @Override
+            public void onResponse(Call<CategoryFilterModel.CategoryFilterModelParser> call, Response<CategoryFilterModel.CategoryFilterModelParser> response) {
+                if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)) {
+                    addListViewTopBrands(response.body().data.top_brands);
+                    lsFilterData = response.body().data.filters;
+                    setListProductCategory();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryFilterModel.CategoryFilterModelParser> call, Throwable t) {
+
             }
         });
     }
@@ -254,6 +274,10 @@ public class FragmentViewCategory extends Fragment {
 
             }
         });
+    }
+
+    public void setSendDataString(SendDataString sendDataString){
+        this.sendDataString = sendDataString;
     }
 
     @Override

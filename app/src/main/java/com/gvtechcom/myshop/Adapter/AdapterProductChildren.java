@@ -43,7 +43,6 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
         Glide.with(context)
                 .load(lsProductChildren.get(position).image)
                 .placeholder(R.drawable.ic_icon_load_error_cetegory)
-                .override(250, 250)
                 .error(R.drawable.ic_icon_load_error_cetegory)
                 .into(holder.imgProductChildren);
     }
@@ -67,7 +66,9 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
                 public void onClick(View v) {
                     if (sendListChildren != null && lsProductChildren.get(getAdapterPosition()).children != null) {
                         if (lsProductChildren.get(getAdapterPosition()).children.size() > 0) {
-                            sendListChildren.dataSend(lsProductChildren.get(getAdapterPosition()).children, getAdapterPosition());
+                            sendListChildren.dataSend(getAdapterPosition());
+                        }else {
+                            sendListChildren.dataSend(0);
                         }
                     }
                 }
@@ -76,7 +77,7 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
     }
 
     public interface SendListChildren{
-        void dataSend(List<ItemDetailsModel.Children> lsProductChildren, int position);
+        void dataSend(int position);
     }
 
     private SendListChildren sendListChildren;

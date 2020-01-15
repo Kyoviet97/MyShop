@@ -68,9 +68,16 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_category_top"
+        android:id="@+id/recycler_view_top_brands"
+        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:paddingBottom="@dimen/_2dp"
+        android:layout_height="@dimen/_50dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_main_bkg" />
 
    <androidx.core.widget.NestedScrollView
        android:id="@+id/netScroll_view_category"
@@ -82,7 +89,6 @@
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/recycler_view_category_main"
            android:nestedScrollingEnabled="false"
-           android:paddingTop="@dimen/_5dp"
            android:layout_width="match_parent"
            android:layout_height="match_parent"/>
 

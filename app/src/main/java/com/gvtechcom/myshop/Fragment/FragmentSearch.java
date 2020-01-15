@@ -256,13 +256,13 @@ public class FragmentSearch extends androidx.fragment.app.Fragment implements Ke
                 if (ValidateCallApi.ValidateAip(getActivity(), response.body().code, response.body().message)) {
                     progressbarLoadApiFooterSearch.setAnimation(animation_side_down);
                     progressbarLoadApiFooterSearch.setVisibility(View.GONE);
-                    if (response.body().response.products.size() == 0 && !loadMore) {
+                    if (response.body().data.products.size() == 0 && !loadMore) {
                         recyclerViewSearch.setVisibility(View.GONE);
                         txtNoResult.setVisibility(View.VISIBLE);
                     } else {
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         Fragment fragmentViewCategory = new FragmentViewCategory();
-                        fragmentTransaction.add(R.id.frame_layout_home_manager, fragmentViewCategory);
+                        fragmentTransaction.replace(R.id.frame_layout_home_manager, fragmentViewCategory);
                         fragmentTransaction.addToBackStack("SearchView");
                         fragmentTransaction.commit();
                     }

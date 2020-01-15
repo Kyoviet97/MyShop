@@ -10,7 +10,6 @@ public class BrowseCategoriesModel {
         public String name;
         public String parent_id;
         public String image;
-        public List<TopBrands> top_brands;
         public List<Children> children;
         public Boolean isSelect;
 
@@ -21,7 +20,6 @@ public class BrowseCategoriesModel {
        public String name;
        public String parent_id;
        public String image;
-       public List<String> top_brands;
        public List<Children> children;
    }
 
@@ -31,15 +29,23 @@ public class BrowseCategoriesModel {
        public String name;
    }
 
+   public class Data{
+       public List<BrowseCategoriesModel> categories;
+       public List<TopBrands> top_brands;
+   }
+
     public class BrowseCategoriesModelParser{
         @SerializedName("status")
         @Expose
         public Integer code;
+
         @SerializedName("content")
         @Expose
         public String message;
+
         @SerializedName("data")
         @Expose
-        public List<BrowseCategoriesModel> response;
+        public Data data;
+
     }
 }
