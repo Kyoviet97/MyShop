@@ -6,14 +6,14 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 public class MySharePreferences{
-    public void SaveSharePref(Context context, String key, String value) {
+    public static void SaveSharePref(Context context, String key, String value) {
         SharedPreferences sharedPref = context.getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
-    public String GetSharePref(Context context, String key) {
+    public static String GetSharePref(Context context, String key) {
         SharedPreferences sharedPref = context.getSharedPreferences("com.gvtechcom.myshop.firts", Context.MODE_PRIVATE);
         String value = sharedPref.getString(key, "Update");
         return value;

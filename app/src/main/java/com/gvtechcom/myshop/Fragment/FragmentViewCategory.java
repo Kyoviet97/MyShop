@@ -32,6 +32,7 @@ import com.gvtechcom.myshop.Network.APIServer;
 import com.gvtechcom.myshop.Network.RetrofitBuilder;
 import com.gvtechcom.myshop.R;
 import com.gvtechcom.myshop.Utils.Const;
+import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.gvtechcom.myshop.Utils.ShowProgressBar;
 import com.gvtechcom.myshop.Utils.ValidateCallApi;
 import com.gvtechcom.myshop.dialog.ToastDialog;
@@ -58,7 +59,6 @@ public class FragmentViewCategory extends Fragment {
     private FragmentItemDetail fragmentItemDetail;
     private DataViewCategoryModel dataViewCategory;
     private List<DataViewCategoryModel.Products> lsdataViewCategorTotal;
-    private List<CategoryFilterModel.Filters> lsFilterData;
     private ToastDialog toastDialog;
     private int pageLoad;
     private String idCategoryBundle;
@@ -211,7 +211,9 @@ public class FragmentViewCategory extends Fragment {
             public void onResponse(Call<CategoryFilterModel.CategoryFilterModelParser> call, Response<CategoryFilterModel.CategoryFilterModelParser> response) {
                 if (ValidateCallApi.ValidateAip(getActivity(), response.body().status, response.body().content)) {
                     addListViewTopBrands(response.body().data.top_brands);
-                    lsFilterData = response.body().data.filters;
+                    Gson gson = new Gson();
+                    String dataFilterString = gson.toJson(response.body().data);
+                    MySharePreferences.SaveSharePref(getActivity(), "dataFilter", dataFilterString);
                     setListProductCategory();
                 }
             }

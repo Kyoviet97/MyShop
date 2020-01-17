@@ -1,5 +1,6 @@
 package com.gvtechcom.myshop.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.Image;
@@ -22,6 +23,7 @@ import java.util.Random;
 public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductChildren.ViewHolder>{
     private Context context;
     private List<ItemDetailsModel.Product> lsProductChildren;
+    int n = 99999;
 
     public AdapterProductChildren(Context context,  List<ItemDetailsModel.Product> lsProductChildren){
         this.context = context;
@@ -36,9 +38,21 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
         return new ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.cardViewBackground.setCardBackgroundColor(Color.BLUE);
+
+        if (n == position) {
+            holder.cardViewBackground.setCardBackgroundColor(Color.parseColor("#FD9644"));
+        } else {
+            holder.cardViewBackground.setCardBackgroundColor(Color.parseColor("#F2F2F2"));
+        }
+
+        if (n == 99999) {
+            if (position == 0) {
+                holder.cardViewBackground.setCardBackgroundColor(Color.parseColor("#FD9644"));
+            }
+        }
 
         Glide.with(context)
                 .load(lsProductChildren.get(position).image)
@@ -71,6 +85,9 @@ public class AdapterProductChildren extends RecyclerView.Adapter<AdapterProductC
                             sendListChildren.dataSend(0);
                         }
                     }
+
+                    n = getAdapterPosition();
+                    notifyDataSetChanged();
                 }
             });
         }

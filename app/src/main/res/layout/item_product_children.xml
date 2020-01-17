@@ -12,15 +12,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:contentPadding="1dp"
-        app:cardCornerRadius="@dimen/_2dp"
-        app:cardBackgroundColor="@android:color/black">
+        app:cardCornerRadius="@dimen/_3dp"
+        app:cardBackgroundColor="@color/color_startus_home">
 
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_2dp"
+            app:cardCornerRadius="@dimen/_3dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false">
 

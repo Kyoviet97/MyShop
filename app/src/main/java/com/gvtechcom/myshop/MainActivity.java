@@ -29,15 +29,23 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.gvtechcom.myshop.Adapter.AdapterFilterSub;
 import com.gvtechcom.myshop.Adapter.AdapterViewPagerHome;
 import com.gvtechcom.myshop.Fragment.FragmentHomeContent;
 import com.gvtechcom.myshop.Fragment.FragmentSearch;
 import com.gvtechcom.myshop.Interface.ClickActionSearch;
 import com.gvtechcom.myshop.Interface.KeywordSearch;
+import com.gvtechcom.myshop.Model.CategoryFilterModel;
+import com.gvtechcom.myshop.Utils.MySharePreferences;
 import com.gvtechcom.myshop.Utils.NonSwipeableViewPager;
 import com.mylibrary.ui.statusbar.StatusBarCompat;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private KeywordSearch keywordSearchl;
     private ClickActionSearch clickActionSearch;
+    private AdapterFilterSub adapterFilterSub;
 
     @BindView(R.id.tablayout_home)
     TabLayout tableLayoutHome;
@@ -71,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.txt_title_sub_action_bar)
     TextView titleSubActionBar;
 
+    @BindView(R.id.recycler_filter_category)
+    RecyclerView recyclerFilterCategory;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"CommitTransaction"})
     @Override
@@ -83,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         setActionSearchClick();
         addControl();
         backTabHome();
+        setRecyclerView();
     }
 
 
@@ -93,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.popBackStack();
                 break;
             case R.id.btn_apply_filter:
-                Toast.makeText(this, "OKOKOKOKO", Toast.LENGTH_SHORT).show();
+
                 break;
         }
     }
@@ -183,6 +196,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setRecyclerView(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
+        recyclerFilterCategory.setLayoutManager(layoutManager);
+    }
+
+    private void addListToAdapter(List<CategoryFilterModel.Filters> lsDataFilter){
+        adapterFilterSub = new AdapterFilterSub(lsDataFilter);
+        recyclerFilterCategory.setAdapter(adapterFilterSub);
+    }
 
     public void setEditSearchNavigation(Boolean isSearch) {
         if (isSearch) {
@@ -308,6 +330,16 @@ public class MainActivity extends AppCompatActivity {
                     setColorStatusTran(true);
                 }
 
+                String dataFilterString = MySharePreferences.GetSharePref(MainActivity.this, "dataFilter");
+                if (dataFilterString == null){
+                }else {
+                    Gson gson = new Gson();
+                    CategoryFilterModel.Data filterData;
+                    filterData = gson.fromJson(dataFilterString, CategoryFilterModel.Data.class);
+                    List<CategoryFilterModel.Filters> lsDataFilter = filterData.filters;
+                    addListToAdapter(lsDataFilter);
+                }
+
             }
 
             @Override
@@ -323,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void setSubActionBar(Boolean hideSubAction, Boolean hideBackButton, String titleSubAction) {
         if (hideSubAction) {
@@ -379,10 +412,14 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
-            System.out.println("=====================>" + viewPagerHome.getCurrentItem());
         } else {
             finish();
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MySharePreferences.SaveSharePref(MainActivity.this, "dataFilter", null);
+    }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 public class AdapterTopBrands extends RecyclerView.Adapter<AdapterTopBrands.viewHolder> {
     private Context context;
     private List<CategoryFilterModel.Topbrands> lsTopBrands;
+    private int n = 99999;
 
     public AdapterTopBrands(Context context, List<CategoryFilterModel.Topbrands> lsTopBrands) {
         this.context = context;
@@ -39,6 +40,18 @@ public class AdapterTopBrands extends RecyclerView.Adapter<AdapterTopBrands.view
                 .placeholder(R.drawable.ic_icon_load_error_just_for_you)
                 .error(R.drawable.ic_icon_load_error_just_for_you)
                 .into(holder.imgTopBrands);
+
+        if (n == position){
+            holder.imgTopBrands.setBackgroundResource(R.drawable.bkg_item_top_brands_selected);
+        }else {
+            holder.imgTopBrands.setBackgroundResource(R.drawable.bkg_item_top_brands);
+        }
+
+        if (n == 99999){
+            if (position == 0){
+                holder.imgTopBrands.setBackgroundResource(R.drawable.bkg_item_top_brands_selected);
+            }
+        }
     }
 
     @Override
@@ -51,6 +64,14 @@ public class AdapterTopBrands extends RecyclerView.Adapter<AdapterTopBrands.view
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             imgTopBrands = itemView.findViewById(R.id.img_top_brands);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    n = getAdapterPosition();
+                        notifyDataSetChanged();
+                }
+            });
+
         }
     }
 }
