@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_StatusBar"
+    android:background="@color/color_main_bkg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,7 +42,7 @@
                 android:textColor="#4A4A4A"
                 android:textSize="@dimen/_12sp" />
 
-            <RelativeLayout
+                <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10dp"
@@ -50,46 +51,120 @@
                 <ImageView
                     android:id="@+id/img_messages_order"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10dp"
                     android:src="@drawable/ic_icon_load_error_cetegory"/>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/txt_view_messages_order"
-                    android:layout_toLeftOf="@+id/txt_view_messages_order"
-                    android:layout_toEndOf="@+id/img_messages_order"
-                    android:layout_toRightOf="@+id/img_messages_order">
+                    android:background="@color/color_main_bkg"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_4dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/awesome_5pro_regular"
-                        android:textColor="@color/red"/>
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:text="Order ID: 12312312312312 \nQuantity: 2 \nTotal: $9.98"
+                        android:textColor="#4A4A4A" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txt_view_messages_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_main_bkg"
+                        android:gravity="right"
 
-                <TextView
-                    android:id="@+id/txt_view_messages_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_10dp"
-                    android:text="VIEW"
-                    android:fontFamily="@font/sf_pro_text_semibold"
-                    android:textSize="@dimen/_12sp"
-                    android:textColor="#FD9644"/>
+                        android:layout_gravity="center|right"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:text="VIEW"
+                        android:textColor="#FD9644"
+                        android:textSize="@dimen/_12sp" />
 
-            </RelativeLayout>
+                </LinearLayout>
 
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_10dp"
+        android:paddingLeft="@dimen/_10dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textColor="#9B9B9B"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Phone number"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textColor="#9B9B9B"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Danijel Keuc"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textColor="#4A4A4A"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="(+386) 41711050"
+                android:textSize="@dimen/_12sp"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textColor="#4A4A4A"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_6dp"
+            android:text="Address"
+            android:textSize="@dimen/_12sp"
+            android:fontFamily="@font/sf_pro_display_regular"
+            android:textColor="#9B9B9B"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pohorska 23g, Maribor, Maribor, Slovenia, 2000"
+            android:textSize="@dimen/_12sp"
+            android:fontFamily="@font/sf_pro_display_regular"
+            android:textColor="#4A4A4A"/>
+
+
+    </LinearLayout>
+
 
 
 </LinearLayout>

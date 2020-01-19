@@ -20,6 +20,7 @@ import java.util.List;
 public class AdapterItemMessagesContent extends RecyclerView.Adapter<AdapterItemMessagesContent.ViewHolder>{
     private Context context;
     private List<ItemRecyclerMessagesContentModel> lsMessagesContent;
+    private SetOnClickMessagesDetail setOnClickMessagesDetail;
 
     public AdapterItemMessagesContent(Context context, List<ItemRecyclerMessagesContentModel> lsMessagesContent) {
         this.context = context;
@@ -64,7 +65,24 @@ public class AdapterItemMessagesContent extends RecyclerView.Adapter<AdapterItem
             txtTitle = itemView.findViewById(R.id.txt_title_recycler_view_messages);
             txtTime = itemView.findViewById(R.id.txt_time_recycler_messages);
             txtContent = itemView.findViewById(R.id.txt_recycler_messages);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (setOnClickMessagesDetail != null){
+                        setOnClickMessagesDetail.onClick();
+                    }
+                }
+            });
         }
+    }
+
+    public void setSetOnClickMessagesDetail(SetOnClickMessagesDetail setOnClickMessagesDetail){
+        this.setOnClickMessagesDetail = setOnClickMessagesDetail;
+    }
+
+    public interface SetOnClickMessagesDetail{
+        void onClick();
     }
 
 }

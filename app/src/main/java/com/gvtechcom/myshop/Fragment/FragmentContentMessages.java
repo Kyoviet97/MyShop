@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,5 +78,14 @@ public class FragmentContentMessages extends Fragment {
     private void setAdapterItemMessagesContentl(List<ItemRecyclerMessagesContentModel> lsData){
         AdapterItemMessagesContent adapterItemMessagesContent = new AdapterItemMessagesContent(getActivity(), lsData);
         recyclerMassagesContent.setAdapter(adapterItemMessagesContent);
+        adapterItemMessagesContent.setSetOnClickMessagesDetail(new AdapterItemMessagesContent.SetOnClickMessagesDetail() {
+            @Override
+            public void onClick() {
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.frame_messages_manager, new FragmentMessagesDetailOrder());
+                fragmentTransaction.addToBackStack("messages");
+                fragmentTransaction.commit();
+            }
+        });
     }
 }

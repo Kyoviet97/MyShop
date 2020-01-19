@@ -123,12 +123,15 @@ public class FragmentItemDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_item_detail, container, false);
         ButterKnife.bind(this, rootView);
+
         mainActivity = (MainActivity) getActivity();
         mainActivity.setDisplayNavigationBar(false, false, false);
         mainActivity.setHideButtonNavigation(true);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mainActivity.setColorStatusTran(false);
+            mainActivity.setColorStatusTran(true);
         }
+
         progressLoading = new ProgressDialogCustom(getActivity());
         toastDialog = new ToastDialog(getActivity());
         return rootView;
@@ -354,7 +357,7 @@ public class FragmentItemDetail extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mainActivity.setColorStatusTran(true);
+            mainActivity.setColorStatusTran(false);
         }
         mainActivity.setHideButtonNavigation(false);
 
